@@ -19,6 +19,11 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
+
+        public ActionResult Servidor()
+        {
+            return View();
+        }
         [HttpGet]
         public JsonResult ListarServidor()
         {
@@ -32,18 +37,6 @@ namespace ActivoFijo.Controllers
 
 
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        
     }
 }

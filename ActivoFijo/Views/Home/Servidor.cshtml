@@ -1,0 +1,269 @@
+﻿
+@{
+    ViewBag.Title = "Servidor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Dashboard</a></li>
+    <li class="breadcrumb-item active">Servidores</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i>Lista de Usuarios
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear Nuevo</button>
+            </div>
+        </div>
+        <hr />
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Marca</th>
+                    <th>Código</th>
+                    <th>Teinda</th>
+                    <th>IP Servidor</th>
+                    <th>Hostname</th>
+                    <th>Modelo</th>
+                    <th>serie</th>
+                    <th>Sistema O.</th>
+                    <th>Version Micros</th>
+                    <th>memoria Ram</th>
+                    <th>Tamaño BD</th>
+                    <th>Status</th>
+                    <th>Ultimo Reini.</th>
+                    <th>Version Facturador</th>
+                    <th>Ultima Venta</th>
+                    <th>FLG</th>
+                    <th>User Cre.</th>
+                    <th>Fecha Crea</th>
+                    <th>Usuario mod.</th>
+                    <th>Fecha Mod.</th>
+                    <th>ID Tecnico</th>
+                    <th>Fecha Asigando</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <input id="txtid" type="text" value="0" style="display: none;" />
+
+
+                <div class="row g-2">
+
+                    <div class="col-sm-6">
+                        <label for="txtnombres" class="form-label">Nombres</label>
+                        <input type="email" class="form-control" id="txtnombres" placeholder="Tu nombre" />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="txtapellidos" class="form-label">Apellidos</label>
+                        <input type="email" class="form-control" id="txtapellidos" placeholder="Tu apellido" />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="txtcorreo" class="form-label">Correo</label>
+                        <input type="email" class="form-control" id="txtcorreo" placeholder="Tu correo" />
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="cboactivo" class="form-label">Activo</label>
+                        <select id="cboactivo" class="form-select">
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+
+        $(document).ready(function () {
+            tabladata = $("#tabla").DataTable({
+        
+        responsive: true,
+        ordering: false,
+        "ajax": {
+            url: '@Url.Action("ListarServidor", "Home")',
+            type: "GET",
+            dataType: "json",
+        },
+        "columns": [
+            { "data": "cod_marca" },
+            { "data": "cod_tienda" },
+            { "data": "tienda" },
+            { "data": "ip_servidor" },
+            { "data": "nom_servidor" },
+            { "data": "modelo" },
+            { "data": "serie" },
+            { "data": "sistema_operativo" },
+            { "data": "version_micros" },
+            { "data": "memoria_ram" },
+            { "data": "tamano_bd" },
+            { "data": "status" },
+            { "data": "ultimo_reinicio" },
+            { "data": "version_facturador" },
+            { "data": "ultima_venta" },
+            { "data": "flg_estado" },
+            { "data": "usuario_crea" },
+            { "data": "fecha_crea" },
+            { "data": "usuario_mod" },
+            { "data": "fecha_mod" },
+            { "data": "idtecnico" },
+            { "data": "fecha_asignado" },
+
+
+            {
+                "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                    '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                "orderable": false,
+                "searchable": false,
+                "width": "90px"
+            }
+        ],
+        info: false,
+        ordering: false,
+        length: false,
+        Response: true,
+        dom: 'Bfrtilp',
+        pageLength: 10,
+        columnDefs:
+        [
+                {
+                    target: 5,
+                    visible: false,
+                    searchable: false
+                },
+                {
+                    target: 6,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 7,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 8,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 9,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 10,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 11,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 12,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 13,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 14,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 15,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 16,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 17,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 18,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 19,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 20,
+                    visible: false,
+                    searchable: false,
+                },
+                {
+                    target: 21,
+                    visible: false,
+                    searchable: false,
+                }
+        ],
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+        }
+    });
+
+    
+
+
+    </script>
+}
+

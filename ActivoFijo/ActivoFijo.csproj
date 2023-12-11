@@ -516,7 +516,7 @@
     <Content Include="webfonts\fa-brands-400.ttf" />
     <Content Include="webfonts\fa-brands-400.eot" />
     <Content Include="Views\Login\Login.cshtml" />
-    <Content Include="Views\Home\ListarServidor.cshtml" />
+    <Content Include="Views\Home\Servidor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
