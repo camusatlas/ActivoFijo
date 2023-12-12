@@ -76,110 +76,110 @@ namespace ActivoFijo.Models
         }
 
         // Funcion Registrar
-        //public int Registrar(Servidor obj, out string Mensaje)
-        //{
-        //    int idautogenerado = 0;
-        //    Mensaje = string.Empty;
-        //    try
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand("Ing_Servidores", cn))
-        //        {
+        public void Registrar(Servidor obj, out string Mensaje)
+        {
+            Mensaje = string.Empty;
+
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("Ing_Servidores", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("@cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("@ip_servidor", obj.ip_servidor);
+                    cmd.Parameters.AddWithValue("@nom_servidor", obj.nom_servidor);
+                    cmd.Parameters.AddWithValue("@modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("@serie", obj.serie);
+                    cmd.Parameters.AddWithValue("@sistema_operativo", obj.sistema_operativo);
+                    cmd.Parameters.AddWithValue("@version_micros", obj.version_micros);
+                    cmd.Parameters.AddWithValue("@memoria_ram", obj.memoria_ram);
+
+                    cmd.Parameters.Add("@Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    // Obtener el mensaje de salida del procedimiento almacenado
+                    Mensaje = cmd.Parameters["@Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Mensaje = ex.Message;
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                    cn.Close();
+            }
+        }
 
 
-        //            cmd.Parameters.AddWithValue("@cod_marca", obj.cod_marca);
-        //            cmd.Parameters.AddWithValue("@cod_tienda", obj.cod_tienda);
-        //            cmd.Parameters.AddWithValue("@tienda", obj.tienda);
-        //            cmd.Parameters.AddWithValue("@ip_servidor", obj.ip_servidor);
-        //            cmd.Parameters.AddWithValue("@nom_servidor", obj.nom_servidor);
-        //            cmd.Parameters.AddWithValue("@modelo", obj.modelo);
-        //            cmd.Parameters.AddWithValue("@serie", obj.serie);
-        //            cmd.Parameters.AddWithValue("@sistema_operativo", obj.sistema_operativo);
-        //            cmd.Parameters.AddWithValue("@version_micros", obj.version_micros);
-        //            cmd.Parameters.AddWithValue("@memoria_ram", obj.memoria_ram);
-        //            cmd.Parameters.AddWithValue("@tamano_bd", obj.tamano_bd);
-        //            cmd.Parameters.AddWithValue("@status", obj.status);
-        //            cmd.Parameters.AddWithValue("@ultimo_reinicio", obj.ultimo_reinicio);
-        //            cmd.Parameters.AddWithValue("@version_facturador", obj.version_facturador);
-        //            cmd.Parameters.AddWithValue("@ultima_venta", obj.ultima_venta);
-        //            cmd.Parameters.AddWithValue("@flg_estado", obj.flg_estado);
-        //            cmd.Parameters.AddWithValue("@usuario_crea", obj.usuario_crea);
-        //            cmd.Parameters.AddWithValue("@fecha_crea", obj.fecha_crea);
-        //            cmd.Parameters.AddWithValue("@usuario_mod", obj.usuario_mod);
-        //            cmd.Parameters.AddWithValue("@fecha_mod", obj.fecha_mod);
-        //            cmd.Parameters.AddWithValue("@idtecnico", obj.idtecnico);
-        //            cmd.Parameters.AddWithValue("@fecha_asignado", obj.fecha_asignado);
+        // Editar
+        public bool Editar(Servidor obj, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("ActualizarServidor", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-        //            cn.Open();
-        //            cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@in_cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("@in_cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("@in_tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("@in_ip_servidor", obj.ip_servidor);
+                    cmd.Parameters.AddWithValue("@in_nom_servidor", obj.nom_servidor);
+                    cmd.Parameters.AddWithValue("@in_modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("@in_serie", obj.serie);
+                    cmd.Parameters.AddWithValue("@in_sistema_operativo", obj.sistema_operativo);
+                    cmd.Parameters.AddWithValue("@in_version_micros", obj.version_micros);
+                    cmd.Parameters.AddWithValue("@in_memoria_ram", obj.memoria_ram);
+                    cmd.Parameters.Add("@out_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("@out_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
-        //            idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-        //            Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
 
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        idautogenerado = 0;
-        //        Mensaje = ex.Message;
-        //    }
-        //    return idautogenerado;
-        //}
-        //// Editar
-        //public bool Editar(Usuario obj, out string Mensaje)
-        //{
-        //    bool resultado = false;
-        //    Mensaje = string.Empty;
-        //    try
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand("sp_Editar", cn))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
+                    resultado = Convert.ToBoolean(cmd.Parameters["@out_Resultado"].Value);
+                    Mensaje = cmd.Parameters["@out_Mensaje"].Value.ToString();
 
-        //            cmd.Parameters.AddWithValue("IdUsuario", obj.IdUsuario);
-        //            cmd.Parameters.AddWithValue("Nombres", obj.Nombres);
-        //            cmd.Parameters.AddWithValue("Apellidos", obj.Apellidos);
-        //            cmd.Parameters.AddWithValue("Correo", obj.Correo);
-        //            cmd.Parameters.AddWithValue("Activo", obj.Activo);
-        //            cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-        //            cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-
-        //            cn.Open();
-        //            cmd.ExecuteNonQuery();
-
-        //            resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-        //            Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        resultado = false;
-        //        Mensaje = ex.Message;
-        //    }
-        //    return resultado;
-        //}
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
 
         //// Eliminar
-        //public bool Eliminar(int id, out string Mensaje)
-        //{
-        //    bool resultado = false;
-        //    Mensaje = string.Empty;
-        //    try
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand("delete top (1) from usuario where IdUsuario = @id", cn))
-        //        {
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.Parameters.AddWithValue("@id", id);
-        //            cn.Open();
-        //            resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        resultado = false;
-        //        Mensaje = ex.Message;
-        //    }
-        //    return resultado;
-        //}
+        public bool Eliminar(string tienda, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM tb_bhd_gen_servidor WHERE tienda = @tienda", cn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@tienda", tienda);
+                    cn.Open();
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
+
     }
 }

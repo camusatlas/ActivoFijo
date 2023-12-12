@@ -177,10 +177,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CD_KDS.cs" />
     <Compile Include="Models\CD_Servidor.cs" />
+    <Compile Include="Models\CD_WorkStation.cs" />
+    <Compile Include="Models\CN_KDS.cs" />
     <Compile Include="Models\CN_Servidor.cs" />
+    <Compile Include="Models\KDS.cs" />
     <Compile Include="Models\Servidor.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\WorkStation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -484,6 +489,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\loadingoverlay\loadingoverlay.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\scripts.js" />
     <Content Include="Web.config" />
@@ -517,6 +523,7 @@
     <Content Include="webfonts\fa-brands-400.eot" />
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Home\Servidor.cshtml" />
+    <Content Include="Views\Home\Kds.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

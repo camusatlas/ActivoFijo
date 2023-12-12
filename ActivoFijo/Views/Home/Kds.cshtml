@@ -1,0 +1,350 @@
+﻿
+@{
+    ViewBag.Title = "Kds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Dashboard</a></li>
+    <li class="breadcrumb-item active">KDS</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i>Lista de KDS
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear Nuevo</button>
+            </div>
+        </div>
+        <hr />
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Empresa</th>
+                    <th>Marca</th>
+                    <th>Tienda</th>
+                    <th>Nombre de Tienda</th>
+                    <th>Departamento</th>
+                    <th>Provincia</th>
+                    <th>Distrito</th>
+                    <th>Ip KDS</th>
+                    <th>Host Name</th>
+                    <th>Serial</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Servidores</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <input id="IdKds" type="text" value="0" style="display: none;" />
+
+
+                <div class="row g-2">
+
+                    <div class="col-sm-6">
+                        <label for="empresa" class="form-label">Empresa</label>
+                        <select class="form-control" id="empresa" name="empresa" placeholder="Ingresa Empresa">
+                            <option value="CINDEL">CINDEL</option>
+                            <option value="DELOSI">DELOSI</option>
+                            <option value="LASINO">LASINO</option>
+                            <option value="LOYSING">LOYSING</option>
+                            <option value="SAIDEL">SAIDEL</option>
+                            <option value="TELEPIZZA ANDINA">TELEPIZZA ANDINA</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="marca" class="form-label" >Marca</label>
+                        <select class="form-control" id="marca" name="marca" placeholder="Ingresa Marca">
+                            <option value="BK">BK</option>
+                            <option value="CH">CH</option>
+                            <option value="KF">KF</option>
+                            <option value="MT">MT</option>
+                            <option value="PB">PB</option>
+                            <option value="PH">PH</option>
+                            <option value="SB">SB</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="tienda" class="form-label">Tienda</label>
+                        <input type="text" class="form-control" id="tienda" placeholder="Ingresa tienda" maxlength="20">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="nombre_tienda" class="form-label">Nombre de la tienda</label>
+                        <input type="text" class="form-control" id="nombre_tienda" placeholder="Ingrese el nombre de la tienda" maxlength="50">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="provincia" class="form-label">Provincia</label>
+                        <input type="text" class="form-control" id="provincia" placeholder="Ingresar Provincia" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="departamento" class="form-label">Departamento</label>
+                        <input type="text" class="form-control" id="departamento" placeholder="Ingrese Departamento" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="distrito" class="form-label">Distrito</label>
+                        <input type="text" class="form-control" id="distrito" placeholder="Ingrese el Distrito" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="ip_kds" class="form-label">IP</label>
+                        <input type="text" class="form-control" id="ip_kds" placeholder="Ingrese la IP" maxlength="30">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="hostname" class="form-label">HostName</label>
+                        <input type="text" class="form-control" id="hostname" placeholder="Ingrese el HostName" maxlength="30">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="1">Operativa</option>
+                            <option value="0">Inoperativa</option>
+                        </select>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="mensajeError" class="alert alert-danger" role="alert">
+                                A simple danger alert—check it out!
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tu código HTML -->
+
+@section scripts{
+    <script>
+        var tabladata;
+        var filaSeleccionada;
+
+        $(document).ready(function () {
+            // Tu lógica para inicializar DataTable y los eventos de los botones...
+            tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListarKDS", "Home")',
+                type: "GET",
+                dataType: "json",
+                },
+                "columns": [
+                    { "data": "empresa" },
+                    { "data": "marca" },
+                    { "data": "tienda" },
+                    { "data": "nombre_tienda" },
+                    { "data": "departamento" },
+                    { "data": "provincia" },
+                    { "data": "distrito" },
+                    { "data": "ip_kds" },
+                    { "data": "hostname" },
+                    { "data": "serial" },
+                    {
+                        "data": "status", "render": function (valor) {
+                            if (valor) {
+                                return '<span class="badge bg-success">Operativa</span>';
+                            } else {
+                                return '<span class="badge bg-danger">Inoperativa</span>';
+                            }
+                        }
+                    },
+                    {
+                    "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                    '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                    }
+                ],
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                }
+            });
+
+            // Evento click para abrir el modal de edición
+            $("#tabla tbody").on("click", '.btn-editar', function () {
+                filaSeleccionada = $(this).closest("tr");
+                var data = tabladata.row(filaSeleccionada).data();
+                abrirModal(data);
+            });
+
+            // Evento click para eliminar
+            $("#tabla tbody").on("click", '.btn-eliminar', function () {
+                // Tu lógica para eliminar...
+                var usuarioSeleccionado = $(this).closest("tr");
+                var data = tabladata.row(usuarioSeleccionado).data();
+
+                swal({
+                title: "¿Está seguro?",
+                text: "¿Desea eliminar el usuario?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Sí",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+                }, function () {
+                    var Usuario = {
+                    IdKds: data.IdKds // Obtener el IdUsuario del registro
+                    };
+
+                    jQuery.ajax({
+                    url: '@Url.Action("EliminarKDS", "Home")',
+                    type: 'POST',
+                    data: JSON.stringify({ id: Usuario.IdKds }), // Enviar solo el IdUsuario
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data.resultado) {
+                            tabladata.row(usuarioSeleccionado).remove().draw();
+                        } else {
+                            swal("No se pudo eliminar", data.mensaje, "error");
+                        }
+                    },
+                    error: function (error) {
+                    console.log(error);
+                    },
+                    beforeSend: function () {
+                    }
+                    });
+                });
+                console.log(data);
+            });
+        });
+
+        function abrirModal(json) {
+            // Tu lógica para abrir el modal...
+            $("#IdKds").val(0);
+            $("#empresa").val("");
+            $("#marca").val("");
+            $("#tienda").val("");
+            $("#nombre_tienda").val("");
+            $("#departamento").val("");
+            $("#provincia").val("");
+            $("#distrito").val("");
+            $("#ip_kds").val("");
+            $("#hostname").val("");
+            $("#serial").val("");
+            $("#status").val(1);
+
+            // Ocultar valores
+            $("#mensajeError").hide();
+
+            if (json !== null) {
+                $("#IdKds").val(json.IdKds);
+                $("#empresa").val(json.empresa);
+                $("#marca").val(json.marca);
+                $("#tienda").val(json.tienda);
+                $("#nombre_tienda").val(json.nombre_tienda);
+                $("#departamento").val(json.departamento);
+                $("#provincia").val(json.provincia);
+                $("#distrito").val(json.distrito);
+                $("#ip_kds").val(json.ip_kds);
+                $("#hostname").val(json.hostname);
+                $("#serial").val(json.serial);
+                $("#status").val(json.status ? 1 : 0);
+            }
+            $("#formModal").modal("show");
+
+            $("#tabla tbody").off("click", '.btn-editar').on("click", '.btn-editar', function () {
+                var filaSeleccionada = $(this).closest("tr");
+                var data = tabladata.row(filaSeleccionada).data();
+                abrirModal(data);
+            });
+        }
+
+        function Guardar() {
+            debugger;
+            var Usuario = {
+                IdKds: $("#IdKds").val(),
+                status: $("#status").val() == 1 ? true : false,
+                empresa: $("#empresa").val(),
+                tienda: $("#tienda").val(),
+                nombre_tienda: $("#nombre_tienda").val(),
+                departamento: $("#departamento").val(),
+                provincia: $("#provincia").val(),
+                distrito: $("#distrito").val(),
+                ip_kds: $("#ip_kds").val(),
+                hostname: $("#hostname").val(),
+                serial: $("#serial").val(),
+                marca : $("#marca").val()
+            };
+
+            jQuery.ajax({
+                url: '@Url.Action("GuardarKDS", "Home")',
+                type: 'POST',
+                data: JSON.stringify({ objeto: Usuario }),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log()
+                    if (Usuario.IdKds == 0) {
+                        if (data.resultado !== 0) {
+                            Usuario.IdKds = data.resultado;
+                            tabladata.row.add(Usuario).draw(false);
+                            $("#formModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    } else {
+                        if (data.data) {
+                            tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+                            $("#formModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                    location.reload(); // Recarga la página después de completar la operación de guardado
+                },
+                error: function (error) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show()
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    });
+                }
+            });
+        }
+    </script>
+}

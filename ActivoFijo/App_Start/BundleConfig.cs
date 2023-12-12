@@ -17,6 +17,7 @@ namespace ActivoFijo
                         "~/Scripts/DataTables/dataTables.responsibe.js",
                         "~/Scripts/loadingoverlay/loadingoverlay.min.js",
                         "~/Scripts/sweetalert.min.js",
+                        
                         "~/Scripts/scripts.js"));
 
 
@@ -34,6 +35,9 @@ namespace ActivoFijo
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
                                                                  "~/Content/DataTables/css/jquery.dataTables.css",
                                                                  "~/Content/DataTable/css/responsive.dataTables.css",
+                                                                 "~/Scripts/DataTables/CSS/dataTables.bootstrap5.min.css",
+                                                                 "~/Scripts/DataTables/CSS/buttons.bootstrap5.min.css",
+                                                                 "~/Scripts/DataTables/CSS/dataTables.bootstrap5.min.css",
                                                                  "~/Content/sweetalert.css"));
         }
     }

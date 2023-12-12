@@ -1,0 +1,175 @@
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+
+namespace ActivoFijo.Models
+{
+    public class CD_KDS
+    {
+        private MySqlConnection cn;
+        public CD_KDS()
+        {
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosi"].ConnectionString);
+        }
+
+        // Listar KDS
+        public List<KDS> listarkds()
+        {
+            List<KDS> listado = new List<KDS>();
+            MySqlCommand cmd = new MySqlCommand("ListarKDS", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                cn.Open();
+                using (MySqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        KDS usuario = new KDS()
+                        {
+                            IdKds = Convert.ToInt32(dr["IdKds"]),
+                            empresa = dr["empresa"].ToString(),
+                            marca = dr["marca"].ToString(),
+                            tienda = dr["tienda"].ToString(),
+                            nombre_tienda = dr["nombre_tienda"].ToString(),
+                            departamento = dr["departamento"].ToString(),
+                            provincia = dr["provincia"].ToString(),
+                            distrito = dr["distrito"].ToString(),
+                            ip_kds = dr["ip_kds"].ToString(),
+                            hostname = dr["hostname"].ToString(),
+                            serial = dr["serial"].ToString(),
+                            status = Convert.ToBoolean(dr["status"]),
+
+                        };
+                        listado.Add(usuario);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                    cn.Close();
+            }
+            return listado;
+        }
+
+        // Actualizar KDS
+        public void Registrar(KDS obj, out string Mensaje)
+        {
+            int idautogenerado = 0;
+            Mensaje = string.Empty;
+
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("Ing_KDS", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@IdKds", obj.IdKds);
+                    cmd.Parameters.AddWithValue("@empresa", obj.empresa);
+                    cmd.Parameters.AddWithValue("@tienda", obj.marca);
+                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("@nombre_tienda", obj.nombre_tienda);
+                    cmd.Parameters.AddWithValue("@departamento", obj.departamento);
+                    cmd.Parameters.AddWithValue("@provincia", obj.provincia);
+                    cmd.Parameters.AddWithValue("@distrito", obj.distrito);
+                    cmd.Parameters.AddWithValue("@ip_kds", obj.ip_kds);
+                    cmd.Parameters.AddWithValue("@hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("@serial", obj.serial);
+                    cmd.Parameters.AddWithValue("@status", obj.status);
+                    cmd.Parameters.Add("@Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("@Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["@Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Mensaje = ex.Message;
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                    cn.Close();
+            }
+        }
+
+        // Editar KDS
+        public bool Editar(KDS obj, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("ActualizarKDS", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@IdKds", obj.IdKds);
+                    cmd.Parameters.AddWithValue("@empresa", obj.empresa);
+                    cmd.Parameters.AddWithValue("@marca", obj.marca);
+                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("@nombre_tienda", obj.nombre_tienda);
+                    cmd.Parameters.AddWithValue("@departamento", obj.departamento);
+                    cmd.Parameters.AddWithValue("@provincia", obj.provincia);
+                    cmd.Parameters.AddWithValue("@distrito", obj.distrito);
+                    cmd.Parameters.AddWithValue("@ip_kds", obj.ip_kds);
+                    cmd.Parameters.AddWithValue("@hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("@serial", obj.serial);
+                    cmd.Parameters.AddWithValue("@status", obj.status);
+                    cmd.Parameters.Add("@out_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("@out_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+
+                    resultado = Convert.ToBoolean(cmd.Parameters["@out_Resultado"].Value);
+                    Mensaje = cmd.Parameters["@out_Mensaje"].Value.ToString();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
+
+        // Eliminar KDS
+        public bool Eliminar(int id, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("delete top (1) from braintech.tb_bhd_gen_kds where IdKds = @id", cn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cn.Open();
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
+    }
+}

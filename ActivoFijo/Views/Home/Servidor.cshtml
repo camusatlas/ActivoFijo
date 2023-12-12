@@ -4,6 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
+
 <ol class="breadcrumb mb-4 mt-4">
     <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Dashboard</a></li>
     <li class="breadcrumb-item active">Servidores</li>
@@ -26,7 +29,7 @@
                 <tr>
                     <th>Marca</th>
                     <th>Código</th>
-                    <th>Teinda</th>
+                    <th>Tienda</th>
                     <th>IP Servidor</th>
                     <th>Hostname</th>
                     <th>Modelo</th>
@@ -61,7 +64,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Servidores</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -72,198 +75,292 @@
                 <div class="row g-2">
 
                     <div class="col-sm-6">
-                        <label for="txtnombres" class="form-label">Nombres</label>
-                        <input type="email" class="form-control" id="txtnombres" placeholder="Tu nombre" />
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="txtapellidos" class="form-label">Apellidos</label>
-                        <input type="email" class="form-control" id="txtapellidos" placeholder="Tu apellido" />
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="txtcorreo" class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="txtcorreo" placeholder="Tu correo" />
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="cboactivo" class="form-label">Activo</label>
-                        <select id="cboactivo" class="form-select">
-                            <option value="1">Si</option>
-                            <option value="0">No</option>
+                        <label for="cod_marca" class="form-label">Código de Marca</label>
+                        <select class="form-control" id="cod_marca" name="cod_marca">
+                            <option value="BK">BK</option>
+                            <option value="CH">CH</option>
+                            <option value="KF">KF</option>
+                            <option value="MT">MT</option>
+                            <option value="PB">PB</option>
+                            <option value="PH">PH</option>
+                            <option value="SB">SB</option>
                         </select>
                     </div>
 
-                </div>
+                    <div class="col-sm-6">
+                        <label for="cod_tienda" class="form-label">Código Tienda</label>
+                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
+                    </div>
 
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <div id="mensajeError" class="alert alert-danger" role="alert">
-                            A simple danger alert—check it out!
+
+                    <div class="col-sm-6">
+                        <label for="ip_servidor" class="form-label">IP Servidor</label>
+                        <input type="text" class="form-control" id="ip_servidor" placeholder="Ingrese la IP del Servisor" maxlength="20">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="nom_servidor" class="form-label">Nombre del Servidor</label>
+                        <input type="text" class="form-control" id="nom_servidor" placeholder="Ingrese el nombre del servidor" maxlength="50">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="modelo" class="form-label">Modelo de Equipo</label>
+                        <input type="text" class="form-control" id="modelo" placeholder="Ingrese el Modelo de Equipo" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="serie" class="form-label">Serie</label>
+                        <input type="text" class="form-control" id="serie" placeholder="Ingrese la serie del Equipo" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="version_micros" class="form-label">Version Micros</label>
+                        <input type="text" class="form-control" id="version_micros" placeholder="Ingrese la vercion del Micros" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="memoria_ram" class="form-label">Memoria Ram</label>
+                        <input type="text" class="form-control" id="memoria_ram" placeholder="Ingrese la memoria ram" maxlength="30">
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="mensajeError" class="alert alert-danger" role="alert">
+                                A simple danger alert—check it out!
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+
+
 @section scripts{
     <script>
 
-        var tabladata;
-        var filaSeleccionada;
+            var tabladata;
+            var filaSeleccionada;
 
         $(document).ready(function () {
-            tabladata = $("#tabla").DataTable({
-        
-        responsive: true,
-        ordering: false,
-        "ajax": {
-            url: '@Url.Action("ListarServidor", "Home")',
-            type: "GET",
-            dataType: "json",
-        },
-        "columns": [
-            { "data": "cod_marca" },
-            { "data": "cod_tienda" },
-            { "data": "tienda" },
-            { "data": "ip_servidor" },
-            { "data": "nom_servidor" },
-            { "data": "modelo" },
-            { "data": "serie" },
-            { "data": "sistema_operativo" },
-            { "data": "version_micros" },
-            { "data": "memoria_ram" },
-            { "data": "tamano_bd" },
-            { "data": "status" },
-            { "data": "ultimo_reinicio" },
-            { "data": "version_facturador" },
-            { "data": "ultima_venta" },
-            { "data": "flg_estado" },
-            { "data": "usuario_crea" },
-            { "data": "fecha_crea" },
-            { "data": "usuario_mod" },
-            { "data": "fecha_mod" },
-            { "data": "idtecnico" },
-            { "data": "fecha_asignado" },
-
-
-            {
-                "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
-                    '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
-                "orderable": false,
-                "searchable": false,
-                "width": "90px"
-            }
-        ],
-        info: false,
-        ordering: false,
-        length: false,
-        Response: true,
-        dom: 'Bfrtilp',
-        pageLength: 10,
-        columnDefs:
-        [
-                {
-                    target: 5,
-                    visible: false,
-                    searchable: false
+            $('#tabla').DataTable({
+                responsive: "true",
+                processing: false,
+                serverSide: false,
+                ordering: false,
+                //columns: [
+                //    {
+                //        target: 5,
+                //        visible: false,
+                //        searchable: false
+                //    },
+                //    {
+                //        target: 6,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 7,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 8,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 9,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 10,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 11,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 12,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 13,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 14,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 15,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 16,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 17,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 18,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 19,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 20,
+                //        visible: false,
+                //        searchable: false,
+                //    },
+                //    {
+                //        target: 21,
+                //        visible: false,
+                //        searchable: false,
+                //    }
+                //],
+                ajax: {
+                    url: '@Url.Action("ListarServidor", "Home")',
+                    type: "GET",
+                    dataType: "json",
+                    dataSrc: "data" // Agregar esta línea para indicar la fuente de los datos
                 },
-                {
-                    target: 6,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 7,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 8,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 9,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 10,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 11,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 12,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 13,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 14,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 15,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 16,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 17,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 18,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 19,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 20,
-                    visible: false,
-                    searchable: false,
-                },
-                {
-                    target: 21,
-                    visible: false,
-                    searchable: false,
+                columns: [
+                    // Aquí van tus columnas como las tenías anteriormente
+                    { "data": "cod_marca" },
+                    { "data": "cod_tienda" },
+                    { "data": "tienda" },
+                    { "data": "ip_servidor" },
+                    { "data": "nom_servidor" },
+                    { "data": "modelo" },
+                    { "data": "serie" },
+                    { "data": "sistema_operativo" },
+                    { "data": "version_micros" },
+                    { "data": "memoria_ram" },
+                    { "data": "tamano_bd" },
+                    { "data": "status" },
+                    { "data": "ultimo_reinicio" },
+                    { "data": "version_facturador" },
+                    { "data": "ultima_venta" },
+                    { "data": "flg_estado" },
+                    { "data": "usuario_crea" },
+                    { "data": "fecha_crea" },
+                    { "data": "usuario_mod" },
+                    { "data": "fecha_mod" },
+                    { "data": "idtecnico" },
+                    { "data": "fecha_asignado" },
+                    {
+                        "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                            '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "90px"
+                    }
+                ],
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 }
-        ],
-        "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+            });
+        });
+            function abrirModal(json) {
+                // Limpiar campos del formulario
+                $("#cod_marca, #cod_tienda, #ip_servidor, #nom_servidor, #modelo, #serie, #version_micros, #memoria_ram").val("");
+                $("#mensajeError").hide(); // Ocultar mensaje de error
+
+                if (json !== null) {
+                    $("#cod_marca").val(json.cod_marca);
+                    $("#cod_tienda").val(json.cod_tienda);
+                    $("#ip_servidor").val(json.ip_servidor);
+                    $("#nom_servidor").val(json.nom_servidor);
+                    $("#modelo").val(json.modelo);
+                    $("#serie").val(json.serie);
+                    $("#version_micros").val(json.version_micros);
+                    $("#memoria_ram").val(json.memoria_ram);
+                }
+
+                $("#formModal").modal("show");
+
+                $("#tabla tbody").off("click", '.btn-editar').on("click", '.btn-editar', function () {
+                    var filaSeleccionada = $(this).closest("tr");
+                    var data = tabladata.row(filaSeleccionada).data();
+                    abrirModal(data);
+                });
+            }
+
+            function Guardar() {
+    var Servidor = {
+        cod_marca: $("#cod_marca").val(),
+        cod_tienda: $("#cod_tienda").val(),
+        ip_servidor: $("#ip_servidor").val(),
+        nom_servidor: $("#nom_servidor").val(),
+        modelo: $("#modelo").val(),
+        serie: $("#serie").val(),
+        version_micros: $("#version_micros").val(),
+        memoria_ram: $("#memoria_ram").val()
+    };
+
+    jQuery.ajax({
+        url: '@Url.Action("GuardarServidor", "Home")', // Reemplaza "TuControlador" por el nombre real de tu controlador
+        type: 'POST',
+        data: JSON.stringify({ objeto: Servidor }),
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            if (data.resultado != null) {
+                if (data.resultado) {
+                    if (Servidor.ip_servidor) {
+                        Servidor.ip_servidor = data.mensaje;
+                        tabladata.row.add(Servidor).draw(false);
+                        $("#formModal").modal("hide");
+                    } else {
+                        var filaSeleccionada = $('#tabla tbody tr.selected');
+                        tabladata.row(filaSeleccionada).data(Servidor).draw(false);
+                        $("#formModal").modal("hide");
+                    }
+                } else {
+                    $("#mensajeError").text(data.mensaje);
+                    $("#mensajeError").show();
+                }
+                location.reload(); // Recarga la página después de completar la operación de guardado
+            }
+        },
+        error: function (error) {
+            $(".modal-body").LoadingOverlay("hide");
+            $("#mensajeError").text("Error Ajax");
+            $("#mensajeError").show();
+        },
+        beforeSend: function () {
+            $(".modal-body").LoadingOverlay("show", {
+                imageResizeFactor: 2,
+                text: "Cargando...",
+                size: 14
+            });
         }
     });
-
-    
-
+}
 
     </script>
 }
-
