@@ -156,7 +156,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("delete top (1) from braintech.tb_bhd_gen_kds where IdKds = @id", cn))
+                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM braintech.tb_bhd_gen_kds WHERE IdKds = @id LIMIT 1", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", id);
