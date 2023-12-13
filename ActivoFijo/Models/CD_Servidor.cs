@@ -34,6 +34,7 @@ namespace ActivoFijo.Models
                     {
                         Servidor usuario = new Servidor()
                         {
+                            IdTienda = Convert.ToInt32(dr["IdTienda"]),
                             cod_marca = dr["cod_marca"].ToString(),
                             cod_tienda = dr["cod_tienda"].ToString(),
                             tienda = dr["tienda"].ToString(),
@@ -57,7 +58,6 @@ namespace ActivoFijo.Models
                             idtecnico = dr["idtecnico"].ToString(),
                             fecha_asignado = dr["fecha_asignado"].ToString()
 
-
                         };
                         listado.Add(usuario);
                     }
@@ -76,45 +76,44 @@ namespace ActivoFijo.Models
         }
 
         // Funcion Registrar
-        public void Registrar(Servidor obj, out string Mensaje)
+        public int Registrar(Servidor obj, out string Mensaje)
         {
+            int idautogenerado = 0;
             Mensaje = string.Empty;
 
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("Ing_Servidores", cn))
+                using (MySqlCommand cmd = new MySqlCommand("IngresarKDS", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@cod_marca", obj.cod_marca);
-                    cmd.Parameters.AddWithValue("@cod_tienda", obj.cod_tienda);
-                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("@ip_servidor", obj.ip_servidor);
-                    cmd.Parameters.AddWithValue("@nom_servidor", obj.nom_servidor);
-                    cmd.Parameters.AddWithValue("@modelo", obj.modelo);
-                    cmd.Parameters.AddWithValue("@serie", obj.serie);
-                    cmd.Parameters.AddWithValue("@sistema_operativo", obj.sistema_operativo);
-                    cmd.Parameters.AddWithValue("@version_micros", obj.version_micros);
-                    cmd.Parameters.AddWithValue("@memoria_ram", obj.memoria_ram);
-
-                    cmd.Parameters.Add("@Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("IdTienda", obj.IdTienda);
+                    cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("ip_servidor", obj.ip_servidor);
+                    cmd.Parameters.AddWithValue("nom_servidor", obj.nom_servidor);
+                    cmd.Parameters.AddWithValue("modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("serie", obj.serie);
+                    cmd.Parameters.AddWithValue("sistema_operativo", obj.sistema_operativo);
+                    cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
+                    cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
+                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    // Obtener el mensaje de salida del procedimiento almacenado
-                    Mensaje = cmd.Parameters["@Mensaje"].Value.ToString();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
                 }
             }
             catch (Exception ex)
             {
+                idautogenerado = 0;
                 Mensaje = ex.Message;
             }
-            finally
-            {
-                if (cn.State == ConnectionState.Open)
-                    cn.Close();
-            }
+            return idautogenerado;
         }
 
 
@@ -129,18 +128,19 @@ namespace ActivoFijo.Models
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@in_cod_marca", obj.cod_marca);
-                    cmd.Parameters.AddWithValue("@in_cod_tienda", obj.cod_tienda);
-                    cmd.Parameters.AddWithValue("@in_tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("@in_ip_servidor", obj.ip_servidor);
-                    cmd.Parameters.AddWithValue("@in_nom_servidor", obj.nom_servidor);
-                    cmd.Parameters.AddWithValue("@in_modelo", obj.modelo);
-                    cmd.Parameters.AddWithValue("@in_serie", obj.serie);
-                    cmd.Parameters.AddWithValue("@in_sistema_operativo", obj.sistema_operativo);
-                    cmd.Parameters.AddWithValue("@in_version_micros", obj.version_micros);
-                    cmd.Parameters.AddWithValue("@in_memoria_ram", obj.memoria_ram);
-                    cmd.Parameters.Add("@out_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("@out_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("IdTienda", obj.IdTienda);
+                    cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("ip_servidor", obj.ip_servidor);
+                    cmd.Parameters.AddWithValue("nom_servidor", obj.nom_servidor);
+                    cmd.Parameters.AddWithValue("modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("serie", obj.serie);
+                    cmd.Parameters.AddWithValue("sistema_operativo", obj.sistema_operativo);
+                    cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
+                    cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
+                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -159,13 +159,13 @@ namespace ActivoFijo.Models
         }
 
         //// Eliminar
-        public bool Eliminar(string tienda, out string Mensaje)
+        public bool Eliminarservidor(int tienda, out string Mensaje)
         {
             bool resultado = false;
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM tb_bhd_gen_servidor WHERE tienda = @tienda", cn))
+                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM tb_bhd_gen_servidor WHERE IdTienda = @IdTienda", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@tienda", tienda);

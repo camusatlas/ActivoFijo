@@ -1,17 +1,17 @@
 ﻿
 @{
-    ViewBag.Title = "Kds";
+    ViewBag.Title = "PCGerencial";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <ol class="breadcrumb mb-4 mt-4">
     <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Dashboard</a></li>
-    <li class="breadcrumb-item active">KDS</li>
+    <li class="breadcrumb-item active">Servidores</li>
 </ol>
 
 <div class="card">
     <div class="card-header">
-        <i class="fas fa-users me-1"></i>Lista de KDS
+        <i class="fas fa-users me-1"></i>Lista de Servidores
     </div>
 
     <div class="card-body">
@@ -24,17 +24,28 @@
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
-                    <th>Empresa</th>
                     <th>Marca</th>
+                    <th>Código</th>
                     <th>Tienda</th>
-                    <th>Nombre de Tienda</th>
-                    <th>Departamento</th>
-                    <th>Provincia</th>
-                    <th>Distrito</th>
-                    <th>Ip KDS</th>
-                    <th>Host Name</th>
+                    <th>IP Servidor</th>
+                    <th>Hostname</th>
+                    <th>Modelo</th>
                     <th>Serie</th>
+                    <th>Sistema O.</th>
+                    <th>Version Micros</th>
+                    <th>memoria Ram</th>
+                    <th>Tamaño BD</th>
                     <th>Status</th>
+                    <th>Ultimo Reini.</th>
+                    <th>Version Facturador</th>
+                    <th>Ultima Venta</th>
+                    <th>FLG</th>
+                    <th>User Cre.</th>
+                    <th>Fecha Crea</th>
+                    <th>Usuario mod.</th>
+                    <th>Fecha Mod.</th>
+                    <th>ID Tecnico</th>
+                    <th>Fecha Asigando</th>
                     <th></th>
                 </tr>
             </thead>
@@ -50,31 +61,19 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">KDS</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Servidores</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
-                <input id="IdKds" type="text" value="0" style="display: none;" />
+                <input id="IdTienda" type="text" value="0" style="display: none;" />
 
 
                 <div class="row g-2">
 
                     <div class="col-sm-6">
-                        <label for="empresa" class="form-label">Empresa</label>
-                        <select class="form-control" id="empresa" name="empresa" placeholder="Ingresa Empresa">
-                            <option value="CINDEL">CINDEL</option>
-                            <option value="DELOSI">DELOSI</option>
-                            <option value="LASINO">LASINO</option>
-                            <option value="LOYSING">LOYSING</option>
-                            <option value="SAIDEL">SAIDEL</option>
-                            <option value="TELEPIZZA ANDINA">TELEPIZZA ANDINA</option>
-                        </select>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="marca" class="form-label">Marca</label>
-                        <select class="form-control" id="marca" name="marca" placeholder="Ingresa Marca">
+                        <label for="cod_marca" class="form-label">Código de Marca</label>
+                        <select class="form-control" id="cod_marca" name="cod_marca">
                             <option value="BK">BK</option>
                             <option value="CH">CH</option>
                             <option value="KF">KF</option>
@@ -86,49 +85,39 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="tienda" class="form-label">Tienda</label>
-                        <input type="text" class="form-control" id="tienda" placeholder="Ingresa tienda" maxlength="20">
+                        <label for="cod_tienda" class="form-label">Código Tienda</label>
+                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <label for="ip_servidor" class="form-label">IP Servidor</label>
+                        <input type="text" class="form-control" id="ip_servidor" placeholder="Ingrese la IP del Servisor" maxlength="20">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="nombre_tienda" class="form-label">Nombre de la tienda</label>
-                        <input type="text" class="form-control" id="nombre_tienda" placeholder="Ingrese el nombre de la tienda" maxlength="50">
+                        <label for="nom_servidor" class="form-label">Nombre del Servidor</label>
+                        <input type="text" class="form-control" id="nom_servidor" placeholder="Ingrese el nombre del servidor" maxlength="50">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="provincia" class="form-label">Provincia</label>
-                        <input type="text" class="form-control" id="provincia" placeholder="Ingresar Provincia" maxlength="90">
+                        <label for="modelo" class="form-label">Modelo de Equipo</label>
+                        <input type="text" class="form-control" id="modelo" placeholder="Ingrese el Modelo de Equipo" maxlength="90">
                     </div>
 
-                    <div class="col-sm-6">
-                        <label for="departamento" class="form-label">Departamento</label>
-                        <input type="text" class="form-control" id="departamento" placeholder="Ingrese Departamento" maxlength="90">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="distrito" class="form-label">Distrito</label>
-                        <input type="text" class="form-control" id="distrito" placeholder="Ingrese el Distrito" maxlength="90">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="ip_kds" class="form-label">IP</label>
-                        <input type="text" class="form-control" id="ip_kds" placeholder="Ingrese la IP" maxlength="30">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="hostname" class="form-label">HostName</label>
-                        <input type="text" class="form-control" id="hostname" placeholder="Ingrese el HostName" maxlength="30">
-                    </div>
                     <div class="col-sm-6">
                         <label for="serie" class="form-label">Serie</label>
-                        <input type="text" class="form-control" id="serie" placeholder="Ingrese N° de Serie" maxlength="30">
+                        <input type="text" class="form-control" id="serie" placeholder="Ingrese la serie del Equipo" maxlength="90">
                     </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-control" id="status" name="status">
-                            <option value="1">Operativa</option>
-                            <option value="0">Inoperativa</option>
-                        </select>
+
+                    <div class="col-sm-6">
+                        <label for="version_micros" class="form-label">Version Micros</label>
+                        <input type="text" class="form-control" id="version_micros" placeholder="Ingrese la vercion del Micros" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="memoria_ram" class="form-label">Memoria Ram</label>
+                        <input type="text" class="form-control" id="memoria_ram" placeholder="Ingrese la memoria ram" maxlength="30">
                     </div>
 
                     <div class="row mt-2">
@@ -149,10 +138,11 @@
     </div>
 </div>
 
-<!-- Tu código HTML -->
+
 
 @section scripts{
     <script>
+
         var tabladata;
         var filaSeleccionada;
 
@@ -161,30 +151,33 @@
         responsive: true,
         ordering: false,
         "ajax": {
-            url: '@Url.Action("ListarKDS", "Home")',
+            url: '@Url.Action("ListarServidor", "Home")',
             type: "GET",
             dataType: "json",
         },
         "columns": [
-            { "data": "empresa" },
-            { "data": "marca" },
+            { "data": "cod_marca" },
+            { "data": "cod_tienda" },
             { "data": "tienda" },
-            { "data": "nombre_tienda" },
-            { "data": "departamento" },
-            { "data": "provincia" },
-            { "data": "distrito" },
-            { "data": "ip_kds" },
-            { "data": "hostname" },
+            { "data": "ip_servidor" },
+            { "data": "nom_servidor" },
+            { "data": "modelo" },
             { "data": "serie" },
-            {
-                "data": "status", "render": function (valor) {
-                    if (valor) {
-                        return '<span class="badge bg-success">Operativa</span>';
-                    } else {
-                        return '<span class="badge bg-danger">Inoperativa</span>';
-                    }
-                }
-            },
+            { "data": "sistema_operativo" },
+            { "data": "version_micros" },
+            { "data": "memoria_ram" },
+            { "data": "tamano_bd" },
+            { "data": "status" },
+            { "data": "ultimo_reinicio" },
+            { "data": "version_facturador" },
+            { "data": "ultima_venta" },
+            { "data": "flg_estado" },
+            { "data": "usuario_crea" },
+            { "data": "fecha_crea" },
+            { "data": "usuario_mod" },
+            { "data": "fecha_mod" },
+            { "data": "idtecnico" },
+            { "data": "fecha_asignado" },
             {
                 "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
                     '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
@@ -223,7 +216,7 @@
             };
 
             jQuery.ajax({
-                url: '@Url.Action("EliminarKDS", "Home")',
+                url: '@Url.Action("EliminarServidor", "Home")',
                 type: 'POST',
                 data: JSON.stringify({ id: Usuario.IdKds }), // Enviar solo el IdUsuario
                 dataType: "json",
@@ -249,35 +242,33 @@
 });
 
         function abrirModal(json) {
-            $("#IdKds").val(0);
-            $("#empresa").val("");
-            $("#marca").val("");
+            $("#IdTienda").val(0);
+            $("#cod_marca").val("");
+            $("#cod_tienda").val("");
             $("#tienda").val("");
-            $("#nombre_tienda").val("");
-            $("#departamento").val("");
-            $("#provincia").val("");
-            $("#distrito").val("");
-            $("#ip_kds").val("");
-            $("#hostname").val("");
+            $("#ip_servidor").val("");
+            $("#nom_servidor").val("");
+            $("#modelo").val("");
             $("#serie").val("");
-            $("#status").val(1);
+            $("#sistema_operativo").val("");
+            $("#version_micros").val("");
+            $("#memoria_ram").val("");
 
             // Ocultar valores
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#IdKds").val(json.IdKds);
-                $("#empresa").val(json.empresa);
-                $("#marca").val(json.marca);
+                $("#IdTienda").val(json.IdTienda);
+                $("#cod_marca").val(json.cod_marca);
+                $("#cod_tienda").val(json.cod_tienda);
                 $("#tienda").val(json.tienda);
-                $("#nombre_tienda").val(json.nombre_tienda);
-                $("#departamento").val(json.departamento);
-                $("#provincia").val(json.provincia);
-                $("#distrito").val(json.distrito);
-                $("#ip_kds").val(json.ip_kds);
-                $("#hostname").val(json.hostname);
+                $("#ip_servidor").val(json.ip_servidor);
+                $("#nom_servidor").val(json.nom_servidor);
+                $("#modelo").val(json.modelo);
                 $("#serie").val(json.serie);
-                $("#status").val(json.status ? 1 : 0);
+                $("#sistema_operativo").val(json.sistema_operativo);
+                $("#version_micros").val(json.version_micros);
+                $("#memoria_ram").val(json.memoria_ram);
             }
 
             $("#formModal").modal("show");
@@ -292,31 +283,30 @@
 
         function Guardar() {
     var Usuario = {
-        IdKds: $("#IdKds").val(),
-        status: $("#status").val() == 1 ? true : false,
-        empresa: $("#empresa").val(),
+        IdTienda: $("#IdTienda").val(),
+        cod_marca: $("#cod_marca").val(),
+        cod_tienda: $("#cod_tienda").val(),
         tienda: $("#tienda").val(),
-        nombre_tienda: $("#nombre_tienda").val(),
-        departamento: $("#departamento").val(),
-        provincia: $("#provincia").val(),
-        distrito: $("#distrito").val(),
-        ip_kds: $("#ip_kds").val(),
-        hostname: $("#hostname").val(),
+        ip_servidor: $("#ip_servidor").val(),
+        nom_servidor: $("#nom_servidor").val(),
+        modelo: $("#modelo").val(),
         serie: $("#serie").val(),
-        marca: $("#marca").val()
+        sistema_operativo: $("#sistema_operativo").val(),
+        version_micros: $("#version_micros").val(),
+        memoria_ram: $("#memoria_ram").val()
     };
 
     jQuery.ajax({
-        url: '@Url.Action("GuardarKDS", "Home")',
+        url: '@Url.Action("GuardarServidor", "Home")',
         type: 'POST',
         data: JSON.stringify({ objeto: Usuario }),
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             debugger;
-            if (Usuario.IdKds == 0) {
+            if (Usuario.IdTienda == 0) {
                 if (data.resultado !== 0) {
-                    Usuario.IdKds = data.resultado;
+                    Usuario.IdTienda = data.resultado;
                     tabladata.row.add(Usuario).draw(false);
                     $("#formModal").modal("hide");
                 } else {
@@ -349,6 +339,6 @@
     });
 }
 
-
     </script>
 }
+

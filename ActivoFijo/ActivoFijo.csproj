@@ -178,11 +178,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CD_KDS.cs" />
+    <Compile Include="Models\CD_PCGerencial.cs" />
     <Compile Include="Models\CD_Servidor.cs" />
     <Compile Include="Models\CD_WorkStation.cs" />
     <Compile Include="Models\CN_KDS.cs" />
+    <Compile Include="Models\CN_PCGerencial.cs" />
     <Compile Include="Models\CN_Servidor.cs" />
+    <Compile Include="Models\CN_WorkStation.cs" />
     <Compile Include="Models\KDS.cs" />
+    <Compile Include="Models\PCGerencial.cs" />
     <Compile Include="Models\Servidor.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\WorkStation.cs" />
@@ -526,6 +530,9 @@
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Home\Servidor.cshtml" />
     <Content Include="Views\Home\Kds.cshtml" />
+    <Content Include="Views\Home\WorkStation.cshtml" />
+    <Content Include="Views\Home\PCGerencial.cshtml" />
+    <Content Include="Views\Home\Inventario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

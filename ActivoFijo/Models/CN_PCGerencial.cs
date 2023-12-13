@@ -1,23 +1,22 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using ActivoFijo.Models;
-
 namespace ActivoFijo.Models
 {
-    public class CN_Servidor
+    public class CN_PCGerencial
     {
-        private CD_Servidor objCapaDato = new CD_Servidor();
+        private CD_PCGerencial objCapaDato = new CD_PCGerencial();
 
-        public List<Servidor> listar()
+        public List<PCGerencial> listar()
         {
-            return objCapaDato.listar();
+            return objCapaDato.listarPCGerencial();
         }
 
-        // Mensajes de Registrar KDS
-        public int Registrar(Servidor obj, out string Mensaje)
+        // Mensaje de Registrar PCGerencial
+        public int Registrar(PCGerencial obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
@@ -36,12 +35,12 @@ namespace ActivoFijo.Models
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.ip_servidor) || string.IsNullOrWhiteSpace(obj.ip_servidor))
+            else if (string.IsNullOrEmpty(obj.ip_gerente) || string.IsNullOrWhiteSpace(obj.ip_gerente))
             {
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.nom_servidor) || string.IsNullOrWhiteSpace(obj.nom_servidor))
+            else if (string.IsNullOrEmpty(obj.nom_pc_gerencial) || string.IsNullOrWhiteSpace(obj.nom_pc_gerencial))
             {
                 Mensaje = "El nombre del departamento no puede estar vacío.";
 
@@ -66,17 +65,29 @@ namespace ActivoFijo.Models
                 Mensaje = "El nombre del host no puede estar vacío.";
 
             }
+            else if (string.IsNullOrEmpty(obj.procesador) || string.IsNullOrWhiteSpace(obj.procesador))
+            {
+                Mensaje = "El nombre del host no puede estar vacío.";
+
+            }
+            else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
+            {
+                Mensaje = "El número de serie no puede estar vacío.";
+
+            }
             if (string.IsNullOrEmpty(Mensaje))
             {
 
-                return objCapaDato.Registrar(obj, out Mensaje);
+                return objCapaDato.RegistrarPCGerencial(obj, out Mensaje);
             }
             else
             {
                 return 0;
             }
         }
-        public bool Editar(Servidor obj, out string Mensaje)
+
+        // Mensaje de Editar PCGerencial
+        public bool Editar(PCGerencial obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
@@ -95,12 +106,12 @@ namespace ActivoFijo.Models
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.ip_servidor) || string.IsNullOrWhiteSpace(obj.ip_servidor))
+            else if (string.IsNullOrEmpty(obj.ip_gerente) || string.IsNullOrWhiteSpace(obj.ip_gerente))
             {
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.nom_servidor) || string.IsNullOrWhiteSpace(obj.nom_servidor))
+            else if (string.IsNullOrEmpty(obj.nom_pc_gerencial) || string.IsNullOrWhiteSpace(obj.nom_pc_gerencial))
             {
                 Mensaje = "El nombre del departamento no puede estar vacío.";
 
@@ -125,20 +136,31 @@ namespace ActivoFijo.Models
                 Mensaje = "El nombre del host no puede estar vacío.";
 
             }
+            else if (string.IsNullOrEmpty(obj.procesador) || string.IsNullOrWhiteSpace(obj.procesador))
+            {
+                Mensaje = "El nombre del host no puede estar vacío.";
+
+            }
+            else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
+            {
+                Mensaje = "El número de serie no puede estar vacío.";
+
+            }
             if (string.IsNullOrEmpty(Mensaje))
             {
-                return objCapaDato.Editar(obj, out Mensaje);
+                return objCapaDato.EditarPCGerencial(obj, out Mensaje);
             }
             else
             {
-                return objCapaDato.Editar(obj, out Mensaje);
+                return objCapaDato.EditarPCGerencial(obj, out Mensaje);
             }
         }
 
         // Eliminar
         public bool Eliminar(int id, out string Mensaje)
         {
-            return objCapaDato.Eliminarservidor(id, out Mensaje);
+            return objCapaDato.EliminarPCGerencial(id, out Mensaje);
         }
+
     }
 }

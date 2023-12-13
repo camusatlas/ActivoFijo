@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using ActivoFijo.Models;
-
 namespace ActivoFijo.Models
 {
-    public class CN_Servidor
+    public class CN_WorkStation
     {
-        private CD_Servidor objCapaDato = new CD_Servidor();
+        private CD_WorkStation objCapaDato = new CD_WorkStation();
 
-        public List<Servidor> listar()
+        public List<WorkStation> listar()
         {
             return objCapaDato.listar();
         }
-
-        // Mensajes de Registrar KDS
-        public int Registrar(Servidor obj, out string Mensaje)
+        // Mensaje de Registros
+        public int Registrar(WorkStation obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
@@ -36,47 +33,44 @@ namespace ActivoFijo.Models
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.ip_servidor) || string.IsNullOrWhiteSpace(obj.ip_servidor))
+            else if (string.IsNullOrEmpty(obj.caja) || string.IsNullOrWhiteSpace(obj.caja))
             {
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.nom_servidor) || string.IsNullOrWhiteSpace(obj.nom_servidor))
+            else if (string.IsNullOrEmpty(obj.ip_workstation) || string.IsNullOrWhiteSpace(obj.ip_workstation))
             {
                 Mensaje = "El nombre del departamento no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.modelo) || string.IsNullOrWhiteSpace(obj.modelo))
+            else if (string.IsNullOrEmpty(obj.hostname) || string.IsNullOrWhiteSpace(obj.hostname))
             {
                 Mensaje = "El nombre de la provincia no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
+            else if (string.IsNullOrEmpty(obj.tipo) || string.IsNullOrWhiteSpace(obj.tipo))
             {
                 Mensaje = "El nombre del distrito no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.sistema_operativo) || string.IsNullOrWhiteSpace(obj.sistema_operativo))
+            else if (string.IsNullOrEmpty(obj.modelo) || string.IsNullOrWhiteSpace(obj.modelo))
             {
                 Mensaje = "La dirección IP del KDS no puede estar vacía.";
-
-            }
-            else if (string.IsNullOrEmpty(obj.memoria_ram) || string.IsNullOrWhiteSpace(obj.memoria_ram))
-            {
-                Mensaje = "El nombre del host no puede estar vacío.";
 
             }
             if (string.IsNullOrEmpty(Mensaje))
             {
 
-                return objCapaDato.Registrar(obj, out Mensaje);
+                return objCapaDato.RegistrarWorkSation(obj, out Mensaje);
             }
             else
             {
                 return 0;
             }
         }
-        public bool Editar(Servidor obj, out string Mensaje)
+
+        // Mensaje de Editar
+        public bool Editar(WorkStation obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
@@ -95,34 +89,29 @@ namespace ActivoFijo.Models
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.ip_servidor) || string.IsNullOrWhiteSpace(obj.ip_servidor))
+            else if (string.IsNullOrEmpty(obj.caja) || string.IsNullOrWhiteSpace(obj.caja))
             {
                 Mensaje = "El nombre de la tienda no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.nom_servidor) || string.IsNullOrWhiteSpace(obj.nom_servidor))
+            else if (string.IsNullOrEmpty(obj.ip_workstation) || string.IsNullOrWhiteSpace(obj.ip_workstation))
             {
                 Mensaje = "El nombre del departamento no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.modelo) || string.IsNullOrWhiteSpace(obj.modelo))
+            else if (string.IsNullOrEmpty(obj.hostname) || string.IsNullOrWhiteSpace(obj.hostname))
             {
                 Mensaje = "El nombre de la provincia no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
+            else if (string.IsNullOrEmpty(obj.tipo) || string.IsNullOrWhiteSpace(obj.tipo))
             {
                 Mensaje = "El nombre del distrito no puede estar vacío.";
 
             }
-            else if (string.IsNullOrEmpty(obj.sistema_operativo) || string.IsNullOrWhiteSpace(obj.sistema_operativo))
+            else if (string.IsNullOrEmpty(obj.modelo) || string.IsNullOrWhiteSpace(obj.modelo))
             {
                 Mensaje = "La dirección IP del KDS no puede estar vacía.";
-
-            }
-            else if (string.IsNullOrEmpty(obj.memoria_ram) || string.IsNullOrWhiteSpace(obj.memoria_ram))
-            {
-                Mensaje = "El nombre del host no puede estar vacío.";
 
             }
             if (string.IsNullOrEmpty(Mensaje))
@@ -138,7 +127,7 @@ namespace ActivoFijo.Models
         // Eliminar
         public bool Eliminar(int id, out string Mensaje)
         {
-            return objCapaDato.Eliminarservidor(id, out Mensaje);
+            return objCapaDato.Eliminar(id, out Mensaje);
         }
     }
 }

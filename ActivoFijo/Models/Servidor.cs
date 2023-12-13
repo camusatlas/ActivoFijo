@@ -8,6 +8,7 @@ namespace ActivoFijo.Models
 {
     public class Servidor
     {
+        public int IdTienda { get; set; }
         public string cod_marca { get; set; }
         public string cod_tienda { get; set; }
         public string tienda { get; set; }
