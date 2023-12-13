@@ -18,7 +18,7 @@ namespace ActivoFijo.Models
         public string distrito { get; set; }
         public string ip_kds { get; set; }
         public string hostname { get; set; }
-        public string serial { get; set; }
+        public string serie { get; set; }
         public bool status { get; set; }
     }
 }

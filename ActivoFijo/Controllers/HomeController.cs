@@ -65,7 +65,7 @@ namespace ActivoFijo.Controllers
         {
             List<KDS> oLista = new List<KDS>();
 
-            oLista = new CN_KDS().ListarKDS();
+            oLista = new CN_KDS().listar();
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }

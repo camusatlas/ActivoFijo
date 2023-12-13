@@ -42,7 +42,7 @@ namespace ActivoFijo.Models
                             distrito = dr["distrito"].ToString(),
                             ip_kds = dr["ip_kds"].ToString(),
                             hostname = dr["hostname"].ToString(),
-                            serial = dr["serial"].ToString(),
+                            serie = dr["serie"].ToString(),
                             status = Convert.ToBoolean(dr["status"]),
 
                         };
@@ -63,48 +63,44 @@ namespace ActivoFijo.Models
         }
 
         // Actualizar KDS
-        public void Registrar(KDS obj, out string Mensaje)
+        public int Registrar(KDS obj, out string Mensaje)
         {
             int idautogenerado = 0;
             Mensaje = string.Empty;
 
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("Ing_KDS", cn))
+                using (MySqlCommand cmd = new MySqlCommand("IngresarKDS", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@IdKds", obj.IdKds);
-                    cmd.Parameters.AddWithValue("@empresa", obj.empresa);
-                    cmd.Parameters.AddWithValue("@tienda", obj.marca);
-                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("@nombre_tienda", obj.nombre_tienda);
-                    cmd.Parameters.AddWithValue("@departamento", obj.departamento);
-                    cmd.Parameters.AddWithValue("@provincia", obj.provincia);
-                    cmd.Parameters.AddWithValue("@distrito", obj.distrito);
-                    cmd.Parameters.AddWithValue("@ip_kds", obj.ip_kds);
-                    cmd.Parameters.AddWithValue("@hostname", obj.hostname);
-                    cmd.Parameters.AddWithValue("@serial", obj.serial);
-                    cmd.Parameters.AddWithValue("@status", obj.status);
-                    cmd.Parameters.Add("@Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("@Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("empresa", obj.empresa);
+                    cmd.Parameters.AddWithValue("marca", obj.marca);
+                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("nombre_tienda", obj.nombre_tienda);
+                    cmd.Parameters.AddWithValue("departamento", obj.departamento);
+                    cmd.Parameters.AddWithValue("provincia", obj.provincia);
+                    cmd.Parameters.AddWithValue("distrito", obj.distrito);
+                    cmd.Parameters.AddWithValue("ip_kds", obj.ip_kds);
+                    cmd.Parameters.AddWithValue("hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("serie", obj.serie);
+                    cmd.Parameters.AddWithValue("status", obj.status);
+                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
                     idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["@Mensaje"].Value.ToString();
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
                 }
             }
             catch (Exception ex)
             {
+                idautogenerado = 0;
                 Mensaje = ex.Message;
             }
-            finally
-            {
-                if (cn.State == ConnectionState.Open)
-                    cn.Close();
-            }
+            return idautogenerado;
         }
 
         // Editar KDS
@@ -118,26 +114,26 @@ namespace ActivoFijo.Models
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@IdKds", obj.IdKds);
-                    cmd.Parameters.AddWithValue("@empresa", obj.empresa);
-                    cmd.Parameters.AddWithValue("@marca", obj.marca);
-                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("@nombre_tienda", obj.nombre_tienda);
-                    cmd.Parameters.AddWithValue("@departamento", obj.departamento);
-                    cmd.Parameters.AddWithValue("@provincia", obj.provincia);
-                    cmd.Parameters.AddWithValue("@distrito", obj.distrito);
-                    cmd.Parameters.AddWithValue("@ip_kds", obj.ip_kds);
-                    cmd.Parameters.AddWithValue("@hostname", obj.hostname);
-                    cmd.Parameters.AddWithValue("@serial", obj.serial);
-                    cmd.Parameters.AddWithValue("@status", obj.status);
-                    cmd.Parameters.Add("@out_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("@out_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("IdKds", obj.IdKds);
+                    cmd.Parameters.AddWithValue("empresa", obj.empresa);
+                    cmd.Parameters.AddWithValue("marca", obj.marca);
+                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("nombre_tienda", obj.nombre_tienda);
+                    cmd.Parameters.AddWithValue("departamento", obj.departamento);
+                    cmd.Parameters.AddWithValue("provincia", obj.provincia);
+                    cmd.Parameters.AddWithValue("distrito", obj.distrito);
+                    cmd.Parameters.AddWithValue("ip_kds", obj.ip_kds);
+                    cmd.Parameters.AddWithValue("hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("serie", obj.serie);
+                    cmd.Parameters.AddWithValue("status", obj.status);
+                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["@out_Resultado"].Value);
-                    Mensaje = cmd.Parameters["@out_Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
 
                 }
             }
