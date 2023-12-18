@@ -76,12 +76,12 @@ namespace ActivoFijo.Models
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@cod_marca", obj.cod_marca);
-                    cmd.Parameters.AddWithValue("@cod_tienda", obj.cod_tienda);
-                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("@caja", obj.caja);
-                    cmd.Parameters.AddWithValue("@ip_workstation", obj.ip_workstation);
-                    cmd.Parameters.AddWithValue("@hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("caja", obj.caja);
+                    cmd.Parameters.AddWithValue("ip_workstation", obj.ip_workstation);
+                    cmd.Parameters.AddWithValue("hostname", obj.hostname);
                     cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
@@ -111,12 +111,13 @@ namespace ActivoFijo.Models
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@cod_marca", obj.cod_marca);
-                    cmd.Parameters.AddWithValue("@cod_tienda", obj.cod_tienda);
-                    cmd.Parameters.AddWithValue("@tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("@caja", obj.caja);
-                    cmd.Parameters.AddWithValue("@ip_workstation", obj.ip_workstation);
-                    cmd.Parameters.AddWithValue("@hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("IdWorkSatation", obj.IdWorkSatation);
+                    cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("caja", obj.caja);
+                    cmd.Parameters.AddWithValue("ip_workstation", obj.ip_workstation);
+                    cmd.Parameters.AddWithValue("hostname", obj.hostname);
                     cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 

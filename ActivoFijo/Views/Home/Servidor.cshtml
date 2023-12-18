@@ -86,7 +86,12 @@
 
                     <div class="col-sm-6">
                         <label for="cod_tienda" class="form-label">Código Tienda</label>
-                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
+                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tienda" class="form-label">Tienda</label>
+                        <input type="text" class="form-control" id="tienda" placeholder="Ingrese el código de la tienda" >
                     </div>
 
 
@@ -130,8 +135,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -212,13 +217,13 @@
             closeOnConfirm: true
         }, function () {
             var Usuario = {
-                IdKdsd: data.IdKdsd // Obtener el IdUsuario del registro
+                IdTienda: data.IdTienda// Obtener el IdUsuario del registro
             };
 
             jQuery.ajax({
                 url: '@Url.Action("EliminarServidor", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Usuario.IdKds }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: Usuario.IdTienda }), // Enviar solo el IdUsuario
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {

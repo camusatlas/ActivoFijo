@@ -83,7 +83,7 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("IngresarKDS", cn))
+                using (MySqlCommand cmd = new MySqlCommand("IngresarServidores", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -145,8 +145,8 @@ namespace ActivoFijo.Models
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["@out_Resultado"].Value);
-                    Mensaje = cmd.Parameters["@out_Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
 
                 }
             }
@@ -165,7 +165,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM tb_bhd_gen_servidor WHERE IdTienda = @IdTienda", cn))
+                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM SELECT * FROM braintech.tb_bhd_gen_servidor ORDER BY cod_marca ASC, cod_tienda ASC; WHERE IdTienda = @IdTienda", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@tienda", tienda);

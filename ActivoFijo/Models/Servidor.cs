@@ -19,6 +19,8 @@ namespace ActivoFijo.Models
         public string sistema_operativo { get; set; }
         public string version_micros { get; set; }
         public string memoria_ram { get; set; }
+
+
         public string tamano_bd { get; set; }
         public string status { get; set; }
         public string ultimo_reinicio { get; set; }
