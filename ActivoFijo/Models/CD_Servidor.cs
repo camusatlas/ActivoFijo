@@ -47,16 +47,6 @@ namespace ActivoFijo.Models
                             memoria_ram = dr["memoria_ram"].ToString(),
                             tamano_bd = dr["tamano_bd"].ToString(),
                             status = Convert.ToBoolean(dr["status"]),
-                            ultimo_reinicio = dr["ultimo_reinicio"].ToString(),
-                            version_facturador = dr["version_facturador"].ToString(),
-                            ultima_venta = dr["ultima_venta"].ToString(),
-                            flg_estado = dr["flg_estado"].ToString(),
-                            usuario_crea = dr["usuario_crea"].ToString(),
-                            fecha_crea = dr["fecha_crea"].ToString(),
-                            usuario_mod = dr["usuario_mod"].ToString(),
-                            fecha_mod = dr["fecha_mod"].ToString(),
-                            idtecnico = dr["idtecnico"].ToString(),
-                            fecha_asignado = dr["fecha_asignado"].ToString()
 
                         };
                         listado.Add(usuario);
@@ -98,6 +88,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("sistema_operativo", obj.sistema_operativo);
                     cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
                     cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
+                    cmd.Parameters.AddWithValue("status", obj.status);
                     cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
@@ -139,6 +130,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("sistema_operativo", obj.sistema_operativo);
                     cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
                     cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
+                    cmd.Parameters.AddWithValue("status", obj.status);
                     cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 

@@ -204,14 +204,14 @@
             cancelButtonText: "No",
             closeOnConfirm: true
         }, function () {
-            var Usuario = {
+            var Servidor = {
                 IdTienda: data.IdTienda// Obtener el IdUsuario del registro
             };
 
             jQuery.ajax({
                 url: '@Url.Action("EliminarServidor", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Usuario.IdTienda }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: Servidor.IdTienda }), // Enviar solo el IdUsuario
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -275,7 +275,7 @@
         }
 
         function Guardar() {
-    var Usuario = {
+    var Servidor = {
         IdTienda: $("#IdTienda").val(),
         cod_marca: $("#cod_marca").val(),
         cod_tienda: $("#cod_tienda").val(),
@@ -292,15 +292,15 @@
     jQuery.ajax({
         url: '@Url.Action("GuardarServidor", "Home")',
         type: 'POST',
-        data: JSON.stringify({ objeto: Usuario }),
+        data: JSON.stringify({ objeto: Servidor }),
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             debugger;
-            if (Usuario.IdTienda == 0) {
+            if (Servidor.IdTienda == 0) {
                 if (data.resultado !== 0) {
-                    Usuario.IdTienda = data.resultado;
-                    tabladata.row.add(Usuario).draw(false);
+                    Servidor.IdTienda = data.resultado;
+                    tabladata.row.add(Servidor).draw(false);
                     $("#formModal").modal("hide");
                 } else {
                     $("#mensajeError").text(data.mensaje);
@@ -308,7 +308,7 @@
                 }
             } else {
                 if (data.data) {
-                    tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+                    tabladata.row(filaSeleccionada).data(Servidor).draw(false);
                     $("#formModal").modal("hide");
                 } else {
                     $("#mensajeError").text(data.mensaje);
