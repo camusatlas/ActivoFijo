@@ -34,19 +34,12 @@
                     <th>Código</th>
                     <th>Tienda</th>
                     <th>Caja</th>
+                    <th>IP</th>
                     <th>Hostname</th>
                     <th>Tipo</th>
                     <th>Modelo</th>
                     <th>Status</th>
                     <th>Ultima Venta</th>
-                    <th>Flg Estado</th>
-                    <th>Usuario</th>
-                    <th>Fecha Estado</th>
-                    <th>Usuario Crea.</th>
-                    <th>Fecha Crea.</th>
-                    <th>Usuario mod.</th>
-                    <th>Fecha mod.</th>
-                    <th>Version Facturador</th>
                     <th></th>
                 </tr>
             </thead>
@@ -167,12 +160,15 @@
             { "data": "modelo" },
             { "data": "status" },
             { "data": "ultima_venta" },
-            { "data": "flg_estado" },
-            { "data": "usuario_crea" },
-            { "data": "fecha_crea" },
-            { "data": "usuario_mod" },
-            { "data": "fecha_mod" },
-            { "data": "version_facturador" },
+            //{
+            //    "data": "satatus", "render": function (valor) {
+            //        if (valor) {
+            //            return '<span class="badge bg-success">Actual</span>';
+            //        } else {
+            //            return '<span class="badge bg-danger">Antigua</span>';
+            //        }
+            //    }
+            //},
             {
                 "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
                     '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',

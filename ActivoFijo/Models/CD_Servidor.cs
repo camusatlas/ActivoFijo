@@ -46,7 +46,7 @@ namespace ActivoFijo.Models
                             version_micros = dr["version_micros"].ToString(),
                             memoria_ram = dr["memoria_ram"].ToString(),
                             tamano_bd = dr["tamano_bd"].ToString(),
-                            status = dr["status"].ToString(),
+                            status = Convert.ToBoolean(dr["status"]),
                             ultimo_reinicio = dr["ultimo_reinicio"].ToString(),
                             version_facturador = dr["version_facturador"].ToString(),
                             ultima_venta = dr["ultima_venta"].ToString(),

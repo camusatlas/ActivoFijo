@@ -22,7 +22,7 @@ namespace ActivoFijo.Models
 
 
         public string tamano_bd { get; set; }
-        public string status { get; set; }
+        public bool status { get; set; }
         public string ultimo_reinicio { get; set; }
         public string version_facturador { get; set; }
         public string ultima_venta { get; set; }

@@ -17,7 +17,19 @@ namespace ActivoFijo
                         "~/Scripts/DataTables/dataTables.responsive.js",
                         "~/Scripts/loadingoverlay/loadingoverlay.min.js",
                         "~/Scripts/sweetalert.min.js",
-                        
+                        "~/Script/Botones/jquery.dataTables.min.js",
+                        "~/Script/Botones/jquery.min.js",
+                        "~/Script/Botones/jquery.dataTables2.min.js",
+                        "~/Script/Botones/dataTables.bootstrap5.min.js",
+                        "~/Script/Botones/dataTables.buttons.min.js",
+                        "~/Script/Botones/buttons.bootstrap5.min.js",
+                        "~/Script/Botones/buttons.colVis.min.js",
+                        "~/Content/DataTables/jszip.min.js",
+                        "~/Content/DataTables/vfs_fonts.js",
+                        "~/Content/DataTables/buttons.html5.min.js",
+                        "~/Content/DataTables/buttons.print.min.js",
+                        "~/Content/DataTables/buttons2.colVis.min",
+
                         "~/Scripts/scripts.js"));
 
 
@@ -38,6 +50,15 @@ namespace ActivoFijo
                                                                  "~/Scripts/DataTables/CSS/dataTables.bootstrap5.min.css",
                                                                  "~/Scripts/DataTables/CSS/buttons.bootstrap5.min.css",
                                                                  "~/Scripts/DataTables/CSS/dataTables.bootstrap5.min.css",
+                                                                 "~/Content/DataTables/dataTables.bootstrap5.min.css",
+                                                                 "~/Content/DataTables/buttons.bootstrap5.min.css",
+                                                                 "~/Content/DataTables/bootstrap.min.css",
+                                                                 "~/Content/DataTables/bootstrap-icons.css",
+                                                                 "~/Content/DataTables/dataTables2.bootstrap5.min.css",
+                                                                 
+                                                                 "~/Content/DataTables/es-ES.json",
+                                                                 
+
                                                                  "~/Content/sweetalert.css"));
         }
     }

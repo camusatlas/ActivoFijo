@@ -37,9 +37,6 @@ namespace ActivoFijo.Models
                             marca = dr["marca"].ToString(),
                             tienda = dr["tienda"].ToString(),
                             nombre_tienda = dr["nombre_tienda"].ToString(),
-                            departamento = dr["departamento"].ToString(),
-                            provincia = dr["provincia"].ToString(),
-                            distrito = dr["distrito"].ToString(),
                             ip_kds = dr["ip_kds"].ToString(),
                             hostname = dr["hostname"].ToString(),
                             serie = dr["serie"].ToString(),
@@ -78,9 +75,6 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("marca", obj.marca);
                     cmd.Parameters.AddWithValue("tienda", obj.tienda);
                     cmd.Parameters.AddWithValue("nombre_tienda", obj.nombre_tienda);
-                    cmd.Parameters.AddWithValue("departamento", obj.departamento);
-                    cmd.Parameters.AddWithValue("provincia", obj.provincia);
-                    cmd.Parameters.AddWithValue("distrito", obj.distrito);
                     cmd.Parameters.AddWithValue("ip_kds", obj.ip_kds);
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
                     cmd.Parameters.AddWithValue("serie", obj.serie);
@@ -119,9 +113,6 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("marca", obj.marca);
                     cmd.Parameters.AddWithValue("tienda", obj.tienda);
                     cmd.Parameters.AddWithValue("nombre_tienda", obj.nombre_tienda);
-                    cmd.Parameters.AddWithValue("departamento", obj.departamento);
-                    cmd.Parameters.AddWithValue("provincia", obj.provincia);
-                    cmd.Parameters.AddWithValue("distrito", obj.distrito);
                     cmd.Parameters.AddWithValue("ip_kds", obj.ip_kds);
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
                     cmd.Parameters.AddWithValue("serie", obj.serie);

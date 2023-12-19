@@ -13,9 +13,6 @@ namespace ActivoFijo.Models
         public string marca { get; set; }
         public string tienda { get; set; }
         public string nombre_tienda { get; set; }
-        public string departamento { get; set; }
-        public string provincia { get; set; }
-        public string distrito { get; set; }
         public string ip_kds { get; set; }
         public string hostname { get; set; }
         public string serie { get; set; }

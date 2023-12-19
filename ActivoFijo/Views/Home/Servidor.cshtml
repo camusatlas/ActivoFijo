@@ -31,21 +31,11 @@
                     <th>Hostname</th>
                     <th>Modelo</th>
                     <th>Serie</th>
-                    <th>Sistema O.</th>
+                    <th>Sistema Operaivo</th>
                     <th>Version Micros</th>
                     <th>memoria Ram</th>
                     <th>Tamaño BD</th>
                     <th>Status</th>
-                    <th>Ultimo Reini.</th>
-                    <th>Version Facturador</th>
-                    <th>Ultima Venta</th>
-                    <th>FLG</th>
-                    <th>User Cre.</th>
-                    <th>Fecha Crea</th>
-                    <th>Usuario mod.</th>
-                    <th>Fecha Mod.</th>
-                    <th>ID Tecnico</th>
-                    <th>Fecha Asigando</th>
                     <th></th>
                 </tr>
             </thead>
@@ -172,19 +162,17 @@
             { "data": "version_micros" },
             { "data": "memoria_ram" },
             { "data": "tamano_bd" },
-            { "data": "status" },
-            { "data": "ultimo_reinicio" },
-            { "data": "version_facturador" },
-            { "data": "ultima_venta" },
-            { "data": "flg_estado" },
-            { "data": "usuario_crea" },
-            { "data": "fecha_crea" },
-            { "data": "usuario_mod" },
-            { "data": "fecha_mod" },
-            { "data": "idtecnico" },
-            { "data": "fecha_asignado" },
             {
-                "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                "data": "status", "render": function (valor) {
+                    if (valor) {
+                        return '<span class="badge bg-danger">Inoperativa</span>';
+                    } else {
+                        return '<span class="badge bg-success">Operativa</span>';
+                    }
+                }
+            },
+            {
+                "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
                     '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
                 "orderable": false,
                 "searchable": false,

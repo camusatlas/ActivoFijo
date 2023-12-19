@@ -28,10 +28,7 @@
                     <th>Marca</th>
                     <th>Tienda</th>
                     <th>Nombre de Tienda</th>
-                    <th>Departamento</th>
-                    <th>Provincia</th>
-                    <th>Distrito</th>
-                    <th>Ip KDS</th>
+                    <th>Ip</th>
                     <th>Host Name</th>
                     <th>Serie</th>
                     <th>Status</th>
@@ -55,7 +52,7 @@
             </div>
             <div class="modal-body">
 
-                <input id="IdKds" type="text" value="0" style="display: none;" />
+                <input id="IdKds" type="text" value="" style="display: none;" />
 
 
                 <div class="row g-2">
@@ -96,21 +93,6 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="provincia" class="form-label">Provincia</label>
-                        <input type="text" class="form-control" id="provincia" placeholder="Ingresar Provincia" maxlength="90">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="departamento" class="form-label">Departamento</label>
-                        <input type="text" class="form-control" id="departamento" placeholder="Ingrese Departamento" maxlength="90">
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label for="distrito" class="form-label">Distrito</label>
-                        <input type="text" class="form-control" id="distrito" placeholder="Ingrese el Distrito" maxlength="90">
-                    </div>
-
-                    <div class="col-sm-6">
                         <label for="ip_kds" class="form-label">IP</label>
                         <input type="text" class="form-control" id="ip_kds" placeholder="Ingrese la IP" maxlength="30">
                     </div>
@@ -123,7 +105,7 @@
                         <label for="serie" class="form-label">Serie</label>
                         <input type="text" class="form-control" id="serie" placeholder="Ingrese N° de Serie" maxlength="30">
                     </div>
-                    <div class="mb-3">
+                    <div class="col-sm-6">
                         <label for="status" class="form-label">Status</label>
                         <select class="form-control" id="status" name="status">
                             <option value="1">Operativa</option>
@@ -153,6 +135,7 @@
 
 @section scripts{
     <script>
+
         var tabladata;
         var filaSeleccionada;
 
@@ -170,9 +153,6 @@
             { "data": "marca" },
             { "data": "tienda" },
             { "data": "nombre_tienda" },
-            { "data": "departamento" },
-            { "data": "provincia" },
-            { "data": "distrito" },
             { "data": "ip_kds" },
             { "data": "hostname" },
             { "data": "serie" },
@@ -214,18 +194,18 @@
             type: "warning",
             showCancelButton: true,
             confirmButtonClass: "btn-primary",
-            confirmButtonText: "Sí",
             cancelButtonText: "No",
+            confirmButtonText: "Sí",
             closeOnConfirm: true
         }, function () {
-            var Usuario = {
-                IdKdsd: data.IdKdsd // Obtener el IdUsuario del registro
+            var KDS = {
+                IdKds: data.IdKds // Obtener el IdUsuario del registro
             };
 
             jQuery.ajax({
                 url: '@Url.Action("EliminarKDS", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Usuario.IdKds }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: KDS.IdKds }), // Enviar solo el IdUsuario
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -254,9 +234,6 @@
             $("#marca").val("");
             $("#tienda").val("");
             $("#nombre_tienda").val("");
-            $("#departamento").val("");
-            $("#provincia").val("");
-            $("#distrito").val("");
             $("#ip_kds").val("");
             $("#hostname").val("");
             $("#serie").val("");
@@ -271,9 +248,6 @@
                 $("#marca").val(json.marca);
                 $("#tienda").val(json.tienda);
                 $("#nombre_tienda").val(json.nombre_tienda);
-                $("#departamento").val(json.departamento);
-                $("#provincia").val(json.provincia);
-                $("#distrito").val(json.distrito);
                 $("#ip_kds").val(json.ip_kds);
                 $("#hostname").val(json.hostname);
                 $("#serie").val(json.serie);
@@ -291,15 +265,13 @@
         }
 
         function Guardar() {
-    var Usuario = {
+            debugger;
+    var KDS = {
         IdKds: $("#IdKds").val(),
         status: $("#status").val() == 1 ? true : false,
         empresa: $("#empresa").val(),
         tienda: $("#tienda").val(),
         nombre_tienda: $("#nombre_tienda").val(),
-        departamento: $("#departamento").val(),
-        provincia: $("#provincia").val(),
-        distrito: $("#distrito").val(),
         ip_kds: $("#ip_kds").val(),
         hostname: $("#hostname").val(),
         serie: $("#serie").val(),
@@ -309,16 +281,19 @@
     jQuery.ajax({
         url: '@Url.Action("GuardarKDS", "Home")',
         type: 'POST',
-        data: JSON.stringify({ objeto: Usuario }),
+        data: JSON.stringify({ objeto: KDS }),
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger;
-            if (Usuario.IdKds == 0) {
+
+            // Nuevo Usuario
+            if (KDS.IdKds == 0) {
                 if (data.resultado !== 0) {
-                    Usuario.IdKds = data.resultado;
-                    tabladata.row.add(Usuario).draw(false);
+
+                    KDS.IdKds = data.resultado;
+                    tabladata.row.add(KDS).draw(false);
                     $("#formModal").modal("hide");
+
                 } else {
                     $("#mensajeError").text(data.mensaje);
                     $("#mensajeError").show();
@@ -350,5 +325,7 @@
 }
 
 
+
     </script>
 }
+

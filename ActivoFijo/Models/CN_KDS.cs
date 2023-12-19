@@ -21,52 +21,37 @@ namespace ActivoFijo.Models
 
             if (string.IsNullOrEmpty(obj.empresa) || string.IsNullOrWhiteSpace(obj.empresa))
             {
-                Mensaje = "El nombre de la empresa no puede estar vacío.";
+                Mensaje = "Ingresar el nombre de la empresa.";
 
             }
             else if (string.IsNullOrEmpty(obj.marca) || string.IsNullOrWhiteSpace(obj.marca))
             {
-                Mensaje = "La marca no puede estar vacía.";
+                Mensaje = "Ingresar la Marca.";
 
             }
             else if (string.IsNullOrEmpty(obj.tienda) || string.IsNullOrWhiteSpace(obj.tienda))
             {
-                Mensaje = "El nombre de la tienda no puede estar vacío.";
+                Mensaje = "Ingresa el número de la marca.";
 
             }
             else if (string.IsNullOrEmpty(obj.nombre_tienda) || string.IsNullOrWhiteSpace(obj.nombre_tienda))
             {
-                Mensaje = "El nombre de la tienda no puede estar vacío.";
-
-            }
-            else if (string.IsNullOrEmpty(obj.departamento) || string.IsNullOrWhiteSpace(obj.departamento))
-            {
-                Mensaje = "El nombre del departamento no puede estar vacío.";
-
-            }
-            else if (string.IsNullOrEmpty(obj.provincia) || string.IsNullOrWhiteSpace(obj.provincia))
-            {
-                Mensaje = "El nombre de la provincia no puede estar vacío.";
-
-            }
-            else if (string.IsNullOrEmpty(obj.distrito) || string.IsNullOrWhiteSpace(obj.distrito))
-            {
-                Mensaje = "El nombre del distrito no puede estar vacío.";
+                Mensaje = "Ingresa el nombre de la tienda.";
 
             }
             else if (string.IsNullOrEmpty(obj.ip_kds) || string.IsNullOrWhiteSpace(obj.ip_kds))
             {
-                Mensaje = "La dirección IP del KDS no puede estar vacía.";
+                Mensaje = "Ingresar la IP correspondiente.";
 
             }
             else if (string.IsNullOrEmpty(obj.hostname) || string.IsNullOrWhiteSpace(obj.hostname))
             {
-                Mensaje = "El nombre del host no puede estar vacío.";
+                Mensaje = "Ingresar el HostName correspondiente.";
 
             }
             else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
             {
-                Mensaje = "El número de serie no puede estar vacío.";
+                Mensaje = "Ingresar la serie.";
 
             }
             if (string.IsNullOrEmpty(Mensaje))
@@ -87,52 +72,37 @@ namespace ActivoFijo.Models
 
             if (string.IsNullOrEmpty(obj.empresa) || string.IsNullOrWhiteSpace(obj.empresa))
             {
-                Mensaje = "El nombre de la empresa no puede estar vacío.";
+                Mensaje = "Ingresar el nombre de la empresa.";
                 
             }
             else if (string.IsNullOrEmpty(obj.marca) || string.IsNullOrWhiteSpace(obj.marca))
             {
-                Mensaje = "La marca no puede estar vacía.";
+                Mensaje = "Ingresar la Marca.";
                 
             }
             else if (string.IsNullOrEmpty(obj.tienda) || string.IsNullOrWhiteSpace(obj.tienda))
             {
-                Mensaje = "El nombre de la tienda no puede estar vacío.";
+                Mensaje = "Ingresa el número de la marca.";
                 
             }
             else if (string.IsNullOrEmpty(obj.nombre_tienda) || string.IsNullOrWhiteSpace(obj.nombre_tienda))
             {
-                Mensaje = "El nombre de la tienda no puede estar vacío.";
-                
-            }
-            else if (string.IsNullOrEmpty(obj.departamento) || string.IsNullOrWhiteSpace(obj.departamento))
-            {
-                Mensaje = "El nombre del departamento no puede estar vacío.";
-                
-            }
-            else if (string.IsNullOrEmpty(obj.provincia) || string.IsNullOrWhiteSpace(obj.provincia))
-            {
-                Mensaje = "El nombre de la provincia no puede estar vacío.";
-                
-            }
-            else if (string.IsNullOrEmpty(obj.distrito) || string.IsNullOrWhiteSpace(obj.distrito))
-            {
-                Mensaje = "El nombre del distrito no puede estar vacío.";
+                Mensaje = "Ingresa el nombre de la tienda.";
                 
             }
             else if (string.IsNullOrEmpty(obj.ip_kds) || string.IsNullOrWhiteSpace(obj.ip_kds))
             {
-                Mensaje = "La dirección IP del KDS no puede estar vacía.";
+                Mensaje = "Ingresar la IP correspondiente.";
                 
             }
             else if (string.IsNullOrEmpty(obj.hostname) || string.IsNullOrWhiteSpace(obj.hostname))
             {
-                Mensaje = "El nombre del host no puede estar vacío.";
+                Mensaje = "Ingresar el HostName correspondiente.";
                 
             }
             else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
             {
-                Mensaje = "El número de serie no puede estar vacío.";
+                Mensaje = "Ingresar la serie.";
                 
             }
             if (string.IsNullOrEmpty(Mensaje))
