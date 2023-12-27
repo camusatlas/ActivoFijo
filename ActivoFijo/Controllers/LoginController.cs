@@ -14,10 +14,45 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
+        /*--------------------------------------------------*/
+        public string ObtenerDisplayName(string dominio, string usuario, string pwd, string path)
+        {
+            string domainAndUsername = usuario + "@" + dominio;
+
+            using (DirectoryEntry entry = new DirectoryEntry(path, domainAndUsername, pwd))
+            {
+                try
+                {
+                    using (DirectorySearcher search = new DirectorySearcher(entry))
+                    {
+                        search.Filter = "(samaccountname=" + usuario + ")";
+                        search.PropertiesToLoad.Add("displayName");
+                        SearchResult result = search.FindOne();
+
+                        if (result != null)
+                        {
+                            return result.Properties["displayName"][0].ToString();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Manejar el error apropiadamente
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+
+
+
+
+        /*--------------------------------------------------*/
         [HttpPost]
         public ActionResult Login(string usuario, string clave, string mensaje)
         {
-            // Aquí va el path URL del servicio de directorio LDAP
             string ldapPath = "LDAP://192.168.0.6/DC=FRANQUICIASPERU,DC=COM";
             string username = usuario;
             string password = clave;
@@ -27,17 +62,21 @@ namespace ActivoFijo.Controllers
 
             if (isAuthenticated)
             {
+                string displayName = ObtenerDisplayName("FRANQUICIASPERU.COM", username, password, ldapPath);
+
                 // Establecer una variable de sesión o hacer otro tipo de seguimiento de inicio de sesión
                 Session["usuario"] = usuario;
+                Session["displayName"] = displayName;
+
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                // Manejar la autenticación fallida apropiadamente, por ejemplo, mostrando un mensaje de error en la vista
-                ViewData["Mensaje"] = "usuario no encontrado";
+                ViewData["Mensaje"] = "Usuario no encontrado";
                 return View();
             }
         }
+
         public bool EstaAutenticado(string dominio, string usuario, string pwd, string path, string msn)
         {
             // Armamos la cadena completa de dominio y usuario
@@ -81,4 +120,6 @@ namespace ActivoFijo.Controllers
         }
 
     }
+
+
 }
