@@ -39,7 +39,6 @@
                     <th>Tipo</th>
                     <th>Modelo</th>
                     <th>Status</th>
-                    <th>Ultima Venta</th>
                     <th></th>
                 </tr>
             </thead>
@@ -111,7 +110,18 @@
 
                     <div class="col-sm-6">
                         <label for="modelo" class="form-label">Modelo</label>
-                        <input type="text" class="form-control" id="modelo" placeholder="Ingrese la memoria ram" maxlength="30">
+                        <select class="form-control" id="status" name="status">
+                            <option value="ACTUAL">ACTUAL</option>
+                            <option value="ANTIGUA">ANTIGUA</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="1">ON</option>
+                            <option value="0">OFF</option>
+                        </select>
                     </div>
 
                     <div class="row mt-2">
@@ -157,18 +167,24 @@
             { "data": "ip_workstation" },
             { "data": "hostname" },
             { "data": "tipo" },
-            { "data": "modelo" },
-            { "data": "status" },
-            { "data": "ultima_venta" },
-            //{
-            //    "data": "satatus", "render": function (valor) {
-            //        if (valor) {
-            //            return '<span class="badge bg-success">Actual</span>';
-            //        } else {
-            //            return '<span class="badge bg-danger">Antigua</span>';
-            //        }
-            //    }
-            //},
+            {
+                "data": "modelo", "render": function (valor) {
+                    if (valor) {
+                        return '<span class="badge bg-success">ACTUAL</span>';
+                    } else {
+                        return '<span class="badge bg-danger">ANTIGUA</span>';
+                    }
+                }
+            },
+            {
+                "data": "satatus", "render": function (valor) {
+                    if (valor) {
+                        return '<span class="badge bg-success">ON</span>';
+                    } else {
+                        return '<span class="badge bg-danger">OFF</span>';
+                    }
+                }
+            },
             {
                 "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
                     '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',

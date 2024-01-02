@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -10,26 +11,26 @@ namespace ActivoFijo.Models
 {
     public class CD_WorkStation
     {
-        private MySqlConnection cn;
+        private SqlConnection cn;
         public CD_WorkStation()
         {
-            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosi"].ConnectionString);
+            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
         }
         public List<WorkStation> listar()
         {
             List<WorkStation> listado = new List<WorkStation>();
-            MySqlCommand cmd = new MySqlCommand("ListarWorkStation", cn);
+            SqlCommand cmd = new SqlCommand("sp_ListarWorkstation", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (MySqlDataReader dr = cmd.ExecuteReader())
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
                         WorkStation usuario = new WorkStation()
                         {
-                            IdWorkSatation = Convert.ToInt32(dr["IdWorkSatation"]),
+                            IdWorkSatation = Convert.ToInt32(dr["IdWorkStation"]),
                             cod_marca = dr["cod_marca"].ToString(),
                             cod_tienda = dr["cod_tienda"].ToString(),
                             tienda = dr["tienda"].ToString(),
@@ -39,13 +40,6 @@ namespace ActivoFijo.Models
                             tipo = dr["tipo"].ToString(),
                             modelo = dr["modelo"].ToString(),
                             status = dr["status"].ToString(),
-                            ultima_venta = dr["ultima_venta"].ToString(),
-                            flg_estado = dr["flg_estado"].ToString(),
-                            usuario_crea = dr["usuario_crea"].ToString(),
-                            fecha_crea = dr["fecha_crea"].ToString(),
-                            usuario_mod = dr["usuario_mod"].ToString(),
-                            fecha_mod = dr["fecha_mod"].ToString(),
-                            version_facturador = dr["version_facturador"].ToString()
 
                         };
                         listado.Add(usuario);
@@ -72,7 +66,7 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("IngresarWorkStation", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_ResgistrarWorkstation", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -82,8 +76,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("caja", obj.caja);
                     cmd.Parameters.AddWithValue("ip_workstation", obj.ip_workstation);
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -107,7 +101,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("ActualizarWorkStation", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_EditarWorkstation", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -118,8 +112,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("caja", obj.caja);
                     cmd.Parameters.AddWithValue("ip_workstation", obj.ip_workstation);
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -144,7 +138,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM tb_bhd_gen_workstation WHERE IdWorkSatation = @id LIMIT 1", cn))
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM WORKSTATION WHERE IdWorkStation = @id", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", id);

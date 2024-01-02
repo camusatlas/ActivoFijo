@@ -19,7 +19,7 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
-
+        #region Servidor
         // Listar Servidor
         [HttpGet]
         public JsonResult ListarServidor()
@@ -59,8 +59,9 @@ namespace ActivoFijo.Controllers
 
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
-
+        #endregion Servidor
         /* Funciones de WorSatation */
+        #region Worstation
         public ActionResult WorkStation()
         {
             return View();
@@ -105,8 +106,9 @@ namespace ActivoFijo.Controllers
 
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
-
+        #endregion Workstation
         /* Funciones de KDS */
+        #region KDS
         public ActionResult Kds()
         {
             return View();
@@ -151,8 +153,9 @@ namespace ActivoFijo.Controllers
 
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
-
+        #endregion KDS
         /* Funciones de la PCGerencial */
+        #region PCGerencial
         public ActionResult PCGerencial()
         {
             return View();
@@ -203,6 +206,6 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
-
+        #endregion PCGerencial
     }
 }

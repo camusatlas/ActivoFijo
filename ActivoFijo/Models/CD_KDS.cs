@@ -11,22 +11,22 @@ namespace ActivoFijo.Models
 {
     public class CD_KDS
     {
-        private MySqlConnection cn;
+        private SqlConnection cn;
         public CD_KDS()
         {
-            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosi"].ConnectionString);
+            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
         }
 
         // Listar KDS
         public List<KDS> listarkds()
         {
             List<KDS> listado = new List<KDS>();
-            MySqlCommand cmd = new MySqlCommand("ListarKDS", cn);
+            SqlCommand cmd = new SqlCommand("sp_ListarKDS", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (MySqlDataReader dr = cmd.ExecuteReader())
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -67,7 +67,7 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("IngresarKDS", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_ResgistrarKDS", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -79,8 +79,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
                     cmd.Parameters.AddWithValue("serie", obj.serie);
                     cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -104,7 +104,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("ActualizarKDS", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_EditarKDS", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -117,8 +117,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
                     cmd.Parameters.AddWithValue("serie", obj.serie);
                     cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -143,7 +143,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM braintech.tb_bhd_gen_kds WHERE IdKds = @id LIMIT 1", cn))
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM KDS WHERE IdKds = @id", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", id);
