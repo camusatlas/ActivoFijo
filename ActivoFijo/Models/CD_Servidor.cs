@@ -13,22 +13,22 @@ namespace ActivoFijo.Models
 {
     public class CD_Servidor
     {
-        private MySqlConnection cn;
+        private SqlConnection cn;
         public CD_Servidor()
         {
-            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosi"].ConnectionString);
+            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
         }
 
         // Listar Servidores
         public List<Servidor> listar()
         {
             List<Servidor> listado = new List<Servidor>();
-            MySqlCommand cmd = new MySqlCommand("ListarServidor", cn);
+            SqlCommand cmd = new SqlCommand("sp_ListarServidor", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (MySqlDataReader dr = cmd.ExecuteReader())
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -45,7 +45,6 @@ namespace ActivoFijo.Models
                             sistema_operativo = dr["sistema_operativo"].ToString(),
                             version_micros = dr["version_micros"].ToString(),
                             memoria_ram = dr["memoria_ram"].ToString(),
-                            tamano_bd = dr["tamano_bd"].ToString(),
                             status = Convert.ToBoolean(dr["status"]),
 
                         };
@@ -73,11 +72,10 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("IngresarServidores", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_ResgistrarServidor", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdTienda", obj.IdTienda);
                     cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
                     cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
                     cmd.Parameters.AddWithValue("tienda", obj.tienda);
@@ -89,8 +87,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
                     cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
                     cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -115,7 +113,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("ActualizarServidor", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_EditarServidor", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -131,8 +129,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
                     cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
                     cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -157,10 +155,10 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM SELECT * FROM braintech.tb_bhd_gen_servidor ORDER BY cod_marca ASC, cod_tienda ASC; WHERE IdTienda = @IdTienda", cn))
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM SERVIDOR WHERE IdTienda = @id", cn))
                 {
                     cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@tienda", tienda);
+                    cmd.Parameters.AddWithValue("@id", tienda);
                     cn.Open();
                     resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
                 }

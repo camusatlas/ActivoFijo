@@ -76,12 +76,12 @@
 
                     <div class="col-sm-6">
                         <label for="cod_tienda" class="form-label">Código Tienda</label>
-                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" >
+                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
                     </div>
 
                     <div class="mb-3">
                         <label for="tienda" class="form-label">Tienda</label>
-                        <input type="text" class="form-control" id="tienda" placeholder="Ingrese el código de la tienda" >
+                        <input type="text" class="form-control" id="tienda" placeholder="Ingrese el código de la tienda">
                     </div>
 
 
@@ -106,6 +106,11 @@
                     </div>
 
                     <div class="col-sm-6">
+                        <label for="sistema_operativo" class="form-label">Serie</label>
+                        <input type="text" class="form-control" id="sistema_operativo" placeholder="Ingrese la serie del Equipo" maxlength="90">
+                    </div>
+
+                    <div class="col-sm-6">
                         <label for="version_micros" class="form-label">Version Micros</label>
                         <input type="text" class="form-control" id="version_micros" placeholder="Ingrese la vercion del Micros" maxlength="90">
                     </div>
@@ -113,6 +118,14 @@
                     <div class="col-sm-6">
                         <label for="memoria_ram" class="form-label">Memoria Ram</label>
                         <input type="text" class="form-control" id="memoria_ram" placeholder="Ingrese la memoria ram" maxlength="30">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status">
+                            <option value="1">Operativa</option>
+                            <option value="0">Inoperativa</option>
+                        </select>
                     </div>
 
                     <div class="row mt-2">
@@ -165,9 +178,9 @@
             {
                 "data": "status", "render": function (valor) {
                     if (valor) {
-                        return '<span class="badge bg-danger">Inoperativa</span>';
-                    } else {
                         return '<span class="badge bg-success">Operativa</span>';
+                    } else {
+                        return '<span class="badge bg-danger">Inoperativa</span>';
                     }
                 }
             },
@@ -246,6 +259,7 @@
             $("#sistema_operativo").val("");
             $("#version_micros").val("");
             $("#memoria_ram").val("");
+            $("#status").val(1);
 
             // Ocultar valores
             $("#mensajeError").hide();
@@ -262,6 +276,7 @@
                 $("#sistema_operativo").val(json.sistema_operativo);
                 $("#version_micros").val(json.version_micros);
                 $("#memoria_ram").val(json.memoria_ram);
+                $("status").val(json.status ? 1 : 0);
             }
 
             $("#formModal").modal("show");
@@ -286,7 +301,8 @@
         serie: $("#serie").val(),
         sistema_operativo: $("#sistema_operativo").val(),
         version_micros: $("#version_micros").val(),
-        memoria_ram: $("#memoria_ram").val()
+        memoria_ram: $("#memoria_ram").val(),
+        status: $("#status").val() == 1 ? true : false,
     };
 
     jQuery.ajax({
