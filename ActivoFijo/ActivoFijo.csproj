@@ -179,6 +179,7 @@
     </Compile>
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CD_Categoria.cs" />
+    <Compile Include="Models\CD_Equipo.cs" />
     <Compile Include="Models\CD_KDS.cs" />
     <Compile Include="Models\CD_Marca.cs" />
     <Compile Include="Models\CD_PCGerencial.cs" />

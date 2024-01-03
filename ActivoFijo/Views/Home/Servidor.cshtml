@@ -198,9 +198,9 @@
     });
 
     $("#tabla tbody").on("click", '.btn-editar', function () {
-        var filaSeleccionada = $(this).closest("tr");
-        var data = tabladata.row(filaSeleccionada).data();
-        abrirModal(data);
+        var rowIndex = tabladata.row($(this).closest('tr')).index();
+        var rowData = tabladata.row(rowIndex).data();
+        abrirModal(rowData);
     });
 
     $("#tabla tbody").on("click", '.btn-eliminar', function () {
@@ -282,9 +282,9 @@
             $("#formModal").modal("show");
 
             $("#tabla tbody").off("click", '.btn-editar').on("click", '.btn-editar', function () {
-                var filaSeleccionada = $(this).closest("tr");
-                var data = tabladata.row(filaSeleccionada).data();
-                abrirModal(data);
+                var rowIndex = tabladata.row($(this).closest('tr')).index();
+                var rowData = tabladata.row(rowIndex).data();
+                abrirModal(rowData);
             });
 
         }
