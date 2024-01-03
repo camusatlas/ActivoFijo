@@ -30,16 +30,16 @@ namespace ActivoFijo.Models
                     {
                         WorkStation usuario = new WorkStation()
                         {
-                            IdWorkSatation = Convert.ToInt32(dr["IdWorkStation"]),
+                            IdWorkStation = Convert.ToInt32(dr["IdWorkStation"]),
                             cod_marca = dr["cod_marca"].ToString(),
                             cod_tienda = dr["cod_tienda"].ToString(),
                             tienda = dr["tienda"].ToString(),
                             caja = dr["caja"].ToString(),
-                            ip_workstation = dr["ip_workstation"].ToString(),
+                            ip_workstation = dr["ip_worksation"].ToString(),
                             hostname = dr["hostname"].ToString(),
                             tipo = dr["tipo"].ToString(),
                             modelo = dr["modelo"].ToString(),
-                            status = dr["status"].ToString(),
+                            status = Convert.ToBoolean(dr["status"]),
 
                         };
                         listado.Add(usuario);
@@ -74,8 +74,11 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
                     cmd.Parameters.AddWithValue("tienda", obj.tienda);
                     cmd.Parameters.AddWithValue("caja", obj.caja);
-                    cmd.Parameters.AddWithValue("ip_workstation", obj.ip_workstation);
+                    cmd.Parameters.AddWithValue("ip_worksation", obj.ip_workstation);
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("tipo", obj.tipo);
+                    cmd.Parameters.AddWithValue("modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("status", obj.status);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
@@ -105,15 +108,18 @@ namespace ActivoFijo.Models
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdWorkSatation", obj.IdWorkSatation);
+                    cmd.Parameters.AddWithValue("IdWorkStation", obj.IdWorkStation);
                     cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
                     cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
                     cmd.Parameters.AddWithValue("tienda", obj.tienda);
                     cmd.Parameters.AddWithValue("caja", obj.caja);
-                    cmd.Parameters.AddWithValue("ip_workstation", obj.ip_workstation);
+                    cmd.Parameters.AddWithValue("ip_worksation", obj.ip_workstation);
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("tipo", obj.tipo);
+                    cmd.Parameters.AddWithValue("modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("status", obj.status);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();

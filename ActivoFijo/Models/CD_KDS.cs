@@ -32,7 +32,7 @@ namespace ActivoFijo.Models
                     {
                         KDS usuario = new KDS()
                         {
-                            IdKds = Convert.ToInt32(dr["IdKds"]),
+                            IdKds = Convert.ToInt32(dr["IdKds"]),   
                             empresa = dr["empresa"].ToString(),
                             marca = dr["marca"].ToString(),
                             tienda = dr["tienda"].ToString(),

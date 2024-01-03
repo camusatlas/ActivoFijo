@@ -84,7 +84,7 @@ namespace ActivoFijo.Controllers
         {
             object resultado;
             string mensaje = string.Empty;
-            if (objeto.IdWorkSatation == 0)
+            if (objeto.IdWorkStation == 0)
             {
                 resultado = new CN_WorkStation().Registrar(objeto, out mensaje);
             }

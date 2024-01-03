@@ -59,7 +59,7 @@
             </div>
             <div class="modal-body">
 
-                <input id="IdWorkSatation" type="text" value="0" style="display: none;" />
+                <input id="IdWorkStation" type="text" value="0" style="display: none;" />
 
 
                 <div class="row g-2">
@@ -110,7 +110,7 @@
 
                     <div class="col-sm-6">
                         <label for="modelo" class="form-label">Modelo</label>
-                        <select class="form-control" id="status" name="status">
+                        <select class="form-control" id="modelo" name="status">
                             <option value="ACTUAL">ACTUAL</option>
                             <option value="ANTIGUA">ANTIGUA</option>
                         </select>
@@ -179,9 +179,9 @@
             {
                 "data": "satatus", "render": function (valor) {
                     if (valor) {
-                        return '<span class="badge bg-success">ON</span>';
-                    } else {
                         return '<span class="badge bg-danger">OFF</span>';
+                    } else {
+                        return '<span class="badge bg-success">ON</span>';
                     }
                 }
             },
@@ -219,13 +219,13 @@
             closeOnConfirm: true
         }, function () {
             var Usuario = {
-                IdKdsd: data.IdKdsd // Obtener el IdUsuario del registro
+                IdWorkStation: data.IdWorkStation // Obtener el IdUsuario del registro
             };
 
             jQuery.ajax({
-                url: '@Url.Action("EliminarServidor", "Home")',
+                url: '@Url.Action("EliminarWorkStation", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Usuario.IdWorkSatation }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: Usuario.IdWorkStation }), // Enviar solo el IdUsuario
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -249,7 +249,7 @@
 });
 
         function abrirModal(json) {
-            $("#IdWorkSatation").val(0);
+            $("#IdWorkStation").val(0);
             $("#cod_marca").val("");
             $("#cod_tienda").val("");
             $("#tienda").val("");
@@ -263,7 +263,7 @@
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#IdWorkSatation").val(json.IdWorkSatation);
+                $("#IdWorkStation").val(json.IdWorkStation);
                 $("#cod_marca").val(json.cod_marca);
                 $("#cod_tienda").val(json.cod_tienda);
                 $("#tienda").val(json.tienda);
@@ -286,7 +286,7 @@
 
         function Guardar() {
     var Usuario = {
-        IdWorkSatation: $("#IdWorkSatation").val(),
+        IdWorkStation: $("#IdWorkStation").val(),
         cod_marca: $("#cod_marca").val(),
         cod_tienda: $("#cod_tienda").val(),
         tienda: $("#tienda").val(),
@@ -305,9 +305,9 @@
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             debugger;
-            if (Usuario.IdWorkSatation == 0) {
+            if (Usuario.IdWorkStation == 0) {
                 if (data.resultado !== 0) {
-                    Usuario.IdWorkSatation = data.resultado;
+                    Usuario.IdWorkStation = data.resultado;
                     tabladata.row.add(Usuario).draw(false);
                     $("#formModal").modal("hide");
                 } else {

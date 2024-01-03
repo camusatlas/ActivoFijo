@@ -8,7 +8,7 @@ namespace ActivoFijo.Models
 {
     public class WorkStation
     {
-        public int IdWorkSatation { get; set; }
+        public int IdWorkStation { get; set; }
         public string cod_marca { get; set; }
         public string cod_tienda { get; set; }
         public string tienda { get; set; }
@@ -18,7 +18,9 @@ namespace ActivoFijo.Models
         public string tipo { get; set; }
         public string modelo { get; set; }
 
-        public string status { get; set; }
+        public bool status { get; set; }
+
+
         public string ultima_venta { set; get; }
         public string flg_estado { set; get; }
         public string usuario_crea { set; get; }
