@@ -110,7 +110,7 @@
 
                     <div class="col-sm-6">
                         <label for="modelo" class="form-label">Modelo</label>
-                        <select class="form-control" id="modelo" name="status">
+                        <select class="form-control" id="modelo">
                             <option value="ACTUAL">ACTUAL</option>
                             <option value="ANTIGUA">ANTIGUA</option>
                         </select>
@@ -118,7 +118,7 @@
 
                     <div class="col-sm-6">
                         <label for="status" class="form-label">Status</label>
-                        <select class="form-control" id="status" name="status">
+                        <select class="form-control" id="status">
                             <option value="1">ON</option>
                             <option value="0">OFF</option>
                         </select>
@@ -168,20 +168,14 @@
             { "data": "hostname" },
             { "data": "tipo" },
             {
-                "data": "modelo", "render": function (valor) {
-                    if (valor) {
-                        return '<span class="badge bg-success">ACTUAL</span>';
-                    } else {
-                        return '<span class="badge bg-danger">ANTIGUA</span>';
-                    }
-                }
+                "data": "modelo"
             },
             {
-                "data": "satatus", "render": function (valor) {
+                "data": "status", "render": function (valor) {
                     if (valor) {
-                        return '<span class="badge bg-danger">OFF</span>';
-                    } else {
                         return '<span class="badge bg-success">ON</span>';
+                    } else {
+                        return '<span class="badge bg-danger">OFF</span>';
                     }
                 }
             },
@@ -258,6 +252,7 @@
             $("#hostname").val("");
             $("#tipo").val("");
             $("#modelo").val("");
+            $("#status").val(1);
 
             // Ocultar valores
             $("#mensajeError").hide();
@@ -272,6 +267,7 @@
                 $("#hostname").val(json.hostname);
                 $("#tipo").val(json.tipo);
                 $("#modelo").val(json.modelo);
+                $("#status").val(json.status ? 1 : 0);
             }
 
             $("#formModal").modal("show");
@@ -295,6 +291,7 @@
         hostname: $("#hostname").val(),
         tipo: $("#tipo").val(),
         modelo: $("#modelo").val(),
+        status: $("#status").val() == 1 ? true : false,
     };
 
     jQuery.ajax({
