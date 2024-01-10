@@ -304,6 +304,84 @@ namespace ActivoFijo.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion Marca
+        #endregion
+
+        #region Sede
+        public ActionResult Sede()
+        {
+            return View();
+        }
+        // Listar Sede
+        [HttpGet]
+        public JsonResult ListarSede()
+        {
+            List<Sede> oLista = new List<Sede>();
+
+            oLista = new CN_Sede().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        // Registrar y Editar Sede
+        [HttpPost]
+        public JsonResult GuardarSede(Sede objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdSede == 0)
+            {
+                resultado = new CN_Sede().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_Sede().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Eliminar Sede
+        [HttpPost]
+        public JsonResult EliminarSede(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Sede().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region RaonSocial
+        public ActionResult RaonSocial()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Tecnico
+        public ActionResult Tecnico()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Prioridad
+        public ActionResult Prioridad()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Equipo
+        public ActionResult Equipo()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }
