@@ -5,11 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using System.Web.Security;
-
 namespace ActivoFijo.Controllers
 {
-    public class LoginController : Controller
+    public class AccesoController : Controller
     {
         // GET: Login
         public ActionResult Login()
@@ -106,7 +104,7 @@ namespace ActivoFijo.Controllers
         public ActionResult CerrarSesion()
         {
             Session["usuario"] = null;
-            return RedirectToAction("Login", "Login");
+            return RedirectToAction("Login");
         }
     }
     public class VariableSessionAttribute : ActionFilterAttribute
@@ -115,7 +113,7 @@ namespace ActivoFijo.Controllers
         {
             if (HttpContext.Current.Session["usuario"] == null)
             {
-                filterContext.Result = new RedirectResult("~/Login/Login");
+                filterContext.Result = new RedirectResult("~/Acceso/Login");
             }
 
             base.OnActionExecuted(filterContext);
