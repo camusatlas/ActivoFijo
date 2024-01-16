@@ -18,7 +18,7 @@ namespace ActivoFijo.Models
         public string tipo { get; set; }
         public string modelo { get; set; }
 
-        public bool status { get; set; }
+        public string status { get; set; }
 
 
         public string ultima_venta { set; get; }

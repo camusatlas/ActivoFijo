@@ -11,20 +11,20 @@ namespace ActivoFijo.Models
 {
     public class CD_WorkStation
     {
-        private SqlConnection cn;
+        private MySqlConnection cn;
         public CD_WorkStation()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosi"].ConnectionString);
         }
         public List<WorkStation> listar()
         {
             List<WorkStation> listado = new List<WorkStation>();
-            SqlCommand cmd = new SqlCommand("sp_ListarWorkstation", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ListarWorkstation", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -35,11 +35,11 @@ namespace ActivoFijo.Models
                             cod_tienda = dr["cod_tienda"].ToString(),
                             tienda = dr["tienda"].ToString(),
                             caja = dr["caja"].ToString(),
-                            ip_workstation = dr["ip_worksation"].ToString(),
+                            ip_workstation = dr["ip_workstation"].ToString(),
                             hostname = dr["hostname"].ToString(),
                             tipo = dr["tipo"].ToString(),
                             modelo = dr["modelo"].ToString(),
-                            status = Convert.ToBoolean(dr["status"]),
+                            status = dr["status"].ToString()
 
                         };
                         listado.Add(usuario);
@@ -66,7 +66,7 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_ResgistrarWorkstation", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_ResgistrarWorkstation", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -74,13 +74,13 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
                     cmd.Parameters.AddWithValue("tienda", obj.tienda);
                     cmd.Parameters.AddWithValue("caja", obj.caja);
-                    cmd.Parameters.AddWithValue("ip_worksation", obj.ip_workstation);
+                    cmd.Parameters.AddWithValue("ip_workstation", obj.ip_workstation);
                     cmd.Parameters.AddWithValue("hostname", obj.hostname);
                     cmd.Parameters.AddWithValue("tipo", obj.tipo);
                     cmd.Parameters.AddWithValue("modelo", obj.modelo);
                     cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -104,7 +104,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EditarWorkstation", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EditarWorkstation", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -118,8 +118,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("tipo", obj.tipo);
                     cmd.Parameters.AddWithValue("modelo", obj.modelo);
                     cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
@@ -144,7 +144,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM WORKSTATION WHERE IdWorkStation = @id", cn))
+                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM tb_bhd_gen_workstation WHERE IdWorkStation = @id", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", id);

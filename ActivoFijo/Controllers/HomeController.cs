@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ActivoFijo.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -20,6 +20,7 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
+
         #region Servidor
         // Listar Servidor
         [HttpGet]
@@ -354,9 +355,46 @@ namespace ActivoFijo.Controllers
         #endregion
 
         #region RaonSocial
-        public ActionResult RaonSocial()
+        public ActionResult RazonSocial()
         {
             return View();
+        }
+        // Listar RazonSocial
+        [HttpGet]
+        public JsonResult ListarRazonSocial()
+        {
+            List<RazonSocial> oLista = new List<RazonSocial>();
+
+            oLista = new CN_RazonSocial().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        // Registrar y Editar RazonSocial
+        [HttpPost]
+        public JsonResult GuardarRazonSocial(RazonSocial objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdRazonSocial == 0)
+            {
+                resultado = new CN_RazonSocial().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_RazonSocial().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        // Eliminar Sede
+        [HttpPost]
+        public JsonResult EliminarRazonSocial(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_RazonSocial().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -366,10 +404,137 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
+        // Listar Tecnico
+        [HttpGet]
+        public JsonResult ListarTecnico()
+        {
+            List<Tecnico> oLista = new List<Tecnico>();
+
+            oLista = new CN_Tecnico().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        // Registrar y Editar Tecnico
+        [HttpPost]
+        public JsonResult GuardarTecnico(Tecnico objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdTecnico == 0)
+            {
+                resultado = new CN_Tecnico().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_Tecnico().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        // Eliminar Tecnico
+        [HttpPost]
+        public JsonResult EliminarTecnico(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Tecnico().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Almacen
+        public ActionResult Almacen()
+        {
+            return View();
+        }
+        // Listar Sede
+        [HttpGet]
+        public JsonResult ListarAlmacen()
+        {
+            List<Almacen> oLista = new List<Almacen>();
+
+            oLista = new CN_Almacen().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        // Registrar y Editar Sede
+        [HttpPost]
+        public JsonResult GuardarAlmacen(Almacen objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdAlmacen == 0)
+            {
+                resultado = new CN_Almacen().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_Almacen().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        // Eliminar Sede
+        [HttpPost]
+        public JsonResult EliminarAlmacen(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Almacen().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
 
-        #region Prioridad
+        #region Modelo
+
+        public ActionResult Modelo()
+        {
+            return View();
+        }
+
+        // Listar Modelo
+        [HttpGet]
+        public JsonResult ListarModelo()
+        {
+            List<Modelo> oLista = new List<Modelo>();
+
+            oLista = new CN_Modelo().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        // Registrar y Editar Modelo
+        [HttpPost]
+        public JsonResult GuardarModelo(Modelo objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdModelo == 0)
+            {
+                resultado = new CN_Modelo().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_Modelo().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        // Eliminar Sede
+        [HttpPost]
+        public JsonResult EliminarModelo(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Modelo().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Prioridades
         public ActionResult Prioridad()
         {
             return View();
@@ -384,5 +549,54 @@ namespace ActivoFijo.Controllers
         }
 
         #endregion
+
+        #region SistemaOperativo
+
+        public ActionResult SistemaOperativo()
+        {
+            return View();
+        }
+        // Listar Sede
+        [HttpGet]
+        public JsonResult ListarSistemaOperativo()
+        {
+            List<SistemaOperativo> oLista = new List<SistemaOperativo>();
+
+            oLista = new CN_SistemaOperativo().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        // Registrar y Editar Sede
+        [HttpPost]
+        public JsonResult GuardarSistemaOperativo(SistemaOperativo objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdSistema == 0)
+            {
+                resultado = new CN_SistemaOperativo().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_SistemaOperativo().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Eliminar Sede
+        [HttpPost]
+        public JsonResult EliminarSistemaOperativo(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_SistemaOperativo().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+
     }
 }

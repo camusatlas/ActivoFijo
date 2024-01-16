@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="sistema_operativo" class="form-label">Serie</label>
+                        <label for="sistema_operativo" class="form-label">Sistema Operativo</label>
                         <input type="text" class="form-control" id="sistema_operativo" placeholder="Ingrese la serie del Equipo" maxlength="90">
                     </div>
 
@@ -123,8 +123,8 @@
                     <div class="col-sm-6">
                         <label for="status" class="form-label">Status</label>
                         <select class="form-control" id="status">
-                            <option value="1">Operativa</option>
-                            <option value="0">Inoperativa</option>
+                            <option value="0">Operativa</option>
+                            <option value="1">Inoperativa</option>
                         </select>
                     </div>
 
@@ -178,9 +178,9 @@
             {
                 "data": "status", "render": function (valor) {
                     if (valor) {
-                        return '<span class="badge bg-success">Operativa</span>';
-                    } else {
                         return '<span class="badge bg-danger">Inoperativa</span>';
+                    } else {
+                        return '<span class="badge bg-success">Operativa</span>';
                     }
                 }
             },

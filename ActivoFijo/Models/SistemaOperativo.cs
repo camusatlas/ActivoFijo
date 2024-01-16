@@ -5,10 +5,10 @@ using System.Web;
 
 namespace ActivoFijo.Models
 {
-    public class Almacen
+    public class SistemaOperativo
     {
-        public int IdAlmacen { get; set; }
-        public string NomAlmacen { get; set; }
+        public int IdSistema { get; set; }
+        public string NombreSistema { get; set; }
         public bool Activo { get; set; }
     }
 }

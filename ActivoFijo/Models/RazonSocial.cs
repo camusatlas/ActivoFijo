@@ -8,6 +8,7 @@ namespace ActivoFijo.Models
     public class RazonSocial
     {
         public int IdRazonSocial { get; set; }
-        public string NameRazonSocial { get; set; }
+        public string NomRazonSocial { get; set; }
+        public bool Activo {  get; set; }
     }
 }

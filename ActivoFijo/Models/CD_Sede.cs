@@ -91,7 +91,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EliminarSede", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_EditarSede", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

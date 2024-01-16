@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
 namespace ActivoFijo.Models
 {
-    public class CD_Marca
+    public class CD_RazonSocial
     {
         private SqlConnection cn;
-        public CD_Marca()
+        public CD_RazonSocial()
         {
             cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
         }
 
-        // Listar Marca
-        public List<Marca> listar()
+        // Listar RazonSocial
+        public List<RazonSocial> listar()
         {
-            List<Marca> listado = new List<Marca>();
-            SqlCommand cmd = new SqlCommand("sp_ListarMarca", cn);
+            List<RazonSocial> listado = new List<RazonSocial>();
+            SqlCommand cmd = new SqlCommand("sp_ListarRazonSocial", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
@@ -29,13 +29,13 @@ namespace ActivoFijo.Models
                 {
                     while (dr.Read())
                     {
-                        Marca usuario = new Marca()
+                        RazonSocial razonSocial = new RazonSocial()
                         {
-                            IdMarca = Convert.ToInt32(dr["IdMarca"]),
-                            Descripcion = dr["Descripcion"].ToString(),
+                            IdRazonSocial = Convert.ToInt32(dr["IdRazonSocial"]),
+                            NomRazonSocial = dr["NomRazonSocial"].ToString(),
                             Activo = Convert.ToBoolean(dr["Activo"])
                         };
-                        listado.Add(usuario);
+                        listado.Add(razonSocial);
                     }
                 }
             }
@@ -51,18 +51,18 @@ namespace ActivoFijo.Models
             return listado;
         }
 
-        // Crear Categoria
-        public int Registrar(Marca obj, out string Mensaje)
+        // Crear RazonSocial
+        public int Registrar(RazonSocial obj, out string Mensaje)
         {
             int idautogenerado = 0;
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_RegistroMarca", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_InsertarRazonSocial", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
+                    cmd.Parameters.AddWithValue("NomRazonSocial", obj.NomRazonSocial);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
@@ -83,18 +83,18 @@ namespace ActivoFijo.Models
             }
             return idautogenerado;
         }
-        public bool Editar(Marca obj, out string Mensaje)
+        public bool Editar(RazonSocial obj, out string Mensaje)
         {
             bool resultado = false;
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EditarMarca", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_EditarRazonSocial", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdMarca", obj.IdMarca);
-                    cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
+                    cmd.Parameters.AddWithValue("IdRazonSocial", obj.IdRazonSocial);
+                    cmd.Parameters.AddWithValue("NomRazonSocial", obj.NomRazonSocial);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
@@ -115,18 +115,18 @@ namespace ActivoFijo.Models
             return resultado;
         }
 
-        // Eliminar
+        // Eliminar RazonSocial
         public bool Eliminar(int id, out string Mensaje)
         {
             bool resultado = false;
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EliminarMarca", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_EliminarRazonSocial", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdMarca", id);
+                    cmd.Parameters.AddWithValue("IdRazonSocial", id);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
@@ -145,5 +145,6 @@ namespace ActivoFijo.Models
             }
             return resultado;
         }
+
     }
 }

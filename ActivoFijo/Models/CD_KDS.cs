@@ -11,22 +11,22 @@ namespace ActivoFijo.Models
 {
     public class CD_KDS
     {
-        private SqlConnection cn;
+        private MySqlConnection cn;
         public CD_KDS()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosi"].ConnectionString);
         }
 
         // Listar KDS
         public List<KDS> listarkds()
         {
             List<KDS> listado = new List<KDS>();
-            SqlCommand cmd = new SqlCommand("sp_ListarKDS", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ListarKDS", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -67,26 +67,26 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_ResgistrarKDS", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_ResgistrarKDS", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("empresa", obj.empresa);
-                    cmd.Parameters.AddWithValue("marca", obj.marca);
-                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("nombre_tienda", obj.nombre_tienda);
-                    cmd.Parameters.AddWithValue("ip_kds", obj.ip_kds);
-                    cmd.Parameters.AddWithValue("hostname", obj.hostname);
-                    cmd.Parameters.AddWithValue("serie", obj.serie);
-                    cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_empresa", obj.empresa);
+                    cmd.Parameters.AddWithValue("p_marca", obj.marca);
+                    cmd.Parameters.AddWithValue("p_tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("p_nombre_tienda", obj.nombre_tienda);
+                    cmd.Parameters.AddWithValue("p_ip_kds", obj.ip_kds);
+                    cmd.Parameters.AddWithValue("p_hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("p_serie", obj.serie);
+                    cmd.Parameters.AddWithValue("p_status", obj.status);
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
                 }
             }
             catch (Exception ex)
@@ -104,27 +104,27 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EditarKDS", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EditarKDS", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdKds", obj.IdKds);
-                    cmd.Parameters.AddWithValue("empresa", obj.empresa);
-                    cmd.Parameters.AddWithValue("marca", obj.marca);
-                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("nombre_tienda", obj.nombre_tienda);
-                    cmd.Parameters.AddWithValue("ip_kds", obj.ip_kds);
-                    cmd.Parameters.AddWithValue("hostname", obj.hostname);
-                    cmd.Parameters.AddWithValue("serie", obj.serie);
-                    cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdKds", obj.IdKds);
+                    cmd.Parameters.AddWithValue("p_empresa", obj.empresa);
+                    cmd.Parameters.AddWithValue("p_marca", obj.marca);
+                    cmd.Parameters.AddWithValue("p_tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("p_nombre_tienda", obj.nombre_tienda);
+                    cmd.Parameters.AddWithValue("p_ip_kds", obj.ip_kds);
+                    cmd.Parameters.AddWithValue("p_hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("p_serie", obj.serie);
+                    cmd.Parameters.AddWithValue("p_status", obj.status);
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -143,7 +143,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM KDS WHERE IdKds = @id", cn))
+                using (MySqlCommand cmd = new MySqlCommand("DELETE FROM tb_bhd_gen_kds WHERE IdKds = @id", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", id);
