@@ -539,6 +539,33 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
+        // Listar Sede
+        [HttpGet]
+        public JsonResult ListarPrioridad()
+        {
+            List<Prioridad> oLista = new List<Prioridad>();
+
+            oLista = new CN_Prioridad().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        // Registrar y Editar Prioridad
+        [HttpPost]
+        public JsonResult GuardarPrioridad(Prioridad objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdPrioridades == 0)
+            {
+                resultado = new CN_Prioridad().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_Prioridad().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
 
         #endregion
 
@@ -547,7 +574,16 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
+        //Listar Equipo
+        [HttpGet]
+        public JsonResult ListarEquipo()
+        {
+            List<Equipo> oLista = new List<Equipo>();
 
+            oLista = new CN_Equipo().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region SistemaOperativo
