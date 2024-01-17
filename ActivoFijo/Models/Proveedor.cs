@@ -9,5 +9,6 @@ namespace ActivoFijo.Models
     {
         public int IdProveedor { get; set; }
         public string NomProveedor { get; set; }
+        public bool Activo { get; set; }
     }
 }

@@ -1,6 +1,11 @@
 ﻿using ActivoFijo.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -584,6 +589,110 @@ namespace ActivoFijo.Controllers
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
+
+        // Guardar Equipo Registrar y Actualizar Equipos
+        [HttpPost]
+        public JsonResult GuardarEquipo(string objeto, HttpPostedFileBase archivoImagen)
+        {
+            string mensaje = string.Empty;
+
+            bool operacion_exitosa = true;
+            bool guardar_imagen_exito = true;
+
+            Equipo oEquipo = new Equipo();
+            oEquipo = JsonConvert.DeserializeObject<Equipo>(objeto);
+
+            decimal precio;
+
+            if (decimal.TryParse(oEquipo.PrecioTexto, NumberStyles.AllowDecimalPoint, new CultureInfo("es-PE"), out precio))
+            {
+                oEquipo.Precio = precio;
+            }
+            else
+            {
+                return Json(new { operacionExitosa = false, mensaje = "El formato del precio debe ser ###.##" }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (oEquipo.IdEquipos == 0)
+            {
+                int idEquipoGenerado = new CN_Equipo().Registrar(oEquipo, out mensaje);
+
+                if (idEquipoGenerado != 0)
+                {
+                    oEquipo.IdEquipos = idEquipoGenerado;
+                }
+                else
+                {
+                    operacion_exitosa = false;
+                }
+            }
+            else
+            {
+                operacion_exitosa = new CN_Equipo().Editar(oEquipo, out mensaje);
+            }
+            if (operacion_exitosa)
+            {
+                if (archivoImagen != null)
+                {
+                    string ruta_guardar = ConfigurationManager.AppSettings["ServidorFotos"];
+                    string extension = Path.GetExtension(archivoImagen.FileName);
+                    string nombre_imagen = string.Concat(oEquipo.IdEquipos.ToString(), extension);
+
+                    try
+                    {
+                        archivoImagen.SaveAs(Path.Combine(ruta_guardar, nombre_imagen));
+                    }
+                    catch (Exception ex)
+                    {
+                        string msg = ex.Message;
+                        guardar_imagen_exito = false;
+                    }
+
+                    if (guardar_imagen_exito)
+                    {
+                        oEquipo.RutaImagen = ruta_guardar;
+                        oEquipo.NombreImagen = nombre_imagen;
+                        bool rsp = new CN_Equipo().GuardarDatosImagen(oEquipo, out mensaje);
+                    }
+                    else
+                    {
+                        mensaje = "Se guardo el equipo pero hubo problemas con la imagen";
+                    }
+
+                }
+            }
+            return Json(new { operacionExitosa = operacion_exitosa, idGenerado = oEquipo.IdEquipos, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult ImagenEquipo(int id)
+        {
+            bool conversion;
+            Equipo oproducto = new CN_Equipo().Listar().Where(p => p.IdEquipos == id).FirstOrDefault();
+            string textoBase64 = CN_Recursos.ConvertirBase64(Path.Combine(oproducto.RutaImagen, oproducto.NombreImagen), out conversion);
+            return Json(new
+            {
+                conversion = conversion,
+                textobase64 = textoBase64,
+                extension = Path.GetExtension(oproducto.NombreImagen)
+            },
+            JsonRequestBehavior.AllowGet);
+
+        }
+
+        // Eliminar Equipo
+        [HttpPost]
+        public JsonResult EliminarEquipo(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Equipo().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         #region SistemaOperativo
@@ -633,6 +742,118 @@ namespace ActivoFijo.Controllers
 
         #endregion
 
+        #region Proveedor
 
+        // Listar Proveedor
+        [HttpGet]
+        public JsonResult ListarProveedor()
+        {
+            List<Proveedor> oLista = new List<Proveedor>();
+
+            oLista = new CN_Proveedor().Listar();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Registrar y Editar Proveedor
+        [HttpPost]
+        public JsonResult GuardarProveedor(Proveedor objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            if (objeto.IdProveedor == 0)
+            {
+                resultado = new CN_Proveedor().Registrar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new CN_Proveedor().Editar(objeto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Eliminar Proveedor
+        [HttpPost]
+        public JsonResult EliminarProveedor(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Proveedor().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region DashBoard
+        // Vista de DashBoard
+        [HttpGet]
+        public JsonResult VistaDashBoard()
+        {
+            DashBoard objeto = new CN_Reportes().VerDashBoard();
+            return Json(new { resultado = objeto }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region
+
+        // Lista de Resportes
+        [HttpGet]
+        public JsonResult ListaReporte(string fechainicio, string fechafin, string idtransaccion)
+        {
+            List<Reporte> oLista = new List<Reporte>();
+
+            oLista = new CN_Reportes().Ventas(fechainicio, fechafin, idtransaccion);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public FileResult ExportarVenta(string fechainicio, string fechafin, string idtransaccion)
+        {
+            List<Reporte> oLista = new List<Reporte>();
+            oLista = new CN_Reportes().Ventas(fechainicio, fechafin, idtransaccion);
+
+            DataTable dt = new DataTable();
+
+            dt.Locale = new System.Globalization.CultureInfo("es-Pe");
+            dt.Columns.Add("Fecha Venta", typeof(string));
+            dt.Columns.Add("Cliente", typeof(string));
+            dt.Columns.Add("Producto", typeof(string));
+            dt.Columns.Add("Precio", typeof(decimal));
+            dt.Columns.Add("Cantidad", typeof(int));
+            dt.Columns.Add("Total", typeof(decimal));
+            dt.Columns.Add("IdTransaccion", typeof(string));
+
+
+            foreach (Reporte rp in oLista)
+            {
+                dt.Rows.Add(new object[]
+                {
+                    rp.FechaVenta,
+                    rp.Cliente,
+                    rp.Equipo,
+                    rp.Precio,
+                    rp.Cantidad,
+                    rp.Total,
+                    rp.IdTransaccion
+                });
+            }
+            dt.TableName = "Datos";
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ResporteVenta" + DateTime.Now.ToString() + ".xlsx");
+                }
+            }
+
+        }
+
+        #endregion
     }
 }

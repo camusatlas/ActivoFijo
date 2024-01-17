@@ -1,0 +1,785 @@
+﻿
+@{
+    ViewBag.Title = "Equipo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Mantenimiento</a></li>
+    <li class="breadcrumb-item active">Equipos</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-boxes me-1"></i>Lista de Equipos
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear Nuevo</button>
+            </div>
+        </div>
+        <hr />
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Categoria</th>
+                    <th>Precio</th>
+                    <th>Sede</th>
+                    <th>Modelo</th>
+                    <th>Serie</th>
+                    <th>Cod. Inventario</th>
+                    <th>Usuario</th>
+                    <th>Guira Ingreso</th>
+                    <th>Proveedor</th>
+                    <th>Orden Compra</th>
+                    <th>Orden Interna</th>
+                    <th>Activo Fijo</th>
+                    <th>Almacen</th>
+                    <th>Codigo SAP</th>
+                    <th>Prioridad</th>
+                    <th>Sistema</th>
+                    <th>Direccion Mac</th>
+                    <th>Especicacion Hardware</th>
+                    <th>Fecha Garantia</th>
+                    <th>Observación</th>
+                    <th>Activo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <input id="txtid" type="text" value="0" style="display: none;" />
+
+                <form id="contenedor" class="row">
+
+                    <div class="col-sm-3">
+                        <div class="mb-2">
+                            <img id="img_equipo" height="197" width="200" class="border rounded mx-auto db-block img-fluid" />
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control" type="file" id="fileEquipo" accept="image/png, image/jpg, image/jpeg" onchange="mostrarImagen(this)" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Marca</label>
+                            <select id="cbomarca" class="form-select">
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <!-- Nombre -->
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Categoria</label>
+                            <select id="cbocategoria" class="form-select">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="txtnombre" name="nombre" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio</label>
+                            <input type="text" class="form-control" id="txtprecio" name="precio" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Sede</label>
+                            <select id="cbosede" class="form-select">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Modelo</label>
+                            <select id="cbomodelo" class="form-select">
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Marca -->
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Proveedor</label>
+                            <select id="cboproveedor" class="form-select">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Almacen</label>
+                            <select id="cboalmacen" class="form-select">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Prioridad</label>
+                            <select id="cboprioridad" class="form-select">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Sistema</label>
+                            <select id="cbosistema" class="form-select">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Activo</label>
+                            <select id="cboactivo" class="form-select">
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+
+                <!-- Mesnaje de alerta -->
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+        function mostrarImagen(input) {
+            if (input.files) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $("#img_equipo").attr("src", e.target.result).width(200).height(197)
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(document).ready(function () {
+            tabladata = $("#tabla").DataTable({
+                responsive: true,
+                ordering: false,
+                "ajax": {
+                    url: '@Url.Action("ListarEquipo", "Home")',
+                    type: "GET",
+                    dataType: "json",
+                },
+                "columns": [
+                    { "data": "Nombre" },
+                    {
+                        "data": "oMarca", "render": function (data) {
+                            return data.Descripcion
+                        }
+                    },
+                    {
+                        "data": "oCategoria", "render": function (data) {
+                            return data.Descripcion
+                        }
+                    },
+                    { "data": "Precio" },
+                    {
+                        "data": "oSede", "render": function (data) {
+                            return data.Sede
+                        }
+                    },
+                    {
+                        "data": "oModelo", "render": function (data) {
+                            return data.NomModelo
+                        }
+                    },
+                    { "data": "serie" },
+                    { "data": "CodInventario" },
+                    { "data": "Usuario" },
+                    { "data": "GuiaIngreso" },
+                    {
+                        "data": "oProveedor", "render": function (data) {
+                            return data.NomProveedor
+                        }
+                    },
+                    { "data": "OrdenCompra" },
+                    { "data": "OrdenInterna" },
+                    { "data": "ActivoFijo" },
+                    {
+                        "data": "oAlmacen", "render": function (data) {
+                            return data.NomAlmacen
+                        }
+                    },
+                    { "data": "CodMaterialSAP" },
+                    {
+                        "data": "oPrioridad", "render": function (data) {
+                            return data.NomPrioridad
+                        }
+                    },
+                    {
+                        "data": "oSistema", "render": function (data) {
+                            return data.NombreSistema
+                        }
+                    },
+                    { "data": "DireccionMac" },
+                    { "data": "EspecificacionesHardware" },
+                    { "data": "FechaGarantia" },
+                    { "data": "Onservacion" },
+                    {
+                        "data": "Activo", "render": function (valor) {
+                            if (valor) {
+                                return '<span class="badge bg-success">SI</span>';
+                            } else {
+                                return '<span class="badge bg-danger">NO</span>';
+                            }
+                        }
+                    },
+                    {
+                        "defaultContent": '<button type="button" class="btn btn-success btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                            '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "90px"
+                    }
+                ],
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                }
+            });
+            // Listar Marca
+            jQuery.ajax({
+                url: '@Url.Action("ListarMarca", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbomarca")
+
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdMarca }).text(item.Descripcion).appendTo("#cbomarca");
+                    })
+
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
+            //Listar Categoria
+            jQuery.ajax({
+                url: '@Url.Action("ListarCategoria", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocategoria")
+
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdCategoria }).text(item.Descripcion).appendTo("#cbocategoria");
+                    })
+
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
+            //Listar Sede
+            jQuery.ajax({
+                url: '@Url.Action("ListarSede", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbosede")
+
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdSede }).text(item.Sede).appendTo("#cbosede");
+                    })
+
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
+            //Listar Modelo
+            jQuery.ajax({
+                url: '@Url.Action("ListarModelo", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbomodelo")
+
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdModelo }).text(item.NomModelo).appendTo("#cbomodelo");
+                    })
+
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
+            //Listar Proveedor
+            jQuery.ajax({
+                url: '@Url.Action("ListarProveedor", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboproveedor")
+
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdProveedor }).text(item.NomProveedor).appendTo("#cboproveedor");
+                    })
+
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
+            //Listar Almacen
+            jQuery.ajax({
+                url: '@Url.Action("ListarAlmacen", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboalmacen")
+
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdAlmacen }).text(item.NomProveedor).appendTo("#cboalmacen");
+                    })
+
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
+            //Listar Prioridad
+            jQuery.ajax({
+                url: '@Url.Action("ListarPrioridad", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboprioridad")
+
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdPrioridades }).text(item.NomPrioridad).appendTo("#cboprioridad");
+                    })
+
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
+            //Listar SistemaOperativo
+            jQuery.ajax({
+                url: '@Url.Action("ListarSistemaOperativo", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+            
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbosistema")
+            
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdSistema }).text(item.NombreSistema).appendTo("#cbosistema");
+                    })
+            
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
+            jQuery.validator.addMethod("preciodecimal", function (value, element) {
+                return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
+            }, "El formato correcto del precio es ###.##");
+
+            $("#contenedor").validate({
+                rules: {
+                    nombre: {
+                        required: true
+                    },
+                    precio: {
+                        required: true,
+                        preciodecimal: true
+                    },
+                    Serie: {
+                        required: true,
+                    },
+                    CodInventario: {
+                        required: true,
+                    },
+                    Usuario: {
+                        required: true,
+                    },
+                    GuiaIngreso: {
+                        required: true,
+                    },
+                    OrdenCompra: {
+                        required: true,
+                    },
+                    OrdenInterna: {
+                        required: true,
+                    },
+                    ActivoFijo: {
+                        required: true,
+                    },
+                    CodMaterialSAP: {
+                        required: true,
+                    },
+                    DireccionMac: {
+                        required: true,
+                    },
+                    EspecificacionesHardware: {
+                        required: true,
+                    },
+                    FechaGarantia: {
+                        required: true,
+                    },
+                    Onservacion: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    nombre: "- El campo Nombre es obligatorio",
+                    precio: { required: "- El campo precio es obligatorio", preciodecimal: "El formato correcto del precio es: ###.##" },
+                    Serie: "- El campo Serie es obligatorio",
+                    CodInventario: "- El cod. inventario es obligatorio",
+                    Usuario: "- El campo usuario es obligatorio",
+                    GuiaIngreso: "- La guia de ingreso es obligatorio",
+                    OrdenCompra: "- La orden de compra es obligatorio",
+                    OrdenInterna: "- La orden interna es obligatorio",
+                    ActivoFijo: "- El activo fijo es obligatorio",
+                    CodMaterialSAP: "- El codigo SAP es obligatorio",
+                    DireccionMac: "- La dirección mac es obligatorio",
+                    EspecificacionesHardware: "- La especificación es obligatorio",
+                    FechaGarantia: "- La fecha de garantia es obligatorio",
+                    Onservacion: "- La observación es obligatorio"
+                },
+                errorElement: "div",
+                errorLabelContainer: ".alert-danger"
+            })
+
+
+
+
+
+
+    $("#tabla tbody").on("click", '.btn-editar', function () {
+        var filaSeleccionada = $(this).closest("tr");
+        var data = tabladata.row(filaSeleccionada).data();
+        abrirModal(data);
+    });
+
+    $("#tabla tbody").on("click", '.btn-eliminar', function () {
+        var equipoSeleccionado = $(this).closest("tr");
+        var data = tabladata.row(equipoSeleccionado).data();
+
+        swal({
+            title: "¿Está seguro?",
+            text: "¿Desea eliminar la Equipo?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-primary",
+            confirmButtonText: "Sí",
+            cancelButtonText: "No",
+            closeOnConfirm: true
+        },
+
+            function () {
+                debugger;
+                var Equipo = {
+                    IdEquipo: data.IdEquipo // Obtener el IdEquipo del registro
+            };
+            jQuery.ajax({
+                url: '@Url.Action("EliminarEquipo", "Home")',
+                type: 'POST',
+                data: JSON.stringify({ id: Equipo.IdEquipo }), // Enviar solo el IdUsuario
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.resultado) {
+                        tabladata.row(equipoSeleccionado).remove().draw();
+                    } else {
+                        swal("No se pudo eliminar", data.mensaje, "error");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                beforeSend: function () {
+                    // Código de beforeSend si lo requieres
+                }
+            });
+        });
+
+        console.log(data);
+    });
+});
+
+        function abrirModal(json) {
+            $("#txtid").val(0);
+            $("#img_producto").removeAttr("src");
+            $("#fileEquipo").val("");
+            $("#txtnombre").val("");
+            $("#cbomarca").val($("#cbomarca option:first").val());
+            $("#cbocategoria").val($("#cbocategoria option:first").val());
+            $("#txtprecio").val("");
+            $("#cbosede").val($("#cbosede option:first").val());
+            $("#cbomodelo").val($("#cbomodelo option:first").val());
+            $("#txtserie").val("");
+            $("#txtcodinventario").val("");
+            $("#txtusuario").val("");
+            $("#txtguiaingreso").val("");
+            $("#cboproveedor").val($("#cboproveedor option:first").val());
+            $("#txtordencompra").val("");
+            $("#txtordeninterna").val("");
+            $("#txtactivofijo").val("");
+            $("#cboalmacen").val($("#cboalmacen option:first").val());
+            $("#codmaterialsap").val("");
+            $("#cboprioridad").val($("#cboprioridad option:first").val());
+            $("#cbosistema").val($("#cbosistema option:first").val());
+            $("#txtdireccionmac").val("");
+            $("#txtespecificacioneshardware").val("");
+            $("#txtfechagrantia").val("");
+            $("#txtobservacion").val("");
+            $("#cboactivo").val(1);
+
+            // Ocultar valores
+            $("#mensajeError").hide();
+
+            if (json !== null) {
+                $("#txtid").val(json.IdEquipo);
+                $("#txtnombre").val(json.Nombre);
+                $("#cbomarca").val(json.oMarca.IdMarca);
+                $("#cbocategoria").val(json.oCategoria.IdCategoria);
+                $("#txtprecio").val(json.Precio);
+                $("#cbosede").val(json.oSede.IdSede);
+                $("#cbomodelo").val(json.oModelo.IdModelo);
+                $("#txtserie").val(json.Serie);
+                $("#txtcodinventario").val(json.CodInventario);
+                $("#txtusuario").val(json.Usuario);
+                $("#txtguiaingreso").val(json.GuiaIngreso);
+                $("#cboproveedor").val(json.oProveedor.IdProveedor);
+                $("#txtordencompra").val(json.OrdenCompra);
+                $("#txtordeninterna").val(json.OrdenInterna);
+                $("#txtactivofijo").val(json.ActivoFijo);
+                $("#cboalmacen").val(json.oAlmacen.IdAlmacen);
+                $("#codmaterialsap").val(json.CodMaterialSAP);
+                $("#cboprioridad").val(json.oPrioridades.IdPrioridades);
+                $("#cbosistema").val(json.oSistema.IdSistema);
+                $("#txtdireccionmac").val(json.DireccionMac);
+                $("#txtespecificacioneshardware").val(json.EspecificacionesHardware);
+                $("#txtfechagrantia").val(json.FechaGarantia);
+                $("#txtobservacion").val(json.Onservacion);
+                $("#cboactivo").val(json.Activo == true ? 1 : 0);
+
+                jQuery.ajax({
+                    url: '@Url.Action("ImagenEquipo", "Home")',
+                    type: "POST",
+                    data: JSON.stringify({ id: json.IdEquipo }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        $("#img_equipo").LoadingOverlay("hide");
+
+                        if (data.conversion) {
+                            $("#img_equipo").attr({ "src": "data:image/" + data.extension + ";base64," + data.textobase64 });
+                        }
+                    },
+                    error: function (error) {
+                        $("#img_equipo").LoadingOverlay("hide");
+
+                        $("#mensajeError").show();
+                        $("#mensajeError").text("Error al mostrar imagen");
+                    },
+                    beforeSend: function () {
+                        $("#img_equipo").LoadingOverlay("show");
+
+                    }
+                })
+
+
+            }
+
+            $("#formModal").modal("show");
+
+            $("#tabla tbody").off("click", '.btn-editar').on("click", '.btn-editar', function () {
+                var filaSeleccionada = $(this).closest("tr");
+                var data = tabladata.row(filaSeleccionada).data();
+                abrirModal(data);
+            });
+
+        }
+
+        function Guardar() {
+            debugger;
+            if (!$("#contenedor").valid()) {
+                return;
+            }
+
+            var ImagenSeleccionada = $("#fileEquipo")[0].files[0];
+
+            var Equipo = {
+                IdEquipo: $("#txtid").val(),
+                Nombre: $("#txtnombre").val(),
+                oMarca: {
+                    IdMarca: $("#cbomarca option:selected").val(),
+                    Descripcion: $("#cbomarca option:selected").text()
+                },
+                oCategoria: {
+                    IdCategoria: $("#cbocategoria option:selected").val(),
+                    Descripcion: $("#cbocategoria option:selected").text()
+                },
+                PrecioTexto: $("#txtprecio").val(),
+                Precio: $("#txtprecio").val(),
+                oSede: {
+                    IdSede: $("#cbosede option:selected").val(),
+                    Sede: $("#cbosede option.selected").text()
+                },
+                oModelo: {
+                    IdModelo: $("#cdomodelo option:selected").val(),
+                    NomModelo: $("#cbomodelo option:selected").text()
+                },
+                Serie: $("#txtserie").val(),
+                CodInventario: $("#txtcodinventario").val(),
+                Usuario: $("#txtusuario").val(),
+                GuiaIngreso: $("#txtguiaingreso").val(),
+                oProveedor: {
+                    IdProveedor: $("#cboproveedor option:selected").val(),
+                    NomProveedor: $("#cboproveedor option:selected").text()
+                },
+                OrdenCompra: $("#txtordencompra").val(),
+                OrdenInterna: $("#txtordeninterna").val(),
+                ActivoFijo: $("#txtactivofijo").val(),
+                oAlmacen: {
+                    IdAlmacen: $("#cboalmacen option:selected").val(),
+                    NomAlmacen: $("#cboalmacen option:selected").text()
+                },
+                CodMaterialSAP: $("txtcodmaterialsap").val(),
+                oPrioridades: {
+                    IdPrioridades: $("#cboprioridad option:selected").val(),
+                    NomPrioridad: $("#cboprioridad option:selected").text()
+                },
+                oSistema: {
+                    IdSistema: $("#cbositema option:selected").val(),
+                    NombreSistema: $("#cbositema option:selected").text()
+                },
+                DireccionMac: $("#txtdireccionmac").val(),
+                EspecificacionesHardware: $("#txtfechagarantia").val(),
+                Onservacion: $("#txtobservacion").val(),
+                Activo: $("#cboactivo").val() == 1 ? true : false,
+
+            };
+
+            var request = new FormData();
+            request.append("objeto", JSON.stringify(Equipo))
+            request.append("archivoImagen", ImagenSeleccionada)
+
+
+    jQuery.ajax({
+        url: '@Url.Action("GuardarEquipo", "Home")',
+        type: 'POST',
+        data: request,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+
+            // Nueva Producto
+            if (Equipo.IdProducto == 0) {
+
+                if (data.idGenerado !== 0) {
+
+                    Equipo.IdEquipo = data.resultado;
+                    tabladata.row.add(Equipo).draw(false);
+                    $("#formModal").modal("hide");
+
+                } else {
+                    $("#mensajeError").text(data.mensaje);
+                    $("#mensajeError").show();
+                }
+            }
+            // Producto Editado
+            else {
+                if (data.data) {
+                    tabladata.row(filaSeleccionada).data(Equipo).draw(false);
+                    $("#formModal").modal("hide");
+                } else {
+                    $("#mensajeError").text(data.mensaje);
+                    $("#mensajeError").show();
+                }
+            }
+            location.reload(); // Recarga la página después de completar la operación de guardado
+        },
+        error: function (error) {
+            $(".modal-body").LoadingOverlay("hide");
+            $("#mensajeError").text("Error Ajax");
+            $("#mensajeError").show();
+        },
+        beforeSend: function () {
+            $(".modal-body").LoadingOverlay("show", {
+                imageResizeFactor: 2,
+                text: "Cargando...",
+                size: 14
+            });
+        }
+    });
+}
+
+
+
+    </script>
+}

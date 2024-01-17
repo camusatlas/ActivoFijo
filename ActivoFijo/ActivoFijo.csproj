@@ -188,7 +188,9 @@
     <Compile Include="Models\CD_Modelo.cs" />
     <Compile Include="Models\CD_PCGerencial.cs" />
     <Compile Include="Models\CD_Prioridad.cs" />
+    <Compile Include="Models\CD_Proveedor.cs" />
     <Compile Include="Models\CD_RazonSocial.cs" />
+    <Compile Include="Models\CD_Reporte.cs" />
     <Compile Include="Models\CD_Sede.cs" />
     <Compile Include="Models\CD_Servidor.cs" />
     <Compile Include="Models\CD_SistemaOperativo.cs" />
@@ -202,12 +204,16 @@
     <Compile Include="Models\CN_Modelo.cs" />
     <Compile Include="Models\CN_PCGerencial.cs" />
     <Compile Include="Models\CN_Prioridad.cs" />
+    <Compile Include="Models\CN_Proveedor.cs" />
     <Compile Include="Models\CN_RazonSocial.cs" />
+    <Compile Include="Models\CN_Recursos.cs" />
+    <Compile Include="Models\CN_Reportes.cs" />
     <Compile Include="Models\CN_Sede.cs" />
     <Compile Include="Models\CN_Servidor.cs" />
     <Compile Include="Models\CN_SistemaOperativo.cs" />
     <Compile Include="Models\CN_Tecnico.cs" />
     <Compile Include="Models\CN_WorkStation.cs" />
+    <Compile Include="Models\DashBoard.cs" />
     <Compile Include="Models\Equipo.cs" />
     <Compile Include="Models\KDS.cs" />
     <Compile Include="Models\Marca.cs" />
@@ -216,6 +222,7 @@
     <Compile Include="Models\Prioridad.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\RazonSocial.cs" />
+    <Compile Include="Models\Reporte.cs" />
     <Compile Include="Models\Sede.cs" />
     <Compile Include="Models\Servidor.cs" />
     <Compile Include="Models\Sistema.cs" />
@@ -591,6 +598,7 @@
     <Content Include="Views\Home\Marca.cshtml" />
     <Content Include="Views\Home\Sede.cshtml" />
     <Content Include="Views\Home\SistemaOperativo.cshtml" />
+    <Content Include="Views\Home\Equipo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
