@@ -512,6 +512,7 @@
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
     <Content Include="Content\DataTables\es-ES.json" />
+    <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Botones\buttons.bootstrap5.min.js" />
     <Content Include="Scripts\Botones\buttons.colVis.min.js" />
