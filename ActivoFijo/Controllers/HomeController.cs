@@ -26,7 +26,7 @@ namespace ActivoFijo.Controllers
         {
             return View();
         }
-
+        /*Listo*/
         #region Servidor
         // Listar Servidor
         [HttpGet]
@@ -68,7 +68,7 @@ namespace ActivoFijo.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
         #endregion Servidor
-        /* Funciones de WorSatation */
+        /* Listo */
         #region Worstation
         public ActionResult WorkStation()
         {
@@ -115,7 +115,7 @@ namespace ActivoFijo.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
         #endregion Workstation
-        /* Funciones de KDS */
+        /* Listo */
         #region KDS
         public ActionResult Kds()
         {
@@ -162,7 +162,7 @@ namespace ActivoFijo.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
         #endregion KDS
-        /* Funciones de la PCGerencial */
+        /* Listo */
         #region PCGerencial
         public ActionResult PCGerencial()
         {
@@ -215,7 +215,7 @@ namespace ActivoFijo.Controllers
             return View();
         }
         #endregion PCGerencial
-
+        /* Listo */
         #region Categoria
 
         public ActionResult Categoria()
@@ -264,7 +264,7 @@ namespace ActivoFijo.Controllers
         }
 
         #endregion Categoria
-
+        /* Listo */
         #region Marca
 
         public ActionResult Marca()
@@ -313,7 +313,7 @@ namespace ActivoFijo.Controllers
         }
 
         #endregion
-
+        /* Listo */
         #region Sede
         public ActionResult Sede()
         {
@@ -742,8 +742,13 @@ namespace ActivoFijo.Controllers
         }
 
         #endregion
-
+        
         #region Proveedor
+
+        public ActionResult Proveedor()
+        {
+            return View();
+        }
 
         // Listar Proveedor
         [HttpGet]

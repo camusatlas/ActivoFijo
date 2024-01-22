@@ -16,7 +16,7 @@ namespace ActivoFijo.Models
             cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
         }
 
-        // Listar Sede
+        // Listar Sistema Operativo
         public List<SistemaOperativo> listar()
         {
             List<SistemaOperativo> listado = new List<SistemaOperativo>();

@@ -1,17 +1,16 @@
 ﻿
 @{
-    ViewBag.Title = "SistemaOperativo";
+    ViewBag.Title = "Proveedor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <ol class="breadcrumb mb-4 mt-4">
     <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Mantenimiento</a></li>
-    <li class="breadcrumb-item active">Sistema Operativo</li>
+    <li class="breadcrumb-item active">Proveedores</li>
 </ol>
 
 <div class="card">
     <div class="card-header">
-        <i class="fas fa-users me-1"></i>Lista de Sistemas Operativos
+        <i class="fas fa-users me-1"></i>Lista de Proveedores
     </div>
 
     <div class="card-body">
@@ -24,7 +23,7 @@
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
-                    <th>Sistema Operativo</th>
+                    <th>Proveedores</th>
                     <th>Activo</th>
                     <th></th>
                 </tr>
@@ -52,8 +51,8 @@
                 <div class="row g-1">
 
                     <div class="col-sm-6">
-                        <label for="txtsistema" class="form-label">Sitema Operativo</label>
-                        <input type="email" class="form-control" id="txtsistema" autocomplete="off" />
+                        <label for="txtproveedor" class="form-label">Sitema Operativo</label>
+                        <input type="email" class="form-control" id="txtproveedor" autocomplete="off" />
                     </div>
 
                     <div class="col-sm-6">
@@ -96,12 +95,12 @@
         responsive: true,
         ordering: false,
         "ajax": {
-            url: '@Url.Action("ListarSistemaOperativo", "Home")',
+            url: '@Url.Action("ListarProveedor", "Home")',
             type: "GET",
             dataType: "json",
         },
         "columns": [
-            { "data": "NombreSistema" },
+            { "data": "NomProveedor" },
             {
                 "data": "Activo", "render": function (valor) {
                     if (valor) {

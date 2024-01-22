@@ -671,6 +671,7 @@
     <Content Include="Views\Home\Sede.cshtml" />
     <Content Include="Views\Home\SistemaOperativo.cshtml" />
     <Content Include="Views\Home\Equipo.cshtml" />
+    <Content Include="Views\Home\Proveedor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
