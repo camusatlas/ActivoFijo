@@ -448,7 +448,7 @@ namespace ActivoFijo.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
         #endregion
-
+        /*Listo*/
         #region Almacen
         public ActionResult Almacen()
         {
@@ -539,7 +539,7 @@ namespace ActivoFijo.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
         #endregion
-
+        /*Listo*/
         #region Prioridades
         public ActionResult Prioridad()
         {
@@ -571,7 +571,17 @@ namespace ActivoFijo.Controllers
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
+        // Eliminar Prioridad
+        [HttpPost]
+        public JsonResult EliminarPrioridad(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
 
+            respuesta = new CN_Prioridad().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
 
@@ -742,7 +752,7 @@ namespace ActivoFijo.Controllers
         }
 
         #endregion
-        
+        /*Listo*/
         #region Proveedor
 
         public ActionResult Proveedor()
@@ -791,7 +801,7 @@ namespace ActivoFijo.Controllers
         }
 
         #endregion
-
+        /*Listo*/
         #region DashBoard
         // Vista de DashBoard
         [HttpGet]

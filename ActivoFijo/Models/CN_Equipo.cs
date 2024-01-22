@@ -78,10 +78,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "Debe seleccionar el almacen";
             }
-            else if (string.IsNullOrEmpty(obj.CodMaterialSAP) || string.IsNullOrWhiteSpace(obj.CodMaterialSAP))
-            {
-                Mensaje = "Ingresar el codigo de SAP";
-            }
+            //else if (string.IsNullOrEmpty(obj.CodMaterialSAP) || string.IsNullOrWhiteSpace(obj.CodMaterialSAP))
+            //{
+            //    Mensaje = "Ingresar el codigo de SAP";
+            //}
             else if (obj.oPrioridad.IdPrioridades == 0)
             {
                 Mensaje = "Debe seleccionar la prioridad";
@@ -152,10 +152,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "Ingresar el codigo de inventario";
             }
-            else if (string.IsNullOrEmpty(obj.Usuario) || string.IsNullOrWhiteSpace(obj.Usuario))
-            {
-                Mensaje = "Ingresa el usuario del tecnico";
-            }
+            //else if (string.IsNullOrEmpty(obj.Usuario) || string.IsNullOrWhiteSpace(obj.Usuario))
+            //{
+            //    Mensaje = "Ingresa el usuario del tecnico";
+            //}
             else if (string.IsNullOrEmpty(obj.GuiaIngreso) || string.IsNullOrWhiteSpace(obj.GuiaIngreso))
             {
                 Mensaje = "Ingresar la guia de ingreso";

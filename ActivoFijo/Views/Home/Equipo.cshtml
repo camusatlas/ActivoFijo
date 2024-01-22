@@ -62,7 +62,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Equipos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -83,10 +83,6 @@
                             <select id="cbomarca" class="form-select">
                             </select>
                         </div>
-                        
-                    </div>
-                    <!-- Nombre -->
-                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label class="form-label">Categoria</label>
                             <select id="cbocategoria" class="form-select">
@@ -111,8 +107,9 @@
                             </select>
                         </div>
                     </div>
-                    <!-- Marca -->
+                    <!-- Nombre -->
                     <div class="col-sm-3">
+
                         <div class="mb-3">
                             <label class="form-label">Proveedor</label>
                             <select id="cboproveedor" class="form-select">
@@ -132,6 +129,59 @@
                             <label class="form-label">Sistema</label>
                             <select id="cbosistema" class="form-select">
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Serie</label>
+                            <input type="text" class="form-control" id="txtserie" name="serie" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Código de Inventario</label>
+                            <input type="text" class="form-control" id="txtcodinventario" name="codinventario" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tecnico</label>
+                            <input type="text" class="form-control" id="txtusuario" name="usuario" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Guía de Ingreso</label>
+                            <input type="text" class="form-control" id="txtguiaingreso" name="guiaingreso" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Orden de Compra</label>
+                            <input type="text" class="form-control" id="txtordencompra" name="ordencompra" />
+                        </div>
+                        
+                    </div>
+                    <!-- Marca -->
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Orden Interna</label>
+                            <input type="text" class="form-control" id="txtordeninterna" name="ordeninterna" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Código Sap</label>
+                            <input type="text" class="form-control" id="txtcodmaterialsap" name="codmaterialsap" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Dirección Mac</label>
+                            <input type="text" class="form-control" id="txtdireccionmac" name="direccionmac" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Especificaciones de Hardware</label>
+                            <input type="text" class="form-control" id="txtespecificacioneshardware" name="especificacioneshardware" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de Garantia</label>
+                            <input type="text" class="form-control" id="txtfechagrantia" name="especificacioneshardware" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Activo Fijo</label>
+                            <input type="text" class="form-control" id="txtactivofijo" name="activofijo" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Observación</label>
+                            <textarea type="text" class="form-control" id="txtobservacion" name="observacion" style="height: 200px; resize: none"></textarea>
                         </div>
                     </div>
 
@@ -206,7 +256,7 @@
                     { "data": "Precio" },
                     {
                         "data": "oSede", "render": function (data) {
-                            return data.Sede
+                            return data.NomSede
                         }
                     },
                     {
@@ -214,7 +264,7 @@
                             return data.NomModelo
                         }
                     },
-                    { "data": "serie" },
+                    { "data": "Serie" },
                     { "data": "CodInventario" },
                     { "data": "Usuario" },
                     { "data": "GuiaIngreso" },
@@ -323,7 +373,7 @@
                     $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbosede")
 
                     $.each(data.data, function (index, item) {
-                        $("<option>").attr({ "value": item.IdSede }).text(item.Sede).appendTo("#cbosede");
+                        $("<option>").attr({ "value": item.IdSede }).text(item.NomSede).appendTo("#cbosede");
                     })
 
                 },
@@ -389,7 +439,7 @@
                     $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cboalmacen")
 
                     $.each(data.data, function (index, item) {
-                        $("<option>").attr({ "value": item.IdAlmacen }).text(item.NomProveedor).appendTo("#cboalmacen");
+                        $("<option>").attr({ "value": item.IdAlmacen }).text(item.NomAlmacen).appendTo("#cboalmacen");
                     })
 
                 },
@@ -442,7 +492,7 @@
                     }
             });
 
-            jQuery.validator.addMethod("preciodecimal", function (value, element) {
+            $.validator.addMethod("preciodecimal", function (value, element) {
                 return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
             }, "El formato correcto del precio es ###.##");
 
@@ -541,12 +591,12 @@
             function () {
                 debugger;
                 var Equipo = {
-                    IdEquipo: data.IdEquipo // Obtener el IdEquipo del registro
+                    IdEquipos: data.IdEquipos // Obtener el IdEquipo del registro
             };
             jQuery.ajax({
                 url: '@Url.Action("EliminarEquipo", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Equipo.IdEquipo }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: Equipo.IdEquipos }), // Enviar solo el IdUsuario
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -571,7 +621,7 @@
 
         function abrirModal(json) {
             $("#txtid").val(0);
-            $("#img_producto").removeAttr("src");
+            $("#img_equipo").removeAttr("src");
             $("#fileEquipo").val("");
             $("#txtnombre").val("");
             $("#cbomarca").val($("#cbomarca option:first").val());
@@ -588,7 +638,7 @@
             $("#txtordeninterna").val("");
             $("#txtactivofijo").val("");
             $("#cboalmacen").val($("#cboalmacen option:first").val());
-            $("#codmaterialsap").val("");
+            $("#txtcodmaterialsap").val("");
             $("#cboprioridad").val($("#cboprioridad option:first").val());
             $("#cbosistema").val($("#cbosistema option:first").val());
             $("#txtdireccionmac").val("");
@@ -601,7 +651,7 @@
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#txtid").val(json.IdEquipo);
+                $("#txtid").val(json.IdEquipos);
                 $("#txtnombre").val(json.Nombre);
                 $("#cbomarca").val(json.oMarca.IdMarca);
                 $("#cbocategoria").val(json.oCategoria.IdCategoria);
@@ -617,8 +667,8 @@
                 $("#txtordeninterna").val(json.OrdenInterna);
                 $("#txtactivofijo").val(json.ActivoFijo);
                 $("#cboalmacen").val(json.oAlmacen.IdAlmacen);
-                $("#codmaterialsap").val(json.CodMaterialSAP);
-                $("#cboprioridad").val(json.oPrioridades.IdPrioridades);
+                $("#txtcodmaterialsap").val(json.CodMaterialSAP);
+                $("#cboprioridad").val(json.oPrioridad.IdPrioridades);
                 $("#cbosistema").val(json.oSistema.IdSistema);
                 $("#txtdireccionmac").val(json.DireccionMac);
                 $("#txtespecificacioneshardware").val(json.EspecificacionesHardware);
@@ -629,7 +679,7 @@
                 jQuery.ajax({
                     url: '@Url.Action("ImagenEquipo", "Home")',
                     type: "POST",
-                    data: JSON.stringify({ id: json.IdEquipo }),
+                    data: JSON.stringify({ id: json.IdEquipos }),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
@@ -674,7 +724,7 @@
             var ImagenSeleccionada = $("#fileEquipo")[0].files[0];
 
             var Equipo = {
-                IdEquipo: $("#txtid").val(),
+                IdEquipos: $("#txtid").val(),
                 Nombre: $("#txtnombre").val(),
                 oMarca: {
                     IdMarca: $("#cbomarca option:selected").val(),
@@ -688,10 +738,10 @@
                 Precio: $("#txtprecio").val(),
                 oSede: {
                     IdSede: $("#cbosede option:selected").val(),
-                    Sede: $("#cbosede option.selected").text()
+                    NomSede: $("#cbosede option.selected").text()
                 },
                 oModelo: {
-                    IdModelo: $("#cdomodelo option:selected").val(),
+                    IdModelo: $("#cbomodelo option:selected").val(),
                     NomModelo: $("#cbomodelo option:selected").text()
                 },
                 Serie: $("#txtserie").val(),
@@ -709,17 +759,18 @@
                     IdAlmacen: $("#cboalmacen option:selected").val(),
                     NomAlmacen: $("#cboalmacen option:selected").text()
                 },
-                CodMaterialSAP: $("txtcodmaterialsap").val(),
-                oPrioridades: {
+                CodMaterialSAP: $("#txtcodmaterialsap").val(),
+                oPrioridad: {
                     IdPrioridades: $("#cboprioridad option:selected").val(),
                     NomPrioridad: $("#cboprioridad option:selected").text()
                 },
                 oSistema: {
-                    IdSistema: $("#cbositema option:selected").val(),
-                    NombreSistema: $("#cbositema option:selected").text()
+                    IdSistema: $("#cbosistema option:selected").val(),
+                    NombreSistema: $("#cbosistema option:selected").text()
                 },
+                FechaGarantia: $("#txtfechagrantia").val(),
                 DireccionMac: $("#txtdireccionmac").val(),
-                EspecificacionesHardware: $("#txtfechagarantia").val(),
+                EspecificacionesHardware: $("#txtespecificacioneshardware").val(),
                 Onservacion: $("#txtobservacion").val(),
                 Activo: $("#cboactivo").val() == 1 ? true : false,
 
@@ -739,7 +790,7 @@
         success: function (data) {
 
             // Nueva Producto
-            if (Equipo.IdProducto == 0) {
+            if (Equipo.IdEquipo == 0) {
 
                 if (data.idGenerado !== 0) {
 
@@ -778,8 +829,5 @@
         }
     });
 }
-
-
-
     </script>
 }

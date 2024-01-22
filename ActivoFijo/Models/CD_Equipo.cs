@@ -41,7 +41,7 @@ namespace ActivoFijo.Models
                             oModelo = new Modelo() { IdModelo = Convert.ToInt32(dr["IdModelo"]), NomModelo = dr["Modeslo"].ToString() },
                             Serie = dr["Serie"].ToString(),
                             CodInventario = dr["CodInventario"].ToString(),
-                            Usuario = dr["Usuario"].ToString(),
+                            
                             GuiaIngreso = dr["GuiaIngreso"].ToString(),
                             oProveedor = new Proveedor() { IdProveedor = Convert.ToInt32(dr["IdProveedor"]), NomProveedor = dr["Proveedor"].ToString() },
                             OrdenCompra = dr["OrdenCompra"].ToString(),
@@ -54,7 +54,7 @@ namespace ActivoFijo.Models
                             DireccionMac = dr["DireccionMac"].ToString(),
                             EspecificacionesHardware = dr["EspecificacionesHardware"].ToString(),
                             FechaGarantia = dr["FechaGarantia"].ToString(),
-                            Onservacion = dr["Onservacion"].ToString(),
+                            Onservacion = dr["Observaciones"].ToString(),
                             RutaImagen = dr["RutaImagen"].ToString(),
                             NombreImagen = dr["NombreImagen"].ToString(),
                             Activo = Convert.ToBoolean(dr["Activo"])
@@ -81,7 +81,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_RegistrarEquipos", cn))
+                using (SqlCommand cmd = new SqlCommand("sp_RegistrarEquipo", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -105,7 +105,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
                     cmd.Parameters.AddWithValue("EspecificacionesHardware", obj.EspecificacionesHardware);
                     cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
-                    cmd.Parameters.AddWithValue("Onservacion", obj.Onservacion);
+                    cmd.Parameters.AddWithValue("Observacion", obj.Onservacion);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;

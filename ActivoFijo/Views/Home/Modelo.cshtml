@@ -1,16 +1,16 @@
 ﻿
 @{
-    ViewBag.Title = "Proveedor";
+    ViewBag.Title = "Modelo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <ol class="breadcrumb mb-4 mt-4">
     <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Mantenimiento</a></li>
-    <li class="breadcrumb-item active">Proveedores</li>
+    <li class="breadcrumb-item active">Modelo</li>
 </ol>
 
 <div class="card">
     <div class="card-header">
-        <i class="fas fa-users me-1"></i>Lista de Proveedores
+        <i class="fas fa-users me-1"></i>Lista de Modelos
     </div>
 
     <div class="card-body">
@@ -23,7 +23,7 @@
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
-                    <th>Proveedores</th>
+                    <th>Modelo</th>
                     <th>Activo</th>
                     <th></th>
                 </tr>
@@ -40,7 +40,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Proveedor</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Modelo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -51,8 +51,8 @@
                 <div class="row g-1">
 
                     <div class="col-sm-6">
-                        <label for="txtproveedor" class="form-label">Proveedor</label>
-                        <input type="email" class="form-control" id="txtproveedor" autocomplete="off" />
+                        <label for="txtmodelo" class="form-label">Modelo</label>
+                        <input type="email" class="form-control" id="txtmodelo" autocomplete="off" />
                     </div>
 
                     <div class="col-sm-6">
@@ -95,12 +95,12 @@
         responsive: true,
         ordering: false,
         "ajax": {
-            url: '@Url.Action("ListarProveedor", "Home")',
+            url: '@Url.Action("ListarModelo", "Home")',
             type: "GET",
             dataType: "json",
         },
         "columns": [
-            { "data": "NomProveedor" },
+            { "data": "NomModelo" },
             {
                 "data": "Activo", "render": function (valor) {
                     if (valor) {
@@ -130,12 +130,12 @@
     });
 
     $("#tabla tbody").on("click", '.btn-eliminar', function () {
-        var proveedorSeleccionada = $(this).closest("tr");
-        var data = tabladata.row(proveedorSeleccionada).data();
+        var modeloSeleccionada = $(this).closest("tr");
+        var data = tabladata.row(modeloSeleccionada).data();
 
         swal({
             title: "¿Está seguro?",
-            text: "¿Desea eliminar al Proveedor?",
+            text: "¿Desea eliminar la Prioridad?",
             type: "warning",
             showCancelButton: true,
             confirmButtonClass: "btn-primary",
@@ -145,19 +145,19 @@
         },
             function () {
                 debugger;
-                var Proveedor = {
-                    IdProveedor: data.IdProveedor // Obtener el IdUsuario del registro
+                var Modelo = {
+                    IdModelo: data.IdModelo // Obtener el IdUsuario del registro
                 };
 
             jQuery.ajax({
-                url: '@Url.Action("EliminarProveedor", "Home")',
+                url: '@Url.Action("EliminarModelo", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Proveedor.IdProveedor }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: Modelo.IdModelo }), // Enviar solo el IdUsuario
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.resultado) {
-                        tabladata.row(proveedorSeleccionada).remove().draw();
+                        tabladata.row(modeloSeleccionada).remove().draw();
                     } else {
                         swal("No se pudo eliminar", data.mensaje, "error");
                     }
@@ -177,15 +177,15 @@
 
         function abrirModal(json) {
             $("#txtid").val(0);
-            $("#txtproveedor").val("");
+            $("#txtmodelo").val("");
             $("#cboactivo").val(1);
 
             // Ocultar valores
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#txtid").val(json.IdProveedor);
-                $("#txtproveedor").val(json.NomProveedor);
+                $("#txtid").val(json.IdModelo);
+                $("#txtmodelo").val(json.NomModelo);
                 $("#cboactivo").val(json.Activo ? 1 : 0);
             }
 
@@ -201,28 +201,28 @@
 
         function Guardar() {
             debugger;
-        var Proveedor = {
-        IdProveedor: $("#txtid").val(),
-        NomProveedor: $("#txtproveedor").val(),
+        var Modelo = {
+        IdModelo: $("#txtid").val(),
+        NomModelo: $("#txtmodelo").val(),
         Activo: $("#cboactivo").val() == 1 ? true : false,
 
     };
 
     jQuery.ajax({
-        url: '@Url.Action("GuardarProveedor", "Home")',
+        url: '@Url.Action("GuardarModelo", "Home")',
         type: 'POST',
-        data: JSON.stringify({ objeto: Proveedor }),
+        data: JSON.stringify({ objeto: Modelo }),
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
 
             // Nueva Categoria
-            if (Proveedor.IdProveedor == 0) {
+            if (Modelo.IdModelo == 0) {
 
                 if (data.resultado !== 0) {
 
-                    Proveedor.IdProveedor = data.resultado;
-                    tabladata.row.add(Proveedor).draw(false);
+                    Modelo.IdModelo = data.resultado;
+                    tabladata.row.add(Modelo).draw(false);
                     $("#formModal").modal("hide");
 
                 } else {
@@ -231,7 +231,7 @@
                 }
             } else {
                 if (data.data) {
-                    tabladata.row(filaSeleccionada).data(Proveedor).draw(false);
+                    tabladata.row(filaSeleccionada).data(Modelo).draw(false);
                     $("#formModal").modal("hide");
                 } else {
                     $("#mensajeError").text(data.mensaje);
