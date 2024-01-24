@@ -31,6 +31,7 @@ namespace ActivoFijo.Models
         public string EspecificacionesHardware { get; set; }
         public string FechaGarantia { get; set; }
         public string Onservacion { get; set; }
+        public RazonSocial oRazonSocial { get; set; }
 
         
 

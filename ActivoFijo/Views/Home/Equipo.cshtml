@@ -32,7 +32,7 @@
                     <th>Modelo</th>
                     <th>Serie</th>
                     <th>Cod. Inventario</th>
-                    <th>Usuario</th>
+                    <th>Tecnico</th>
                     <th>Guira Ingreso</th>
                     <th>Proveedor</th>
                     <th>Orden Compra</th>
@@ -46,7 +46,7 @@
                     <th>Especicacion Hardware</th>
                     <th>Fecha Garantia</th>
                     <th>Observación</th>
-                    <th>Activo</th>
+                    <th>Estado</th>
                     <th></th>
                 </tr>
             </thead>
@@ -72,11 +72,10 @@
                 <form id="contenedor" class="row">
 
                     <div class="col-sm-3">
-                        <div class="mb-2">
-                            <img id="img_equipo" height="197" width="200" class="border rounded mx-auto db-block img-fluid" />
-                        </div>
-                        <div class="mb-2">
-                            <input class="form-control" type="file" id="fileEquipo" accept="image/png, image/jpg, image/jpeg" onchange="mostrarImagen(this)" />
+                        <div class="mb-3">
+                            <label class="form-label">Equipo</label>
+                            <select id="cbocategoria" class="form-select">
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Marca</label>
@@ -84,17 +83,32 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Categoria</label>
-                            <select id="cbocategoria" class="form-select">
+                            <label class="form-label">Modelo</label>
+                            <select id="cbomodelo" class="form-select">
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="txtnombre" name="nombre" />
+                            <label class="form-label">Serie</label>
+                            <input type="text" class="form-control" id="txtserie" name="serie" />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Precio</label>
-                            <input type="text" class="form-control" id="txtprecio" name="precio" />
+                            <label class="form-label">Descripción</label>
+                            <textarea type="text" class="form-control" id="txtnombre" name="observacion" style="height: 200px; resize: none"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Código de Inventario</label>
+                            <input type="text" class="form-control" id="txtcodinventario" name="codinventario" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Responsable</label>
+                            <input type="text" class="form-control" id="txtusuario" name="usuario" value="@HttpUtility.HtmlEncode(Session["displayName"])" />
+                        </div>                 
+                    </div>
+                    <!-- Nombre -->
+                    <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Guía de Ingreso</label>
+                            <input type="text" class="form-control" id="txtguiaingreso" name="guiaingreso" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Sede</label>
@@ -102,24 +116,41 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Modelo</label>
-                            <select id="cbomodelo" class="form-select">
-                            </select>
-                        </div>
-                    </div>
-                    <!-- Nombre -->
-                    <div class="col-sm-3">
-
-                        <div class="mb-3">
                             <label class="form-label">Proveedor</label>
                             <select id="cboproveedor" class="form-select">
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Almacen</label>
+                            <label class="form-label">Orden de Compra</label>
+                            <input type="text" class="form-control" id="txtordencompra" name="ordencompra" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Orden Interna</label>
+                            <input type="text" class="form-control" id="txtordeninterna" name="ordeninterna" />
+                        </div>
+                        <!--AFEC-->
+                        <div class="mb-3">
+                            <label class="form-label">Almacen de Ingreso</label>
                             <select id="cboalmacen" class="form-select">
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio</label>
+                            <input type="text" class="form-control" id="txtprecio" name="precio" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Código Sap</label>
+                            <input type="text" class="form-control" id="txtcodmaterialsap" name="codmaterialsap" />
+                        </div>
+                        <!--falta agregar el listado de esta tabla-->
+                        <div class="mb-3">
+                            <label class="form-label">Razón Social</label>
+                            <select id="cborazonsocial" class="form-select">
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Marca -->
+                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label class="form-label">Prioridad</label>
                             <select id="cboprioridad" class="form-select">
@@ -131,66 +162,37 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Serie</label>
-                            <input type="text" class="form-control" id="txtserie" name="serie" />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Código de Inventario</label>
-                            <input type="text" class="form-control" id="txtcodinventario" name="codinventario" />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tecnico</label>
-                            <input type="text" class="form-control" id="txtusuario" name="usuario" />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Guía de Ingreso</label>
-                            <input type="text" class="form-control" id="txtguiaingreso" name="guiaingreso" />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Orden de Compra</label>
-                            <input type="text" class="form-control" id="txtordencompra" name="ordencompra" />
-                        </div>
-                        
-                    </div>
-                    <!-- Marca -->
-                    <div class="col-sm-3">
-                        <div class="mb-3">
-                            <label class="form-label">Orden Interna</label>
-                            <input type="text" class="form-control" id="txtordeninterna" name="ordeninterna" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Código Sap</label>
-                            <input type="text" class="form-control" id="txtcodmaterialsap" name="codmaterialsap" />
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Dirección Mac</label>
                             <input type="text" class="form-control" id="txtdireccionmac" name="direccionmac" />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Especificaciones de Hardware</label>
-                            <input type="text" class="form-control" id="txtespecificacioneshardware" name="especificacioneshardware" />
+                            <label class="form-label">Fecha de Garantia</label>
+                            <input type="text" class="form-control" id="txtfechagrantia" name="fechagrantia" />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Fecha de Garantia</label>
-                            <input type="text" class="form-control" id="txtfechagrantia" name="especificacioneshardware" />
+                            <label class="form-label">Fecha de Actualizacion</label>
+                            <input type="text" class="form-control" id="txtfechaactualizacion" name="fechaactualizacion" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Activo Fijo</label>
                             <input type="text" class="form-control" id="txtactivofijo" name="activofijo" />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Observación</label>
+                            <label class="form-label">Observaciones</label>
                             <textarea type="text" class="form-control" id="txtobservacion" name="observacion" style="height: 200px; resize: none"></textarea>
                         </div>
                     </div>
 
                     <div class="col-sm-3">
                         <div class="mb-3">
-                            <label class="form-label">Activo</label>
+                            <label class="form-label">Stock</label>
+                            <input type="number" class="form-control" id="txtstock" name="stock" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estado</label>
                             <select id="cboactivo" class="form-select">
-                                <option value="1">Si</option>
-                                <option value="0">No</option>
+                                <option value="1">Activo</option>
+                                <option value="0">Desactivado</option>
                             </select>
                         </div>
                     </div>
@@ -221,16 +223,6 @@
 
         var tabladata;
         var filaSeleccionada;
-        function mostrarImagen(input) {
-            if (input.files) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $("#img_equipo").attr("src", e.target.result).width(200).height(197)
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
 
         $(document).ready(function () {
             tabladata = $("#tabla").DataTable({
@@ -242,21 +234,14 @@
                     dataType: "json",
                 },
                 "columns": [
-                    { "data": "Nombre" },
-                    {
-                        "data": "oMarca", "render": function (data) {
-                            return data.Descripcion
-                        }
-                    },
                     {
                         "data": "oCategoria", "render": function (data) {
                             return data.Descripcion
                         }
                     },
-                    { "data": "Precio" },
                     {
-                        "data": "oSede", "render": function (data) {
-                            return data.NomSede
+                        "data": "oMarca", "render": function (data) {
+                            return data.Descripcion
                         }
                     },
                     {
@@ -265,9 +250,15 @@
                         }
                     },
                     { "data": "Serie" },
+                    { "data": "Nombre" },
                     { "data": "CodInventario" },
                     { "data": "Usuario" },
                     { "data": "GuiaIngreso" },
+                    {
+                        "data": "oSede", "render": function (data) {
+                            return data.NomSede
+                        }
+                    },
                     {
                         "data": "oProveedor", "render": function (data) {
                             return data.NomProveedor
@@ -275,13 +266,18 @@
                     },
                     { "data": "OrdenCompra" },
                     { "data": "OrdenInterna" },
-                    { "data": "ActivoFijo" },
                     {
                         "data": "oAlmacen", "render": function (data) {
                             return data.NomAlmacen
                         }
                     },
+                    { "data": "Precio" },
                     { "data": "CodMaterialSAP" },
+                    {
+                        "data": "oRazonSocial", "render": function (data) {
+                            return data.NomRazonSocial
+                        }
+                    },
                     {
                         "data": "oPrioridad", "render": function (data) {
                             return data.NomPrioridad
@@ -293,15 +289,16 @@
                         }
                     },
                     { "data": "DireccionMac" },
-                    { "data": "EspecificacionesHardware" },
                     { "data": "FechaGarantia" },
+                    { "data": "FechaActualizacion" },
+                    { "data": "ActivoFijo" },
                     { "data": "Onservacion" },
                     {
                         "data": "Activo", "render": function (valor) {
                             if (valor) {
-                                return '<span class="badge bg-success">SI</span>';
+                                return '<span class="badge bg-success">Activo</span>';
                             } else {
-                                return '<span class="badge bg-danger">NO</span>';
+                                return '<span class="badge bg-danger">Desactivado</span>';
                             }
                         }
                     },
@@ -426,6 +423,28 @@
                     }
             });
 
+            //Listar Razon social
+            jQuery.ajax({
+                url: '@Url.Action("ListarRazonSocial", "Home")',
+                type: "GET",
+                data: null,
+                dataType: "json",
+                contentType: "application/json; charset=uft-8",
+                success: function (data) {
+                    console.log(data)
+            
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cborazonsocial")
+            
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IdRazonSocial }).text(item.NomRazonSocial).appendTo("#cborazonsocial");
+                    })
+            
+                },
+                    error: function (error) {
+                    console.log(error)
+                    }
+            });
+
             //Listar Almacen
             jQuery.ajax({
                 url: '@Url.Action("ListarAlmacen", "Home")',
@@ -479,13 +498,13 @@
                 contentType: "application/json; charset=uft-8",
                 success: function (data) {
                     console.log(data)
-            
+
                     $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbosistema")
-            
+
                     $.each(data.data, function (index, item) {
                         $("<option>").attr({ "value": item.IdSistema }).text(item.NombreSistema).appendTo("#cbosistema");
                     })
-            
+
                 },
                     error: function (error) {
                     console.log(error)
@@ -567,11 +586,11 @@
 
 
 
-    $("#tabla tbody").on("click", '.btn-editar', function () {
-        var filaSeleccionada = $(this).closest("tr");
-        var data = tabladata.row(filaSeleccionada).data();
-        abrirModal(data);
-    });
+            $("#tabla tbody").on("click", '.btn-editar', function () {
+                var rowIndex = tabladata.row($(this).closest('tr')).index();
+                var rowData = tabladata.row(rowIndex).data();
+                abrirModal(rowData);
+            });
 
     $("#tabla tbody").on("click", '.btn-eliminar', function () {
         var equipoSeleccionado = $(this).closest("tr");
@@ -621,8 +640,6 @@
 
         function abrirModal(json) {
             $("#txtid").val(0);
-            $("#img_equipo").removeAttr("src");
-            $("#fileEquipo").val("");
             $("#txtnombre").val("");
             $("#cbomarca").val($("#cbomarca option:first").val());
             $("#cbocategoria").val($("#cbocategoria option:first").val());
@@ -676,33 +693,6 @@
                 $("#txtobservacion").val(json.Onservacion);
                 $("#cboactivo").val(json.Activo == true ? 1 : 0);
 
-                jQuery.ajax({
-                    url: '@Url.Action("ImagenEquipo", "Home")',
-                    type: "POST",
-                    data: JSON.stringify({ id: json.IdEquipos }),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-
-                        $("#img_equipo").LoadingOverlay("hide");
-
-                        if (data.conversion) {
-                            $("#img_equipo").attr({ "src": "data:image/" + data.extension + ";base64," + data.textobase64 });
-                        }
-                    },
-                    error: function (error) {
-                        $("#img_equipo").LoadingOverlay("hide");
-
-                        $("#mensajeError").show();
-                        $("#mensajeError").text("Error al mostrar imagen");
-                    },
-                    beforeSend: function () {
-                        $("#img_equipo").LoadingOverlay("show");
-
-                    }
-                })
-
-
             }
 
             $("#formModal").modal("show");
@@ -720,8 +710,6 @@
             if (!$("#contenedor").valid()) {
                 return;
             }
-
-            var ImagenSeleccionada = $("#fileEquipo")[0].files[0];
 
             var Equipo = {
                 IdEquipos: $("#txtid").val(),

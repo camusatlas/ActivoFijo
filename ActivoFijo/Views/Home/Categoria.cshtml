@@ -48,23 +48,33 @@
 
                 <input id="txtid" type="text" value="0" style="display: none;" />
 
+                <form id="contenedor" class="row">
 
-                <div class="row g-1">
+                    <div class="row g-1">
+                        <div class="mb-2">
+                            <img id="img_categoria" height="197" width="200" class="border rounded mx-auto db-block img-fluid" />
+                        </div>
 
-                    <div class="col-sm-6">
-                        <label for="txtdescripccion" class="form-label">Descripcción</label>
-                        <input type="email" class="form-control" id="txtdescripccion" autocomplete="off" />
+                        <div class="mb-2">
+                            <input class="form-control" type="file" id="fileCategoria" accept="image/png, image/jpg, image/jpeg" onchange="mostrarImagen(this)" />
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="txtdescripccion" class="form-label">Descripcción</label>
+                            <input type="text" class="form-control" id="txtdescripccion" autocomplete="off" />
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="cboactivo" class="form-label">Activo</label>
+                            <select id="cboactivo" class="form-select">
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+
                     </div>
 
-                    <div class="col-sm-6">
-                        <label for="cboactivo" class="form-label">Activo</label>
-                        <select id="cboactivo" class="form-select">
-                            <option value="1">Si</option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>
-
-                </div>
+                </form>
                 <!-- Mesnaje de alerta -->
                 <div class="row mt-2">
                     <div class="col-12">
@@ -90,6 +100,17 @@
 
         var tabladata;
         var filaSeleccionada;
+
+        function mostrarImagen(input) {
+            if (input.files) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $("#img_categoria").attr("src", e.target.result).width(200).height(197)
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         $(document).ready(function () {
     tabladata = $("#tabla").DataTable({
@@ -123,6 +144,25 @@
             "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
         }
     });
+
+            $.validator.addMethod("preciodecimal", function (value, element) {
+                return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
+            }, "El formato correcto del precio es ###.##");
+
+            $("#contenedor").validate({
+                rules: {
+                    Descripcion: {
+                        required: true
+                    },
+                },
+                messages: {
+                    Descripcion: "- El campo Nombre es obligatorio",
+                },
+                errorElement: "div",
+                errorLabelContainer: ".alert-danger"
+            })
+
+
 
     $("#tabla tbody").on("click", '.btn-editar', function () {
         var filaSeleccionada = $(this).closest("tr");
@@ -176,8 +216,11 @@
 
         function abrirModal(json) {
             $("#txtid").val(0);
+            $("#img_categoria").removeAttr("src");
+            $("#fileCategoria").val("");
             $("#txtdescripccion").val("");
             $("#cboactivo").val(1);
+
 
             // Ocultar valores
             $("#mensajeError").hide();
@@ -186,6 +229,32 @@
                 $("#txtid").val(json.IdCategoria);
                 $("#txtdescripccion").val(json.Descripcion);
                 $("#cboactivo").val(json.Activo ? 1 : 0);
+
+                jQuery.ajax({
+                    url: '@Url.Action("ImagenCategoria", "Home")',
+                    type: "POST",
+                    data: JSON.stringify({ id: json.IdCategoria }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                
+                        $("#img_categoria").LoadingOverlay("hide");
+                
+                        if (data.conversion) {
+                            $("#img_categoria").attr({ "src": "data:image/" + data.extension + ";base64," + data.textobase64 });
+                        }
+                    },
+                    error: function (error) {
+                        $("#img_categoria").LoadingOverlay("hide");
+                
+                        $("#mensajeError").show();
+                        $("#mensajeError").text("Error al mostrar imagen");
+                    },
+                    beforeSend: function () {
+                        $("#img_categoria").LoadingOverlay("show");
+                
+                    }
+                })
             }
 
             $("#formModal").modal("show");
@@ -200,19 +269,27 @@
 
         function Guardar() {
             debugger;
-    var Categoria = {
-        IdCategoria: $("#txtid").val(),
-        Descripcion: $("#txtdescripccion").val(),
-        Activo: $("#cboactivo").val() == 1 ? true : false,
+            if (!$("#contenedor").valid()) {
+                return;
+            }
+            var ImagenSeleccionada = $("#fileCategoria")[0].files[0];
 
-    };
+        var Categoria = {
+            IdCategoria: $("#txtid").val(),
+            Descripcion: $("#txtdescripccion").val(),
+            Activo: $("#cboactivo").val() == 1 ? true : false,
+
+            };
+            var request = new FormData();
+            request.append("objeto", JSON.stringify(Categoria))
+            request.append("archivoImagen", ImagenSeleccionada)
 
     jQuery.ajax({
         url: '@Url.Action("GuardarCategoria", "Home")',
         type: 'POST',
-        data: JSON.stringify({ objeto: Categoria }),
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
+        data: request,
+        processData: false,
+        contentType: false,
         success: function (data) {
 
             // Nueva Categoria

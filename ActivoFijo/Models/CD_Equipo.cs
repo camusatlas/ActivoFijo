@@ -41,7 +41,8 @@ namespace ActivoFijo.Models
                             oModelo = new Modelo() { IdModelo = Convert.ToInt32(dr["IdModelo"]), NomModelo = dr["Modeslo"].ToString() },
                             Serie = dr["Serie"].ToString(),
                             CodInventario = dr["CodInventario"].ToString(),
-                            
+                            oRazonSocial = new RazonSocial() { IdRazonSocial = Convert.ToInt32(dr["IdRazonSocial"]), NomRazonSocial = dr["NomRazonSocial"].ToString() },
+                            Usuario = dr["Usuario"].ToString(),
                             GuiaIngreso = dr["GuiaIngreso"].ToString(),
                             oProveedor = new Proveedor() { IdProveedor = Convert.ToInt32(dr["IdProveedor"]), NomProveedor = dr["Proveedor"].ToString() },
                             OrdenCompra = dr["OrdenCompra"].ToString(),
@@ -93,6 +94,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("IdModelo", obj.oModelo.IdModelo);
                     cmd.Parameters.AddWithValue("Serie", obj.Serie);
                     cmd.Parameters.AddWithValue("CodInventario", obj.CodInventario);
+                    cmd.Parameters.AddWithValue("Usuario", obj.Usuario);
+                    cmd.Parameters.AddWithValue("NomRazonSocial", obj.oRazonSocial.IdRazonSocial);
                     cmd.Parameters.AddWithValue("GuiaIngreso", obj.GuiaIngreso);
                     cmd.Parameters.AddWithValue("IdProveedor", obj.oProveedor.IdProveedor);
                     cmd.Parameters.AddWithValue("OrdenCompra", obj.OrdenCompra);
@@ -146,6 +149,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("IdModelo", obj.oModelo.IdModelo);
                     cmd.Parameters.AddWithValue("Serie", obj.Serie);
                     cmd.Parameters.AddWithValue("CodInventario", obj.CodInventario);
+                    cmd.Parameters.AddWithValue("Usuario", obj.Usuario);
+                    cmd.Parameters.AddWithValue("NomRazonSocial", obj.oRazonSocial.IdRazonSocial);
                     cmd.Parameters.AddWithValue("GuiaIngreso", obj.GuiaIngreso);
                     cmd.Parameters.AddWithValue("IdProveedor", obj.oProveedor.IdProveedor);
                     cmd.Parameters.AddWithValue("OrdenCompra", obj.OrdenCompra);
@@ -179,42 +184,7 @@ namespace ActivoFijo.Models
             }
             return resultado;
         }
-        /*------------------------------------------------------------------------------------------------------------------------*/
-        // Guardar Datos de Imagen
-        public bool GuardarDatosImagen(Equipo obj, out string Mensaje)
-        {
-            bool resultado = false;
-            Mensaje = string.Empty;
-            try
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_GuardarDatosImagen", cn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("RutaImagen", obj.RutaImagen);
-                    cmd.Parameters.AddWithValue("NombreImagen", obj.NombreImagen);
-                    cmd.Parameters.AddWithValue("IdEquipos", obj.IdEquipos);
-
-                    cn.Open();
-                    if (cmd.ExecuteNonQuery() > 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        Mensaje = "No se pudo Actualizar";
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                resultado = false;
-                Mensaje = ex.Message;
-            }
-            return resultado;
-        }
-        /*------------------------------------------------------------------------------------------------------------------------*/
+        
         // Eliminar Equipo
         public bool Eliminar(int id, out string Mensaje)
         {

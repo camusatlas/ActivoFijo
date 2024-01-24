@@ -47,7 +47,31 @@ namespace ActivoFijo.Controllers
             return null;
         }
 
+        /*---------------------------------------------------*/
+        public ActionResult ObtenerInformacionUsuario()
+        {
+            // Verificar si el usuario está autenticado
+            if (User.Identity.IsAuthenticated)
+            {
+                // Obtener el nombre de usuario del claim del identificador del usuario
+                string nombreUsuario = User.Identity.Name;
 
+                // Obtener el displayName utilizando el método ya existente
+                string displayName = ObtenerDisplayName("FRANQUICIASPERU.COM", nombreUsuario, "", "LDAP://192.168.0.6/DC=FRANQUICIASPERU,DC=COM");
+
+                // Puedes obtener más información según tus necesidades, por ejemplo, desde la base de datos
+                // Aquí estoy usando un objeto ViewBag para pasar la información a la vista
+                ViewBag.NombreUsuario = nombreUsuario;
+                ViewBag.DisplayName = displayName;
+
+                return View();
+            }
+            else
+            {
+                // El usuario no está autenticado, redirigir o manejar según sea necesario
+                return RedirectToAction("Login");
+            }
+        }
 
 
 

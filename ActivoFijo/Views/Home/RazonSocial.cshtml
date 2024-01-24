@@ -1,17 +1,22 @@
 ﻿
 @{
+    ViewBag.Title = "RazonSocial";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
     ViewBag.Title = "Marca";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <ol class="breadcrumb mb-4 mt-4">
     <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Mantenimiento</a></li>
-    <li class="breadcrumb-item active">Marca</li>
+    <li class="breadcrumb-item active">Razón Social</li>
 </ol>
 
 <div class="card">
     <div class="card-header">
-        <i class="fas fa-users me-1"></i>Lista de Marca
+        <i class="fas fa-users me-1"></i>Lista de Razón social
     </div>
 
     <div class="card-body">
@@ -41,7 +46,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Marca</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Razón Social</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -96,12 +101,12 @@
         responsive: true,
         ordering: false,
         "ajax": {
-            url: '@Url.Action("ListarMarca", "Home")',
+            url: '@Url.Action("ListarRazonSocial", "Home")',
             type: "GET",
             dataType: "json",
         },
         "columns": [
-            { "data": "Descripcion" },
+            { "data": "NomRazonSocial" },
             {
                 "data": "Activo", "render": function (valor) {
                     if (valor) {
@@ -131,8 +136,8 @@
     });
 
     $("#tabla tbody").on("click", '.btn-eliminar', function () {
-        var marcaSeleccionada = $(this).closest("tr");
-        var data = tabladata.row(marcaSeleccionada).data();
+        var razonsocialSeleccionada = $(this).closest("tr");
+        var data = tabladata.row(razonsocialSeleccionada).data();
 
         swal({
             title: "¿Está seguro?",
@@ -145,18 +150,18 @@
             closeOnConfirm: true
         },
             function () {
-                var Marca = {
-                    IdMarca: data.IdMarca // Obtener el IdUsuario del registro
+                var RazonSocial = {
+                    IdRazonSocial: data.IdRazonSocial // Obtener el IdUsuario del registro
             };
             jQuery.ajax({
-                url: '@Url.Action("EliminarMarca", "Home")',
+                url: '@Url.Action("EliminarRazonSocial", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Marca.IdMarca }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: RazonSocial.IdRazonSocial }), // Enviar solo el IdUsuario
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.resultado) {
-                        tabladata.row(marcaSeleccionada).remove().draw();
+                        tabladata.row(razonsocialSeleccionada).remove().draw();
                     } else {
                         swal("No se pudo eliminar", data.mensaje, "error");
                     }
@@ -183,8 +188,8 @@
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#txtid").val(json.IdMarca);
-                $("#txtdescripccion").val(json.Descripcion);
+                $("#txtid").val(json.IdRazonSocial);
+                $("#txtdescripccion").val(json.NomRazonSocial);
                 $("#cboactivo").val(json.Activo ? 1 : 0);
             }
 
@@ -200,28 +205,28 @@
 
         function Guardar() {
             debugger;
-    var Marca = {
-        IdMarca: $("#txtid").val(),
-        Descripcion: $("#txtdescripccion").val(),
+        var RazonSocial = {
+        IdRazonSocial: $("#txtid").val(),
+        NomRazonSocial: $("#txtdescripccion").val(),
         Activo: $("#cboactivo").val() == 1 ? true : false,
 
     };
 
     jQuery.ajax({
-        url: '@Url.Action("GuardarMarca", "Home")',
+        url: '@Url.Action("GuardarRazonSocial", "Home")',
         type: 'POST',
-        data: JSON.stringify({ objeto: Marca }),
+        data: JSON.stringify({ objeto: RazonSocial }),
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
 
             // Nueva Categoria
-            if (Marca.IdMarca == 0) {
+            if (RazonSocial.IdRazonSocial == 0) {
 
                 if (data.resultado !== 0) {
 
-                    Marca.IdMarca = data.resultado;
-                    tabladata.row.add(Marca).draw(false);
+                    RazonSocial.IdRazonSocial = data.resultado;
+                    tabladata.row.add(RazonSocial).draw(false);
                     $("#formModal").modal("hide");
 
                 } else {
@@ -230,7 +235,7 @@
                 }
             } else {
                 if (data.data) {
-                    tabladata.row(filaSeleccionada).data(Categoria).draw(false);
+                    tabladata.row(filaSeleccionada).data(RazonSocial).draw(false);
                     $("#formModal").modal("hide");
                 } else {
                     $("#mensajeError").text(data.mensaje);

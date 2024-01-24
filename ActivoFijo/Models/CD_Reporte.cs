@@ -71,9 +71,9 @@ namespace ActivoFijo.Models
                     {
                         objeto = new DashBoard()
                         {
-                            TotalCliente = Convert.ToInt32(dr["TotalCliente"]),
-                            TotalVenta = Convert.ToInt32(dr["TotalVenta"]),
-                            TotalEquipo = Convert.ToInt32(dr["TotalProducto"]),
+                            TotalCliente = Convert.ToInt32(dr["TotalTecnicos"]),
+                            TotalVenta = Convert.ToInt32(dr["TotalSalida"]),
+                            TotalEquipo = Convert.ToInt32(dr["TotalEquipos"]),
                         };
                     }
                 }

@@ -236,19 +236,83 @@ namespace ActivoFijo.Controllers
 
         // Registrar y Editar Categoria
         [HttpPost]
-        public JsonResult GuardarCategoria(Categoria objeto)
+        public JsonResult GuardarCategoria(string objeto, HttpPostedFileBase archivoImagen)
         {
-            object resultado;
             string mensaje = string.Empty;
-            if (objeto.IdCategoria == 0)
+
+            bool operacion_exitosa = true;
+            bool guardar_imagen_exito = true;
+
+            Categoria oCategoria = new Categoria();
+            oCategoria = JsonConvert.DeserializeObject<Categoria>(objeto);
+
+            if (oCategoria.IdCategoria == 0)
             {
-                resultado = new CN_Categoria().Registrar(objeto, out mensaje);
+                int idEquipoGenerado = new CN_Categoria().Registrar(oCategoria, out mensaje);
+
+                if (idEquipoGenerado != 0)
+                {
+                    oCategoria.IdCategoria = idEquipoGenerado;
+                }
+                else
+                {
+                    operacion_exitosa = false;
+                }
             }
             else
             {
-                resultado = new CN_Categoria().Editar(objeto, out mensaje);
+                operacion_exitosa = new CN_Categoria().Editar(oCategoria, out mensaje);
             }
-            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            if (operacion_exitosa)
+            {
+                if (archivoImagen != null)
+                {
+                    string ruta_guardar = ConfigurationManager.AppSettings["ServidorFotos"];
+                    string extension = Path.GetExtension(archivoImagen.FileName);
+                    string nombre_imagen = string.Concat(oCategoria.IdCategoria.ToString(), extension);
+
+                    try
+                    {
+                        archivoImagen.SaveAs(Path.Combine(ruta_guardar, nombre_imagen));
+                    }
+                    catch (Exception ex)
+                    {
+                        string msg = ex.Message;
+                        guardar_imagen_exito = false;
+                    }
+
+                    if (guardar_imagen_exito)
+                    {
+                        oCategoria.RutaImagen = ruta_guardar;
+                        oCategoria.NombreImagen = nombre_imagen;
+                        bool rsp = new CN_Categoria().GuardarDatosImagen(oCategoria, out mensaje);
+                    }
+                    else
+                    {
+                        mensaje = "Se guardo el equipo pero hubo problemas con la imagen";
+                    }
+
+                }
+            }
+            return Json(new { operacionExitosa = operacion_exitosa, idGenerado = oCategoria.IdCategoria, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        [HttpPost]
+        public JsonResult ImagenCategoria(int id)
+        {
+            bool conversion;
+            Categoria ocategoria = new CN_Categoria().Listar().Where(p => p.IdCategoria == id).FirstOrDefault();
+            string textoBase64 = CN_Recursos.ConvertirBase64(Path.Combine(ocategoria.RutaImagen, ocategoria.NombreImagen), out conversion);
+            return Json(new
+            {
+                conversion = conversion,
+                textobase64 = textoBase64,
+                extension = Path.GetExtension(ocategoria.NombreImagen)
+            },
+            JsonRequestBehavior.AllowGet);
+
         }
 
         // Eliminar Usuario
@@ -608,7 +672,6 @@ namespace ActivoFijo.Controllers
             string mensaje = string.Empty;
 
             bool operacion_exitosa = true;
-            bool guardar_imagen_exito = true;
 
             Equipo oEquipo = new Equipo();
             oEquipo = JsonConvert.DeserializeObject<Equipo>(objeto);
@@ -641,56 +704,12 @@ namespace ActivoFijo.Controllers
             {
                 operacion_exitosa = new CN_Equipo().Editar(oEquipo, out mensaje);
             }
-            if (operacion_exitosa)
-            {
-                if (archivoImagen != null)
-                {
-                    string ruta_guardar = ConfigurationManager.AppSettings["ServidorFotos"];
-                    string extension = Path.GetExtension(archivoImagen.FileName);
-                    string nombre_imagen = string.Concat(oEquipo.IdEquipos.ToString(), extension);
-
-                    try
-                    {
-                        archivoImagen.SaveAs(Path.Combine(ruta_guardar, nombre_imagen));
-                    }
-                    catch (Exception ex)
-                    {
-                        string msg = ex.Message;
-                        guardar_imagen_exito = false;
-                    }
-
-                    if (guardar_imagen_exito)
-                    {
-                        oEquipo.RutaImagen = ruta_guardar;
-                        oEquipo.NombreImagen = nombre_imagen;
-                        bool rsp = new CN_Equipo().GuardarDatosImagen(oEquipo, out mensaje);
-                    }
-                    else
-                    {
-                        mensaje = "Se guardo el equipo pero hubo problemas con la imagen";
-                    }
-
-                }
-            }
+            
             return Json(new { operacionExitosa = operacion_exitosa, idGenerado = oEquipo.IdEquipos, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
 
-        [HttpPost]
-        public JsonResult ImagenEquipo(int id)
-        {
-            bool conversion;
-            Equipo oproducto = new CN_Equipo().Listar().Where(p => p.IdEquipos == id).FirstOrDefault();
-            string textoBase64 = CN_Recursos.ConvertirBase64(Path.Combine(oproducto.RutaImagen, oproducto.NombreImagen), out conversion);
-            return Json(new
-            {
-                conversion = conversion,
-                textobase64 = textoBase64,
-                extension = Path.GetExtension(oproducto.NombreImagen)
-            },
-            JsonRequestBehavior.AllowGet);
 
-        }
 
         // Eliminar Equipo
         [HttpPost]
