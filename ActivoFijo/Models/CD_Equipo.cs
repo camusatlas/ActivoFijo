@@ -54,9 +54,8 @@ namespace ActivoFijo.Models
                             oPrioridad = new Prioridad() { IdPrioridades = Convert.ToInt32(dr["IdPrioridades"]), NomPrioridad = dr["Nivel-Prioridad"].ToString() },
                             oSistema = new SistemaOperativo() { IdSistema = Convert.ToInt32(dr["IdSistema"]), NombreSistema = dr["SistemaOperativo"].ToString() },
                             DireccionMac = dr["DireccionMac"].ToString(),
-                            EspecificacionesHardware = dr["EspecificacionesHardware"].ToString(),
-                            FechaGarantia = dr["FechaGarantia"].ToString(),
-                            FechaActualizacion = dr["FechaActualizacion"].ToString(),
+                            FechaActualizacion = Convert.ToDateTime(dr["FechaActualizacion"]),
+                            FechaGarantia = Convert.ToDateTime(dr["FechaGarantia"]),
                             Onservacion = dr["Observaciones"].ToString(),
                             Activo = Convert.ToBoolean(dr["Activo"])
                         };
@@ -95,7 +94,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("Serie", obj.Serie);
                     cmd.Parameters.AddWithValue("CodInventario", obj.CodInventario);
                     cmd.Parameters.AddWithValue("Usuario", obj.Usuario);
-                    cmd.Parameters.AddWithValue("NomRazonSocial", obj.oRazonSocial.IdRazonSocial);
+                    cmd.Parameters.AddWithValue("IdRazonSocial", obj.oRazonSocial.IdRazonSocial);
                     cmd.Parameters.AddWithValue("GuiaIngreso", obj.GuiaIngreso);
                     cmd.Parameters.AddWithValue("IdProveedor", obj.oProveedor.IdProveedor);
                     cmd.Parameters.AddWithValue("OrdenCompra", obj.OrdenCompra);
@@ -107,7 +106,6 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
                     cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
-                    cmd.Parameters.AddWithValue("EspecificacionesHardware", obj.EspecificacionesHardware);
                     cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
                     cmd.Parameters.AddWithValue("FechaActualizacion", obj.FechaActualizacion);
                     cmd.Parameters.AddWithValue("Observacion", obj.Onservacion);
@@ -164,7 +162,6 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
                     cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
-                    cmd.Parameters.AddWithValue("EspecificacionesHardware", obj.EspecificacionesHardware);
                     cmd.Parameters.AddWithValue("FechaActualizacion", obj.FechaActualizacion);
                     cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
                     cmd.Parameters.AddWithValue("Onservacion", obj.Onservacion);

@@ -667,47 +667,24 @@ namespace ActivoFijo.Controllers
 
         // Guardar Equipo Registrar y Actualizar Equipos
         [HttpPost]
-        public JsonResult GuardarEquipo(string objeto, HttpPostedFileBase archivoImagen)
+        public JsonResult GuardarEquipo(Equipo objeto)
         {
+            object resultado;
             string mensaje = string.Empty;
 
-            bool operacion_exitosa = true;
+            objeto.FechaActualizacion = objeto.FechaActualizacion.Date;
 
-            Equipo oEquipo = new Equipo();
-            oEquipo = JsonConvert.DeserializeObject<Equipo>(objeto);
-
-            decimal precio;
-
-            if (decimal.TryParse(oEquipo.PrecioTexto, NumberStyles.AllowDecimalPoint, new CultureInfo("es-PE"), out precio))
+            if (objeto.IdEquipos == 0)
             {
-                oEquipo.Precio = precio;
+                resultado = new CN_Equipo().Registrar(objeto, out mensaje);
             }
             else
             {
-                return Json(new { operacionExitosa = false, mensaje = "El formato del precio debe ser ###.##" }, JsonRequestBehavior.AllowGet);
+                resultado = new CN_Equipo().Editar(objeto, out mensaje);
             }
-
-            if (oEquipo.IdEquipos == 0)
-            {
-                int idEquipoGenerado = new CN_Equipo().Registrar(oEquipo, out mensaje);
-
-                if (idEquipoGenerado != 0)
-                {
-                    oEquipo.IdEquipos = idEquipoGenerado;
-                }
-                else
-                {
-                    operacion_exitosa = false;
-                }
-            }
-            else
-            {
-                operacion_exitosa = new CN_Equipo().Editar(oEquipo, out mensaje);
-            }
-            
-            return Json(new { operacionExitosa = operacion_exitosa, idGenerado = oEquipo.IdEquipos, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
+
 
 
 

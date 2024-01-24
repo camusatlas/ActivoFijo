@@ -94,14 +94,6 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "Debe ingresar la mac del equipo";
             }
-            else if (string.IsNullOrEmpty(obj.EspecificacionesHardware) || string.IsNullOrWhiteSpace(obj.EspecificacionesHardware))
-            {
-                Mensaje = "Debe especificar el hardware";
-            }
-            else if (string.IsNullOrEmpty(obj.FechaGarantia) || string.IsNullOrWhiteSpace(obj.FechaGarantia))
-            {
-                Mensaje = "ingresar la fecha garantia";
-            }
             else if (string.IsNullOrEmpty(obj.Onservacion) || string.IsNullOrWhiteSpace(obj.Onservacion))
             {
                 Mensaje = "Ingresar la observacion";
@@ -195,14 +187,6 @@ namespace ActivoFijo.Models
             else if (string.IsNullOrEmpty(obj.DireccionMac) || string.IsNullOrWhiteSpace(obj.DireccionMac))
             {
                 Mensaje = "Debe ingresar la mac del equipo";
-            }
-            else if (string.IsNullOrEmpty(obj.EspecificacionesHardware) || string.IsNullOrWhiteSpace(obj.EspecificacionesHardware))
-            {
-                Mensaje = "Debe especificar el hardware";
-            }
-            else if (string.IsNullOrEmpty(obj.FechaGarantia) || string.IsNullOrWhiteSpace(obj.FechaGarantia))
-            {
-                Mensaje = "ingresar la fecha garantia";
             }
             else if (string.IsNullOrEmpty(obj.Onservacion) || string.IsNullOrWhiteSpace(obj.Onservacion))
             {

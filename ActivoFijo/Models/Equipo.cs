@@ -29,13 +29,13 @@ namespace ActivoFijo.Models
         public SistemaOperativo oSistema { get; set; }
         public string DireccionMac { get; set; }
         public string EspecificacionesHardware { get; set; }
-        public string FechaGarantia { get; set; }
+        public DateTime FechaGarantia { get; set; }
         public string Onservacion { get; set; }
         public RazonSocial oRazonSocial { get; set; }
         public int Stock { get; set; }
         
 
-        public string FechaActualizacion { get; set; }
+        public DateTime FechaActualizacion { get; set; }
         public bool Activo { get; set; }
 
         public string Base64 { get; set; }

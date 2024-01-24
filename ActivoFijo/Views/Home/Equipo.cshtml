@@ -24,27 +24,29 @@
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
-                    <th>Nombre</th>
                     <th>Marca</th>
                     <th>Categoria</th>
-                    <th>Precio</th>
-                    <th>Sede</th>
+                    <th>Nombre</th>
+                    <th>Stok</th>
                     <th>Modelo</th>
                     <th>Serie</th>
                     <th>Cod. Inventario</th>
-                    <th>Tecnico</th>
+                    <th>Encargado</th>
                     <th>Guira Ingreso</th>
+                    <th>Sede</th>
                     <th>Proveedor</th>
                     <th>Orden Compra</th>
                     <th>Orden Interna</th>
-                    <th>Activo Fijo</th>
                     <th>Almacen</th>
+                    <th>Precio</th>
                     <th>Codigo SAP</th>
+                    <th>Razón social</th>
                     <th>Prioridad</th>
                     <th>Sistema</th>
                     <th>Direccion Mac</th>
-                    <th>Especicacion Hardware</th>
                     <th>Fecha Garantia</th>
+                    <th>Fecha de Actualización</th>
+                    <th>Activo Fijo</th>
                     <th>Observación</th>
                     <th>Estado</th>
                     <th></th>
@@ -224,6 +226,8 @@
         var tabladata;
         var filaSeleccionada;
 
+
+
         $(document).ready(function () {
             tabladata = $("#tabla").DataTable({
                 responsive: true,
@@ -244,14 +248,14 @@
                             return data.Descripcion
                         }
                     },
+                    { "data": "Stock" },
+                    { "data": "Nombre" },
                     {
                         "data": "oModelo", "render": function (data) {
                             return data.NomModelo
                         }
                     },
                     { "data": "Serie" },
-                    { "data": "Nombre" },
-                    { "data": "Stock" },
                     { "data": "CodInventario" },
                     { "data": "Usuario" },
                     { "data": "GuiaIngreso" },
@@ -552,13 +556,16 @@
                     DireccionMac: {
                         required: true,
                     },
-                    EspecificacionesHardware: {
-                        required: true,
-                    },
                     FechaGarantia: {
                         required: true,
                     },
+                    FechaActualizacion: {
+                        required: true,
+                    },
                     Onservacion: {
+                        required: true,
+                    },
+                    Stock: {
                         required: true,
                     }
                 },
@@ -656,12 +663,14 @@
             $("#txtordeninterna").val("");
             $("#txtactivofijo").val("");
             $("#cboalmacen").val($("#cboalmacen option:first").val());
+            $("#cborazonsocial").val($("#cboalmacen option:first").val());
             $("#txtcodmaterialsap").val("");
             $("#cboprioridad").val($("#cboprioridad option:first").val());
             $("#cbosistema").val($("#cbosistema option:first").val());
             $("#txtdireccionmac").val("");
-            $("#txtespecificacioneshardware").val("");
-            $("#txtfechagrantia").val("");
+            $("#txtstock").val("");
+            $("#txtfechaactualizacion").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date());
+            $("#txtfechagrantia").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date());
             $("#txtobservacion").val("");
             $("#cboactivo").val(1);
 
@@ -684,13 +693,16 @@
                 $("#txtordencompra").val(json.OrdenCompra);
                 $("#txtordeninterna").val(json.OrdenInterna);
                 $("#txtactivofijo").val(json.ActivoFijo);
+                $("#cborazonsocial").val(json.oRazonSocial.IdRazonSocial);
                 $("#cboalmacen").val(json.oAlmacen.IdAlmacen);
                 $("#txtcodmaterialsap").val(json.CodMaterialSAP);
                 $("#cboprioridad").val(json.oPrioridad.IdPrioridades);
                 $("#cbosistema").val(json.oSistema.IdSistema);
                 $("#txtdireccionmac").val(json.DireccionMac);
+                $("#txtstock").val(json.Stock);
                 $("#txtespecificacioneshardware").val(json.EspecificacionesHardware);
                 $("#txtfechagrantia").val(json.FechaGarantia);
+                $("#txtfechaactualizacion").val(json.FechaActualizacion);
                 $("#txtobservacion").val(json.Onservacion);
                 $("#cboactivo").val(json.Activo == true ? 1 : 0);
 
@@ -733,6 +745,7 @@
                     IdModelo: $("#cbomodelo option:selected").val(),
                     NomModelo: $("#cbomodelo option:selected").text()
                 },
+                Stock: $("").val(),
                 Serie: $("#txtserie").val(),
                 CodInventario: $("#txtcodinventario").val(),
                 Usuario: $("#txtusuario").val(),
@@ -748,6 +761,11 @@
                     IdAlmacen: $("#cboalmacen option:selected").val(),
                     NomAlmacen: $("#cboalmacen option:selected").text()
                 },
+                oRazonSocial: {
+                    IdRazonSocial: $("#cborazonsocual").val(),
+                    NomRazonSocial: $("#cborazonsocual").text()
+                },
+                Stock: $("#txtstock").val(),
                 CodMaterialSAP: $("#txtcodmaterialsap").val(),
                 oPrioridad: {
                     IdPrioridades: $("#cboprioridad option:selected").val(),
@@ -758,24 +776,19 @@
                     NombreSistema: $("#cbosistema option:selected").text()
                 },
                 FechaGarantia: $("#txtfechagrantia").val(),
+                FechaActualizacion: $("txtfechaactualizacion").val(),
                 DireccionMac: $("#txtdireccionmac").val(),
-                EspecificacionesHardware: $("#txtespecificacioneshardware").val(),
                 Onservacion: $("#txtobservacion").val(),
                 Activo: $("#cboactivo").val() == 1 ? true : false,
 
             };
 
-            var request = new FormData();
-            request.append("objeto", JSON.stringify(Equipo))
-            request.append("archivoImagen", ImagenSeleccionada)
-
-
     jQuery.ajax({
         url: '@Url.Action("GuardarEquipo", "Home")',
         type: 'POST',
-        data: request,
-        processData: false,
-        contentType: false,
+        data: JSON.stringify({ objeto: Equipo }),
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
         success: function (data) {
 
             // Nueva Producto
