@@ -43,6 +43,7 @@ namespace ActivoFijo.Models
                             CodInventario = dr["CodInventario"].ToString(),
                             oRazonSocial = new RazonSocial() { IdRazonSocial = Convert.ToInt32(dr["IdRazonSocial"]), NomRazonSocial = dr["NomRazonSocial"].ToString() },
                             Usuario = dr["Usuario"].ToString(),
+                            Stock = Convert.ToInt32(dr["Cantidad"]),
                             GuiaIngreso = dr["GuiaIngreso"].ToString(),
                             oProveedor = new Proveedor() { IdProveedor = Convert.ToInt32(dr["IdProveedor"]), NomProveedor = dr["Proveedor"].ToString() },
                             OrdenCompra = dr["OrdenCompra"].ToString(),
@@ -55,9 +56,8 @@ namespace ActivoFijo.Models
                             DireccionMac = dr["DireccionMac"].ToString(),
                             EspecificacionesHardware = dr["EspecificacionesHardware"].ToString(),
                             FechaGarantia = dr["FechaGarantia"].ToString(),
+                            FechaActualizacion = dr["FechaActualizacion"].ToString(),
                             Onservacion = dr["Observaciones"].ToString(),
-                            RutaImagen = dr["RutaImagen"].ToString(),
-                            NombreImagen = dr["NombreImagen"].ToString(),
                             Activo = Convert.ToBoolean(dr["Activo"])
                         };
                         listado.Add(equipo);
@@ -103,11 +103,13 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("ActivoFijo", obj.ActivoFijo);
                     cmd.Parameters.AddWithValue("IdAlmacen", obj.oAlmacen.IdAlmacen);
                     cmd.Parameters.AddWithValue("CodMaterialSAP", obj.CodMaterialSAP);
+                    cmd.Parameters.AddWithValue("Cantidad", obj.Stock);
                     cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
                     cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
                     cmd.Parameters.AddWithValue("EspecificacionesHardware", obj.EspecificacionesHardware);
                     cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
+                    cmd.Parameters.AddWithValue("FechaActualizacion", obj.FechaActualizacion);
                     cmd.Parameters.AddWithValue("Observacion", obj.Onservacion);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -158,10 +160,12 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("ActivoFijo", obj.ActivoFijo);
                     cmd.Parameters.AddWithValue("IdAlmacen", obj.oAlmacen.IdAlmacen);
                     cmd.Parameters.AddWithValue("CodMaterialSAP", obj.CodMaterialSAP);
+                    cmd.Parameters.AddWithValue("Cantidad", obj.Stock);
                     cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
                     cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
                     cmd.Parameters.AddWithValue("EspecificacionesHardware", obj.EspecificacionesHardware);
+                    cmd.Parameters.AddWithValue("FechaActualizacion", obj.FechaActualizacion);
                     cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
                     cmd.Parameters.AddWithValue("Onservacion", obj.Onservacion);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
