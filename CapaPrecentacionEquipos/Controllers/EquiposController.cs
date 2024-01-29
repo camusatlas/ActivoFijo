@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ActivoFijo.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,9 +14,13 @@ namespace CapaPrecentacionEquipos.Controllers
         {
             return View();
         }
-        public ActionResult EquiposVista()
+        [HttpGet]
+        public JsonResult ListCategoria()
         {
-            return View();
+            List<Categoria> lista = new List<Categoria>();
+            lista = new CN_Categoria().Listar();
+
+            return Json(new { data = lista }, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -676,6 +676,7 @@
     <Content Include="Views\Home\Prioridad.cshtml" />
     <Content Include="Views\Home\Modelo.cshtml" />
     <Content Include="Views\Home\RazonSocial.cshtml" />
+    <Content Include="Views\Home\AsignacionEquipos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

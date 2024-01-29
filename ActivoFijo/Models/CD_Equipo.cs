@@ -150,7 +150,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("Serie", obj.Serie);
                     cmd.Parameters.AddWithValue("CodInventario", obj.CodInventario);
                     cmd.Parameters.AddWithValue("Usuario", obj.Usuario);
-                    cmd.Parameters.AddWithValue("NomRazonSocial", obj.oRazonSocial.IdRazonSocial);
+                    cmd.Parameters.AddWithValue("IdRazonSocial", obj.oRazonSocial.IdRazonSocial);
                     cmd.Parameters.AddWithValue("GuiaIngreso", obj.GuiaIngreso);
                     cmd.Parameters.AddWithValue("IdProveedor", obj.oProveedor.IdProveedor);
                     cmd.Parameters.AddWithValue("OrdenCompra", obj.OrdenCompra);
@@ -164,7 +164,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
                     cmd.Parameters.AddWithValue("FechaActualizacion", obj.FechaActualizacion);
                     cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
-                    cmd.Parameters.AddWithValue("Onservacion", obj.Onservacion);
+                    cmd.Parameters.AddWithValue("Observacion", obj.Onservacion);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;

@@ -672,8 +672,6 @@ namespace ActivoFijo.Controllers
             object resultado;
             string mensaje = string.Empty;
 
-            objeto.FechaActualizacion = objeto.FechaActualizacion.Date;
-
             if (objeto.IdEquipos == 0)
             {
                 resultado = new CN_Equipo().Registrar(objeto, out mensaje);
@@ -682,7 +680,7 @@ namespace ActivoFijo.Controllers
             {
                 resultado = new CN_Equipo().Editar(objeto, out mensaje);
             }
-            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.DenyGet);
         }
 
 
@@ -809,7 +807,7 @@ namespace ActivoFijo.Controllers
 
         #endregion
 
-        #region
+        #region Reportes
 
         // Lista de Resportes
         [HttpGet]
@@ -864,6 +862,15 @@ namespace ActivoFijo.Controllers
                 }
             }
 
+        }
+
+        #endregion
+
+        #region
+
+        public ActionResult AsignacionEquipos()
+        {
+            return View();
         }
 
         #endregion
