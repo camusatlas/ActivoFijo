@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace CapaPrecentacionEquipos.Controllers
 {
-    public class LoginController : Controller
+    public class AccesoController : Controller
     {
         public ActionResult Login()
         {
@@ -127,7 +127,7 @@ namespace CapaPrecentacionEquipos.Controllers
         public ActionResult CerrarSesion()
         {
             Session["usuario"] = null;
-            return RedirectToAction("Login", "Login");
+            return RedirectToAction("Login", "Acceso");
         }
     }
     public class VariableSessionAttribute : ActionFilterAttribute

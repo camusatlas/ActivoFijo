@@ -57,5 +57,10 @@ namespace ActivoFijo.Models
         {
             return objCapaDato.Eliminar(id, out Mensaje);
         }
+
+        public List<Marca> listarMarcaporCategoria(int idcategoria)
+        {
+            return objCapaDato.listarMarcaporCategoria(idcategoria);
+        }
     }
 }
