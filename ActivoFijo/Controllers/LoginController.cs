@@ -139,7 +139,7 @@ namespace ActivoFijo.Controllers
         {
             if (HttpContext.Current.Session["usuario"] == null)
             {
-                filterContext.Result = new RedirectResult("~/Login/Login");
+                filterContext.Result = new RedirectResult("~/Login/Acceso");
             }
 
             base.OnActionExecuted(filterContext);

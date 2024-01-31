@@ -33,7 +33,7 @@ namespace ActivoFijo.Models
         public string Onservacion { get; set; }
         public RazonSocial oRazonSocial { get; set; }
         public int Stock { get; set; }
-        
+
 
         public DateTime FechaActualizacion { get; set; }
         public bool Activo { get; set; }

@@ -65,7 +65,7 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">Fancy Product</h5>
                                     <!-- Product price-->
-                                    $40.00 - $80.00
+                                    S/40.00 - S/80.00
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -94,7 +94,7 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                     <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$20.00</span>
+                                    <span class="text-muted text-decoration-line-through">S/20.00</span>
                                     $18.00
                                 </div>
                             </div>
@@ -111,3 +111,157 @@
 
     </div>
 </section>
+
+@section scripts {
+
+    
+    
+
+    <script>
+
+        function ObtenerRutaCompletaImagen(ruta, nombreImagen) {
+            return ruta + '/' + nombreImagen;
+        }
+
+        $(document).ready(function () {
+            MostrarCategorias();
+            MostrarProducto(0,0);
+        })
+
+        // Mostrar Categoria
+        function MostrarCategorias() {
+            jQuery.ajax({
+                url: "@Url.Action("ListCategoria", "Equipos")",
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#contenedor_categoria").LoadingOverlay("hide");
+
+                    $("<div>").addClass("form-check").append(
+                        $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "categoria", "value": "0", "id": "cx", "checked": "checked" }),
+                        $("<label>").addClass("from-check-label").text("Todos").attr({ "for": "cx" })
+                    ).appendTo("#contenedor_categoria")
+
+                    $.each(response.data, function (i, element) {
+                        $("<div>").addClass("form-check").append(
+
+                            $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "categoria", "value": element.IdCategoria, "id": "c" + i }),
+                            $("<label>").addClass("from-check-label").text(element.Descripcion).attr({ "for": "c" + i })
+                        ).appendTo("#contenedor_categoria")
+                    })
+                    MostrarMarca();
+                },
+                beforeSend: function () {
+                    $("#contenedor_categoria").LoadingOverlay("show");
+                }
+            })
+        }
+
+        // Mostrar Marca
+
+        function MostrarMarca() {
+            var _idcategoria = $("input[name=categoria]:checked").val();
+
+
+            jQuery.ajax({
+                url: "@Url.Action("ListaMarcaporCategoria", "Equipos")",
+                type: "POST",
+                data: JSON.stringify({ idcategoria: _idcategoria }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#contenedor_marca").html("");
+                    $("#contenedor_marca").LoadingOverlay("hide");
+
+                    $("<div>").addClass("form-check").append(
+
+                        $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "marca", "value": "0", "id": "mx", "checked": "checked" }),
+                        $("<label>").addClass("from-check-label").text("Todos").attr({ "for": "mx" })
+                    ).appendTo("#contenedor_marca")
+
+                    $.each(response.data, function (i, element) {
+                        $("<div>").addClass("form-check").append(
+
+                            $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "marca", "value": element.IdMarca, "id": "m" + i }),
+                            $("<label>").addClass("from-check-label").text(element.Descripcion).attr({ "for": "m" + i })
+                        ).appendTo("#contenedor_marca")
+                    })
+                },
+                beforeSend: function () {
+                    $("#contenedor_marca").LoadingOverlay("show");
+                }
+            })
+        }
+
+        $(document).on("change", "input[name=categoria]", function () {
+            MostrarMarca();
+
+
+        })
+
+        function MostrarProducto(_idcategoria, _idmarca) {
+            debugger;
+            jQuery.ajax({
+                url: "@Url.Action("ListarEquipos", "Equipos")",
+                type: "POST",
+                data: JSON.stringify({ idcategoria: _idcategoria, idmarca: _idmarca }),
+                dataType: "json",  // Corregir el nombre del atributo dataType
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#contenedor_producto").html(""); // Limpia el contenedor antes de agregar nuevos elementos
+                    $("#contenedor_producto").LoadingOverlay("hide");
+
+                    $.each(response.data, function (i, element) {
+                        $("<div>").addClass("col mb-5").append(
+                            $("<div>").addClass("card h-100").append(
+                                // Mostrar la imagen de la categoría dentro del contenedor de la card
+                                $("<img>").addClass("card-img-top").attr({
+                                    "src": ObtenerRutaCompletaImagen(element.oCategoria.RutaImagen, element.oCategoria.NombreImagen),
+                                    "alt": element.oCategoria.Descripcion
+                                }),
+                                $("<div>").addClass("card-body p-4").append(
+                                    $("<div>").addClass("text-center").append(
+                                        $("<h5>").addClass("fw-bolder").text(element.Nombre),
+                                        "$ " + element.Precio.toFixed(2) + "USD"
+                                    )
+                                ),
+                                $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(
+                                    $("<div>").addClass("d-grid gap-2").append(
+                                        // Asegúrate de agregar un espacio entre los botones si hay un cliente en la sesión
+                                        @if (Session["usuario"] != null)
+                                        {
+                                            @:$("<button>").addClass("btn btn-success mt-auto agregarcarrito").data("idequipos", element.IdEquipos).text("Agregar al carrito"),
+                                        }
+                                        $("<a>").addClass("btn btn-dark mt-auto")
+                                            .attr({ "href": "@Url.Action("DetalleEquipos", "Equipos")" + "?idequipos=" + element.IdEquipos })
+                                            .text("Ver detalle")
+                                    )
+                                )
+                            )
+                        ).appendTo("#contenedor_producto"); // Añade al contenedor producto fuera del bucle
+                    });
+                },
+                beforeSend: function () {
+                    $("#contenedor_producto").LoadingOverlay("show");
+                },
+
+                error: function (xhr, status, error) {
+                    console.error("Error en la solicitud AJAX (MostrarProducto):", status, error);
+                }
+            });
+        }
+
+
+        $("#btnaplicarfiltro").click(function () {
+
+            var _idcategoria = $("input[name=categoria]:checked").val()
+            var _idmarca = $("input[name=marca]:checked").val()
+            MostrarProducto(_idcategoria, _idmarca)
+
+        })
+
+
+    </script>
+
+}
