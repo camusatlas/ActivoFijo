@@ -125,7 +125,7 @@
 
         $(document).ready(function () {
             MostrarCategorias();
-            MostrarProducto(0,0);
+            MostrarEquipo(0,0);
         })
 
         // Mostrar Categoria
@@ -200,54 +200,51 @@
 
         })
 
-        function MostrarProducto(_idcategoria, _idmarca) {
-            debugger;
+        function MostrarEquipo(_idcategoria, _idmarca) {
+
             jQuery.ajax({
-                url: "@Url.Action("ListarEquipos", "Equipos")",
+                url: "@Url.Action("ListarEquipo", "Equipos")",
                 type: "POST",
-                data: JSON.stringify({ idcategoria: _idcategoria, idmarca: _idmarca }),
-                dataType: "json",  // Corregir el nombre del atributo dataType
+                data: JSON.stringify({ idcategoria: _idcategoria, idmarca: _idmarca }), // Corrige el nombre del parámetro
+                dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (response) {
                     $("#contenedor_producto").html(""); // Limpia el contenedor antes de agregar nuevos elementos
                     $("#contenedor_producto").LoadingOverlay("hide");
-
+        
                     $.each(response.data, function (i, element) {
                         $("<div>").addClass("col mb-5").append(
                             $("<div>").addClass("card h-100").append(
-                                // Mostrar la imagen de la categoría dentro del contenedor de la card
-                                $("<img>").addClass("card-img-top").attr({
-                                    "src": ObtenerRutaCompletaImagen(element.oCategoria.RutaImagen, element.oCategoria.NombreImagen),
-                                    "alt": element.oCategoria.Descripcion
-                                }),
+                                $("<img>").addClass("card-img-top").attr({ "src": "data:image/" + element.Extension + ";base64," + element.Base64 }),
                                 $("<div>").addClass("card-body p-4").append(
                                     $("<div>").addClass("text-center").append(
                                         $("<h5>").addClass("fw-bolder").text(element.Nombre),
-                                        "$ " + element.Precio.toFixed(2) + "USD"
+                                        "S/ " + element.Precio.toFixed(2)
                                     )
                                 ),
                                 $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(
+        
+        
                                     $("<div>").addClass("d-grid gap-2").append(
-                                        // Asegúrate de agregar un espacio entre los botones si hay un cliente en la sesión
-                                        @if (Session["usuario"] != null)
-                                        {
-                                            @:$("<button>").addClass("btn btn-success mt-auto agregarcarrito").data("idequipos", element.IdEquipos).text("Agregar al carrito"),
-                                        }
-                                        $("<a>").addClass("btn btn-dark mt-auto")
-                                            .attr({ "href": "@Url.Action("DetalleEquipos", "Equipos")" + "?idequipos=" + element.IdEquipos })
-                                            .text("Ver detalle")
+                                        @if (Session["usuario"]!=null)
+                                         {
+                                             @:$("<button>").addClass("btn btn-success mt-auto agregarcarrito").data("idequipo", element.IdEquipos).text("Agregar al carrito"),
+                                         }
+        
+                                        $("<a>").addClass("btn btn-dark mt-auto btn-ver-detalle")
+                                           .attr({ "href": "@Url.Action("DetalleEquipo", "Tienda")" + "?idequipo=" + element.IdEquipos })
+                                           .text("Ver detalle")
                                     )
+        
+        
                                 )
+        
                             )
-                        ).appendTo("#contenedor_producto"); // Añade al contenedor producto fuera del bucle
+                        ).appendTo("#contenedor_producto")
                     });
                 },
                 beforeSend: function () {
                     $("#contenedor_producto").LoadingOverlay("show");
-                },
-
-                error: function (xhr, status, error) {
-                    console.error("Error en la solicitud AJAX (MostrarProducto):", status, error);
                 }
             });
         }

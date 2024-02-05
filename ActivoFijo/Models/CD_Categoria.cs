@@ -33,8 +33,6 @@ namespace ActivoFijo.Models
                         {
                             IdCategoria = Convert.ToInt32(dr["IdCategoria"]),
                             Descripcion = dr["Descripcion"].ToString(),
-                            RutaImagen = dr["RutaImagen"].ToString(),
-                            NombreImagen = dr["NombreImagen"].ToString(),
                             Activo = Convert.ToBoolean(dr["Activo"])
                         };
                         listado.Add(usuario);
@@ -118,39 +116,7 @@ namespace ActivoFijo.Models
         }
 
         /*----------------------------------------------------------------------------------------------------------------------------*/
-        public bool GuardarDatosImagen(Categoria obj, out string Mensaje)
-        {
-            bool resultado = false;
-            Mensaje = string.Empty;
-            try
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_GuardarDatosImagen", cn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("RutaImagen", obj.RutaImagen);
-                    cmd.Parameters.AddWithValue("NombreImagen", obj.NombreImagen);
-                    cmd.Parameters.AddWithValue("IdCategoria", obj.IdCategoria);
-
-                    cn.Open();
-                    if (cmd.ExecuteNonQuery() > 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        Mensaje = "No se pudo Actualizar";
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                resultado = false;
-                Mensaje = ex.Message;
-            }
-            return resultado;
-        }
+        
         /*----------------------------------------------------------------------------------------------------------------------------*/
 
         // Eliminar

@@ -249,8 +249,10 @@
     </Compile>
     <Compile Include="Models\Almacen.cs" />
     <Compile Include="Models\Caracteristicas.cs" />
+    <Compile Include="Models\Carrito.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CD_Almacen.cs" />
+    <Compile Include="Models\CD_Carrito.cs" />
     <Compile Include="Models\CD_Categoria.cs" />
     <Compile Include="Models\CD_Equipo.cs" />
     <Compile Include="Models\CD_KDS.cs" />

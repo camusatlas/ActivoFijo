@@ -58,10 +58,5 @@ namespace ActivoFijo.Models
         {
             return objCapaDato.Eliminar(id, out Mensaje);
         }
-
-        public bool GuardarDatosImagen(Categoria obj, out string Mensaje)
-        {
-            return objCapaDato.GuardarDatosImagen(obj, out Mensaje);
-        }
     }
 }

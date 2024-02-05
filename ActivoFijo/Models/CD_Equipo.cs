@@ -34,6 +34,7 @@ namespace ActivoFijo.Models
                         {
                             IdEquipos = Convert.ToInt32(dr["IdEquipos"]),
                             Nombre = dr["Nombre"].ToString(),
+                            Descripcion = dr["Descripcion"].ToString(),
                             oMarca = new Marca() { IdMarca = Convert.ToInt32(dr["IdMarca"]), Descripcion = dr["DesMarca"].ToString() },
                             oCategoria = new Categoria() { IdCategoria = Convert.ToInt32(dr["IdCategoria"]), Descripcion = dr["DesCategoria"].ToString() },
                             Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-PE")),
@@ -54,6 +55,8 @@ namespace ActivoFijo.Models
                             oPrioridad = new Prioridad() { IdPrioridades = Convert.ToInt32(dr["IdPrioridades"]), NomPrioridad = dr["Nivel-Prioridad"].ToString() },
                             oSistema = new SistemaOperativo() { IdSistema = Convert.ToInt32(dr["IdSistema"]), NombreSistema = dr["SistemaOperativo"].ToString() },
                             DireccionMac = dr["DireccionMac"].ToString(),
+                            NombreImagen = dr["NombreImagen"].ToString(),
+                            RutaImagen = dr["RutaImagen"].ToString(),
                             FechaActualizacion = Convert.ToDateTime(dr["FechaActualizacion"]),
                             FechaGarantia = Convert.ToDateTime(dr["FechaGarantia"]),
                             Onservacion = dr["Observaciones"].ToString(),
@@ -86,6 +89,7 @@ namespace ActivoFijo.Models
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                    cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
                     cmd.Parameters.AddWithValue("IdMarca", obj.oMarca.IdMarca);
                     cmd.Parameters.AddWithValue("IdCategoria", obj.oCategoria.IdCategoria);
                     cmd.Parameters.AddWithValue("Precio", obj.Precio);
@@ -142,6 +146,7 @@ namespace ActivoFijo.Models
 
                     cmd.Parameters.AddWithValue("IdEquipos", obj.IdEquipos);
                     cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                    cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
                     cmd.Parameters.AddWithValue("IdMarca", obj.oMarca.IdMarca);
                     cmd.Parameters.AddWithValue("IdCategoria", obj.oCategoria.IdCategoria);
                     cmd.Parameters.AddWithValue("Precio", obj.Precio);
@@ -206,6 +211,41 @@ namespace ActivoFijo.Models
 
                     resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
                     Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
+
+
+        public bool GuardarDatosImagen(Equipo obj, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_GuardarDatosImagen", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("RutaImagen", obj.RutaImagen);
+                    cmd.Parameters.AddWithValue("NombreImagen", obj.NombreImagen);
+                    cmd.Parameters.AddWithValue("IdEquipos", obj.IdEquipos);
+
+                    cn.Open();
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Mensaje = "No se pudo Actualizar";
+                    }
 
                 }
             }

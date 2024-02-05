@@ -9,10 +9,6 @@ namespace ActivoFijo.Models
     {
         public int IdCategoria { get; set; }
         public string Descripcion { get; set; }
-        public string RutaImagen { get; set; }
-        public string NombreImagen { get; set; }
-        public string Base64 { get; set; }
-        public string Extension { get; set; }
         public bool Activo { get; set; }
     }
 }

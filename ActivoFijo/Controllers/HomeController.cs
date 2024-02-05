@@ -1,5 +1,6 @@
 ﻿using ActivoFijo.Models;
 using ClosedXML.Excel;
+using Irony.Parsing;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -236,84 +237,23 @@ namespace ActivoFijo.Controllers
 
         // Registrar y Editar Categoria
         [HttpPost]
-        public JsonResult GuardarCategoria(string objeto, HttpPostedFileBase archivoImagen)
+        public JsonResult GuardarCategoria(Categoria objeto)
         {
+            object resultado;
             string mensaje = string.Empty;
-
-            bool operacion_exitosa = true;
-            bool guardar_imagen_exito = true;
-
-            Categoria oCategoria = new Categoria();
-            oCategoria = JsonConvert.DeserializeObject<Categoria>(objeto);
-
-            if (oCategoria.IdCategoria == 0)
+            if (objeto.IdCategoria == 0)
             {
-                int idEquipoGenerado = new CN_Categoria().Registrar(oCategoria, out mensaje);
-
-                if (idEquipoGenerado != 0)
-                {
-                    oCategoria.IdCategoria = idEquipoGenerado;
-                }
-                else
-                {
-                    operacion_exitosa = false;
-                }
+                resultado = new CN_Categoria().Registrar(objeto, out mensaje);
             }
             else
             {
-                operacion_exitosa = new CN_Categoria().Editar(oCategoria, out mensaje);
+                resultado = new CN_Categoria().Editar(objeto, out mensaje);
             }
-            if (operacion_exitosa)
-            {
-                if (archivoImagen != null)
-                {
-                    string ruta_guardar = ConfigurationManager.AppSettings["ServidorFotos"];
-                    string extension = Path.GetExtension(archivoImagen.FileName);
-                    string nombre_imagen = string.Concat(oCategoria.IdCategoria.ToString(), extension);
-
-                    try
-                    {
-                        archivoImagen.SaveAs(Path.Combine(ruta_guardar, nombre_imagen));
-                    }
-                    catch (Exception ex)
-                    {
-                        string msg = ex.Message;
-                        guardar_imagen_exito = false;
-                    }
-
-                    if (guardar_imagen_exito)
-                    {
-                        oCategoria.RutaImagen = ruta_guardar;
-                        oCategoria.NombreImagen = nombre_imagen;
-                        bool rsp = new CN_Categoria().GuardarDatosImagen(oCategoria, out mensaje);
-                    }
-                    else
-                    {
-                        mensaje = "Se guardo el equipo pero hubo problemas con la imagen";
-                    }
-
-                }
-            }
-            return Json(new { operacionExitosa = operacion_exitosa, idGenerado = oCategoria.IdCategoria, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
 
-        [HttpPost]
-        public JsonResult ImagenCategoria(int id)
-        {
-            bool conversion;
-            Categoria ocategoria = new CN_Categoria().Listar().Where(p => p.IdCategoria == id).FirstOrDefault();
-            string textoBase64 = CN_Recursos.ConvertirBase64(Path.Combine(ocategoria.RutaImagen, ocategoria.NombreImagen), out conversion);
-            return Json(new
-            {
-                conversion = conversion,
-                textobase64 = textoBase64,
-                extension = Path.GetExtension(ocategoria.NombreImagen)
-            },
-            JsonRequestBehavior.AllowGet);
-
-        }
+        
 
         // Eliminar Usuario
         [HttpPost]
@@ -667,23 +607,96 @@ namespace ActivoFijo.Controllers
 
         // Guardar Equipo Registrar y Actualizar Equipos
         [HttpPost]
-        public JsonResult GuardarEquipo(Equipo objeto)
+        public JsonResult GuardarEquipo(string objeto, HttpPostedFileBase archivoImagen)
         {
-            object resultado;
             string mensaje = string.Empty;
 
-            if (objeto.IdEquipos == 0)
+            bool operacion_exitosa = true;
+            bool guardar_imagen_exito = true;
+
+            Equipo oEquipo = new Equipo();
+            oEquipo = JsonConvert.DeserializeObject<Equipo>(objeto);
+
+            decimal precio;
+
+            if (decimal.TryParse(oEquipo.PrecioTexto, NumberStyles.AllowDecimalPoint, new CultureInfo("es-PE"), out precio))
             {
-                resultado = new CN_Equipo().Registrar(objeto, out mensaje);
+                oEquipo.Precio = precio;
             }
             else
             {
-                resultado = new CN_Equipo().Editar(objeto, out mensaje);
+                return Json(new { operacionExitosa = false, mensaje = "El formato del precio debe ser ###.##" }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.DenyGet);
+
+            if (oEquipo.IdEquipos == 0)
+            {
+                int idEquipoGenerado = new CN_Equipo().Registrar(oEquipo, out mensaje);
+
+                if (idEquipoGenerado != 0)
+                {
+                    oEquipo.IdEquipos = idEquipoGenerado;
+                }
+                else
+                {
+                    operacion_exitosa = false;
+                }
+            }
+            else
+            {
+                operacion_exitosa = new CN_Equipo().Editar(oEquipo, out mensaje);
+            }
+            if (operacion_exitosa)
+            {
+                if (archivoImagen != null)
+                {
+                    string ruta_guardar = ConfigurationManager.AppSettings["ServidorFotos"];
+                    string extension = Path.GetExtension(archivoImagen.FileName);
+                    string nombre_imagen = string.Concat(oEquipo.IdEquipos.ToString(), extension);
+
+                    try
+                    {
+                        archivoImagen.SaveAs(Path.Combine(ruta_guardar, nombre_imagen));
+                    }
+                    catch (Exception ex)
+                    {
+                        string msg = ex.Message;
+                        guardar_imagen_exito = false;
+                    }
+
+                    if (guardar_imagen_exito)
+                    {
+                        oEquipo.RutaImagen = ruta_guardar;
+                        oEquipo.NombreImagen = nombre_imagen;
+                        bool rsp = new CN_Equipo().GuardarDatosImagen(oEquipo, out mensaje);
+                    }
+                    else
+                    {
+                        mensaje = "Se guardo el producto pero hubo problemas con la imagen";
+                    }
+
+                }
+            }
+            return Json(new { operacionExitosa = operacion_exitosa, idGenerado = oEquipo.IdEquipos, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
         }
 
+        // Guardar las imagenes de los equipos
 
+        [HttpPost]
+        public JsonResult ImagenEquipo(int id)
+        {
+            bool conversion;
+            Equipo oEquipo = new CN_Equipo().Listar().Where(p => p.IdEquipos == id).FirstOrDefault();
+            string textoBase64 = CN_Recursos.ConvertirBase64(Path.Combine(oEquipo.RutaImagen, oEquipo.NombreImagen), out conversion);
+            return Json(new
+            {
+                conversion = conversion,
+                textobase64 = textoBase64,
+                extension = Path.GetExtension(oEquipo.NombreImagen)
+            },
+            JsonRequestBehavior.AllowGet);
+
+        }
 
 
         // Eliminar Equipo

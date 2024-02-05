@@ -22,6 +22,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "La descripcion de la Categoria no puede ser vacio";
             }
+            else if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
+            {
+                Mensaje = "La descripcion no puede ser vacio";
+            }
             else if (obj.oMarca.IdMarca == 0)
             {
                 Mensaje = "Debe seleccionar una Marca";
@@ -30,10 +34,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "Debe seleccionar una Categoria";
             }
-            else if (obj.Precio == 0)
-            {
-                Mensaje = "Ingresar el precio del equipo";
-            }
+            //else if (obj.Precio == 0)
+            //{
+            //    Mensaje = "Ingresar el precio del equipo";
+            //}
             else if (obj.oSede.IdSede == 0)
             {
                 Mensaje = "Debe seleccionar una Sede";
@@ -116,6 +120,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "La descripcion de la Categoria no puede ser vacio";
             }
+            else if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
+            {
+                Mensaje = "La descripcion no puede ser vacio";
+            }
             else if (obj.oMarca.IdMarca == 0)
             {
                 Mensaje = "Debe seleccionar una Marca";
@@ -124,10 +132,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "Debe seleccionar una Categoria";
             }
-            else if (obj.Precio == 0)
-            {
-                Mensaje = "Ingresar el precio del equipo";
-            }
+            //else if (obj.Precio == 0)
+            //{
+            //    Mensaje = "Ingresar el precio del equipo";
+            //}
             else if (obj.oSede.IdSede == 0)
             {
                 Mensaje = "Debe seleccionar una Sede";
@@ -188,10 +196,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "Debe ingresar la mac del equipo";
             }
-            else if (string.IsNullOrEmpty(obj.Onservacion) || string.IsNullOrWhiteSpace(obj.Onservacion))
-            {
-                Mensaje = "Ingresar la observacion";
-            }
+            //else if (string.IsNullOrEmpty(obj.Onservacion) || string.IsNullOrWhiteSpace(obj.Onservacion))
+            //{
+            //    Mensaje = "Ingresar la observacion";
+            //}
             if (string.IsNullOrEmpty(Mensaje))
             {
                 return objCapaDato.Editar(obj, out Mensaje);
@@ -205,6 +213,11 @@ namespace ActivoFijo.Models
         public bool Eliminar(int id, out string Mensaje)
         {
             return objCapaDato.Eliminar(id, out Mensaje);
+        }
+
+        public bool GuardarDatosImagen(Equipo obj, out string Mensaje)
+        {
+            return objCapaDato.GuardarDatosImagen(obj, out Mensaje);
         }
     }
 }

@@ -369,6 +369,7 @@
     <Content Include="Scripts\loadingoverlay.min.js.map" />
     <Content Include="Views\Equipos\Index.cshtml" />
     <Content Include="Views\Acceso\Login.cshtml" />
+    <Content Include="Views\Equipos\DetalleEquipo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

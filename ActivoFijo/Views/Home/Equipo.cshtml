@@ -24,30 +24,13 @@
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
+                    <th>Nombre</th>
                     <th>Categoria</th>
                     <th>Marca</th>
-                    <th>Caracteristicas</th>
                     <th>Stok</th>
                     <th>Modelo</th>
                     <th>Serie</th>
-                    <th>Cod. Inventario</th>
-                    <th>Encargado</th>
-                    <th>Guira Ingreso</th>
-                    <th>Sede</th>
-                    <th>Proveedor</th>
-                    <th>Orden Compra</th>
-                    <th>Orden Interna</th>
-                    <th>Almacen</th>
-                    <th>Precio</th>
-                    <th>Codigo SAP</th>
-                    <th>Razón social</th>
-                    <th>Prioridad</th>
-                    <th>Sistema</th>
-                    <th>Direccion Mac</th>
-                    <th>Fecha Garantia</th>
-                    <th>Fecha de Actualización</th>
-                    <th>Activo Fijo</th>
-                    <th>Observación</th>
+                    <th>Responsable</th>
                     <th>Estado</th>
                     <th></th>
                 </tr>
@@ -75,7 +58,11 @@
 
                     <div class="col-sm-3">
                         <div class="mb-3">
-                            <label class="form-label">Equipo</label>
+                            <label class="form-label">Nombre Equipo</label>
+                            <input type="text" class="form-control" id="txtnombreequipo" name="nombreequipo" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Categoria</label>
                             <select id="cbocategoria" class="form-select">
                             </select>
                         </div>
@@ -95,19 +82,20 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Descripción</label>
-                            <textarea type="text" class="form-control" id="txtnombre" name="observacion" style="height: 200px; resize: none"></textarea>
+                            <textarea type="text" class="form-control" id="txtdescripcion" name="descripcion" style="height: 200px; resize: none"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Código de Inventario</label>
                             <input type="text" class="form-control" id="txtcodinventario" name="codinventario" />
                         </div>
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label class="form-label">Responsable</label>
                             <input type="text" class="form-control" id="txtusuario" name="usuario" value="@HttpUtility.HtmlEncode(Session["displayName"])" />
-                        </div>                 
-                    </div>
-                    <!-- Nombre -->
-                    <div class="col-sm-3">
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Guía de Ingreso</label>
                             <input type="text" class="form-control" id="txtguiaingreso" name="guiaingreso" />
@@ -145,14 +133,15 @@
                             <input type="text" class="form-control" id="txtcodmaterialsap" name="codmaterialsap" />
                         </div>
                         <!--falta agregar el listado de esta tabla-->
+                    </div>
+                    
+                    <!-- Marca -->
+                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label class="form-label">Razón Social</label>
                             <select id="cborazonsocial" class="form-select">
                             </select>
                         </div>
-                    </div>
-                    <!-- Marca -->
-                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label class="form-label">Prioridad</label>
                             <select id="cboprioridad" class="form-select">
@@ -176,16 +165,16 @@
                             <input type="text" class="form-control" id="txtfechaactualizacion" name="fechaactualizacion" />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Activo Fijo</label>
-                            <input type="text" class="form-control" id="txtactivofijo" name="activofijo" />
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Observaciones</label>
                             <textarea type="text" class="form-control" id="txtobservacion" name="observacion" style="height: 200px; resize: none"></textarea>
                         </div>
                     </div>
 
                     <div class="col-sm-3">
+                        <div class="mb-3">
+                            <label class="form-label">Activo Fijo</label>
+                            <input type="text" class="form-control" id="txtactivofijo" name="activofijo" />
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Stock</label>
                             <input type="number" class="form-control" id="txtstock" name="stock" />
@@ -196,6 +185,14 @@
                                 <option value="1">Activo</option>
                                 <option value="0">Desactivado</option>
                             </select>
+                            <br />
+                            <br />
+                            <div class="mb-2">
+                                <img id="img_equipo" height="197" width="200" class="border rounded mx-auto db-block img-fluid" />
+                            </div>
+                            <div class="mb-2">
+                                <input class="form-control" type="file" id="fileEquipo" accept="image/png, image/jpg, image/jpeg" onchange="mostrarImagen(this)" />
+                            </div>
                         </div>
                     </div>
 
@@ -226,6 +223,17 @@
         var tabladata;
         var filaSeleccionada;
 
+        function mostrarImagen(input) {
+            if (input.files) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $("#img_equipo").attr("src", e.target.result).width(200).height(197)
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
 
 
         $(document).ready(function () {
@@ -238,6 +246,7 @@
                     dataType: "json",
                 },
                 "columns": [
+                    { "data": "Nombre"},
                     {
                         "data": "oCategoria", "render": function (data) {
                             return data.Descripcion
@@ -248,7 +257,6 @@
                             return data.Descripcion
                         }
                     },
-                    { "data": "Nombre" },
                     { "data": "Stock" },
                     {
                         "data": "oModelo", "render": function (data) {
@@ -256,48 +264,7 @@
                         }
                     },
                     { "data": "Serie" },
-                    { "data": "CodInventario" },
                     { "data": "Usuario" },
-                    { "data": "GuiaIngreso" },
-                    {
-                        "data": "oSede", "render": function (data) {
-                            return data.NomSede
-                        }
-                    },
-                    {
-                        "data": "oProveedor", "render": function (data) {
-                            return data.NomProveedor
-                        }
-                    },
-                    { "data": "OrdenCompra" },
-                    { "data": "OrdenInterna" },
-                    {
-                        "data": "oAlmacen", "render": function (data) {
-                            return data.NomAlmacen
-                        }
-                    },
-                    { "data": "Precio" },
-                    { "data": "CodMaterialSAP" },
-                    {
-                        "data": "oRazonSocial", "render": function (data) {
-                            return data.NomRazonSocial
-                        }
-                    },
-                    {
-                        "data": "oPrioridad", "render": function (data) {
-                            return data.NomPrioridad
-                        }
-                    },
-                    {
-                        "data": "oSistema", "render": function (data) {
-                            return data.NombreSistema
-                        }
-                    },
-                    { "data": "DireccionMac" },
-                    { "data": "FechaGarantia" },
-                    { "data": "FechaActualizacion" },
-                    { "data": "ActivoFijo" },
-                    { "data": "Onservacion" },
                     {
                         "data": "Activo", "render": function (valor) {
                             if (valor) {
@@ -437,13 +404,13 @@
                 contentType: "application/json; charset=uft-8",
                 success: function (data) {
                     console.log(data)
-            
+
                     $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cborazonsocial")
-            
+
                     $.each(data.data, function (index, item) {
                         $("<option>").attr({ "value": item.IdRazonSocial }).text(item.NomRazonSocial).appendTo("#cborazonsocial");
                     })
-            
+
                 },
                     error: function (error) {
                     console.log(error)
@@ -522,7 +489,10 @@
 
             $("#contenedor").validate({
                 rules: {
-                    nombre: {
+                    Nombre: {
+                        required: true
+                    },
+                    Descripcion: {
                         required: true
                     },
                     precio: {
@@ -570,8 +540,8 @@
                     }
                 },
                 messages: {
-                    nombre: "- El campo Nombre es obligatorio",
-                    precio: { required: "- El campo precio es obligatorio", preciodecimal: "El formato correcto del precio es: ###.##" },
+                    Nombre: "- El campo Nombre es obligatorio",
+                    /*precio: { required: "- El campo precio es obligatorio", preciodecimal: "El formato correcto del precio es: ###.##" },*/
                     Serie: "- El campo Serie es obligatorio",
                     CodInventario: "- El cod. inventario es obligatorio",
                     Usuario: "- El campo usuario es obligatorio",
@@ -601,8 +571,8 @@
             });
 
     $("#tabla tbody").on("click", '.btn-eliminar', function () {
-        var equipoSeleccionado = $(this).closest("tr");
-        var data = equipoSeleccionado.data();
+        var equipotoSeleccionado = $(this).closest("tr");
+        var data = tabladata.row(equipotoSeleccionado).data();
 
         swal({
             title: "¿Está seguro?",
@@ -628,7 +598,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.resultado) {
-                        tabladata.row(equipoSeleccionado).remove().draw();
+                        tabladata.row(equipotoSeleccionado).remove().draw();
                     } else {
                         swal("No se pudo eliminar", data.mensaje, "error");
                     }
@@ -648,7 +618,9 @@
 
         function abrirModal(json) {
             $("#txtid").val(0);
-            $("#txtnombre").val("");
+            $("#img_equipo").removeAttr("src");
+            $("#fileEquipo").val("");
+            $("#txtdescripcion").val("");
             $("#cbomarca").val($("#cbomarca option:first").val());
             $("#cbocategoria").val($("#cbocategoria option:first").val());
             $("#txtprecio").val("");
@@ -672,6 +644,7 @@
             $("#txtfechaactualizacion").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date());
             $("#txtfechagrantia").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date());
             $("#txtobservacion").val("");
+            $("#txtnombreequipo").val("");
             $("#cboactivo").val(1);
 
             // Ocultar valores
@@ -679,7 +652,8 @@
 
             if (json !== null) {
                 $("#txtid").val(json.IdEquipos);
-                $("#txtnombre").val(json.Nombre);
+                $("#txtnombreequipo").val(json.Nombre);
+                $("#txtdescripcion").val(json.Descripcion);
                 $("#cbomarca").val(json.oMarca.IdMarca);
                 $("#cbocategoria").val(json.oCategoria.IdCategoria);
                 $("#txtprecio").val(json.Precio);
@@ -706,6 +680,34 @@
                 $("#txtobservacion").val(json.Onservacion);
                 $("#cboactivo").val(json.Activo == true ? 1 : 0);
 
+
+                jQuery.ajax({
+                    url: '@Url.Action("ImagenEquipo", "Home")',
+                    type: "POST",
+                    data: JSON.stringify({ id: json.IdEquipos }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                
+                        $("#img_equipo").LoadingOverlay("hide");
+                
+                        if (data.conversion) {
+                            $("#img_equipo").attr({ "src": "data:image/" + data.extension + ";base64," + data.textobase64 });
+                        }
+                    },
+                    error: function (error) {
+                        $("#img_equipo").LoadingOverlay("hide");
+                
+                        $("#mensajeError").show();
+                        $("#mensajeError").text("Error al mostrar imagen");
+                    },
+                    beforeSend: function () {
+                        $("#img_equipo").LoadingOverlay("show");
+                
+                    }
+                })
+
+
             }
 
             $("#formModal").modal("show");
@@ -724,9 +726,12 @@
                 return;
             }
 
+            var ImagenSeleccionada = $("#fileEquipo")[0].files[0];
+
             var Equipo = {
                 IdEquipos: $("#txtid").val(),
-                Nombre: $("#txtnombre").val(),
+                Nombre: $("#txtnombreequipo").val(),
+                Descripcion: $("#txtdescripcion").val(),
                 oMarca: {
                     IdMarca: $("#cbomarca option:selected").val(),
                     Descripcion: $("#cbomarca option:selected").text()
@@ -783,53 +788,59 @@
 
             };
 
-    jQuery.ajax({
-        url: '@Url.Action("GuardarEquipo", "Home")',
-        type: 'POST',
-        data: JSON.stringify({ objeto: Equipo }),
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
+            var request = new FormData();
+            request.append("objeto", JSON.stringify(Equipo))
+            request.append("archivoImagen", ImagenSeleccionada)
 
-            // Nueva Producto
-            if (Equipo.IdEquipo == 0) {
 
-                if (data.idGenerado !== 0) {
+                jQuery.ajax({
+                    url: '@Url.Action("GuardarEquipo", "Home")',
+                    type: 'POST',
+                    data: request,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
 
-                    Equipo.IdEquipo = data.resultado;
-                    tabladata.row.add(Equipo).draw(false);
-                    $("#formModal").modal("hide");
+                        // Nueva Producto
+                        if (Equipo.IdEquipos == 0) {
 
-                } else {
-                    $("#mensajeError").text(data.mensaje);
-                    $("#mensajeError").show();
-                }
-            }
-            // Producto Editado
-            else {
-                if (data.data) {
-                    tabladata.row(filaSeleccionada).data(Equipo).draw(false);
-                    $("#formModal").modal("hide");
-                } else {
-                    $("#mensajeError").text(data.mensaje);
-                    $("#mensajeError").show();
-                }
-            }
-            location.reload(); // Recarga la página después de completar la operación de guardado
-        },
-        error: function (error) {
-            $(".modal-body").LoadingOverlay("hide");
-            $("#mensajeError").text("Error Ajax");
-            $("#mensajeError").show();
-        },
-        beforeSend: function () {
-            $(".modal-body").LoadingOverlay("show", {
-                imageResizeFactor: 2,
-                text: "Cargando...",
-                size: 14
+                            if (data.idGenerado !== 0) {
+
+                                Equipo.IdEquipo = data.resultado;
+                                tabladata.row.add(Equipo).draw(false);
+                                $("#formModal").modal("hide");
+
+                            } else {
+                                $("#mensajeError").text(data.mensaje);
+                                $("#mensajeError").show();
+                            }
+                        }
+                        // Producto Editado
+                        else {
+                            if (data.data) {
+                                tabladata.row(filaSeleccionada).data(Equipo).draw(false);
+                                $("#formModal").modal("hide");
+                            } else {
+                                $("#mensajeError").text(data.mensaje);
+                                $("#mensajeError").show();
+                            }
+                        }
+                        location.reload(); // Recarga la página después de completar la operación de guardado
+                    },
+                    error: function (error) {
+                        $(".modal-body").LoadingOverlay("hide");
+                        $("#mensajeError").text("Error Ajax");
+                        $("#mensajeError").show();
+                    },
+                    beforeSend: function () {
+                        $(".modal-body").LoadingOverlay("show", {
+                            imageResizeFactor: 2,
+                            text: "Cargando...",
+                            size: 14
+                        });
+                    }
             });
+
         }
-    });
-}
     </script>
 }
