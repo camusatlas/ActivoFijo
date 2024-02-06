@@ -55,7 +55,7 @@ namespace ActivoFijo.Models
 
 
                     cmd.Parameters.AddWithValue("IdUsuario", idusuario);
-                    cmd.Parameters.AddWithValue("IdUsuario", idequipo);
+                    cmd.Parameters.AddWithValue("IdEquipos", idequipo);
                     cmd.Parameters.AddWithValue("Sumar", sumar);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
@@ -77,16 +77,16 @@ namespace ActivoFijo.Models
             return resultado;
         }
 
-        public int CantidadEnCarrito(int idCliente)
+        public int CantidadEnCarrito(int idusuario)
         {
             int resultado = 0;
 
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) from CARRITO where IdCliente = @idcliente", cn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) from CARRITO where IdUsuario = @idusuario", cn))
                 {
                     cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@idcliente", idCliente);
+                    cmd.Parameters.AddWithValue("@IdUsuario", idusuario);
                     cn.Open();
                     resultado = Convert.ToInt32(cmd.ExecuteScalar());
                 }
@@ -98,11 +98,11 @@ namespace ActivoFijo.Models
             return resultado;
         }
 
-        public List<Carrito> ListarProducto(int idcliente)
+        public List<Carrito> ListarEquipo(int idusuario)
         {
             List<Carrito> listado = new List<Carrito>();
-            SqlCommand cmd = new SqlCommand("sp_ObtenerCarritoCliente", cn);
-            cmd.Parameters.AddWithValue("@IdCliente", idcliente);
+            SqlCommand cmd = new SqlCommand("sp_ObtenerCarritoUsuario", cn);
+            cmd.Parameters.AddWithValue("@IdUsuario", idusuario);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
@@ -113,15 +113,15 @@ namespace ActivoFijo.Models
                     {
                         Carrito carrito = new Carrito()
                         {
-                            oProducto = new Producto()
+                            oEquipo = new Equipo()
                             {
-                                IdProducto = Convert.ToInt32(dr["IdProducto"]),
+                                IdEquipos = Convert.ToInt32(dr["IdEquipos"]),
                                 Nombre = dr["Nombre"].ToString(),
                                 Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-PE")),
                                 RutaImagen = dr["RutaImagen"].ToString(),
                                 NombreImagen = dr["NombreImagen"].ToString(),
                                 oMarca = new Marca() { Descripcion = dr["DesMarca"].ToString() }
-                            },
+                            }, 
                             Cantidad = Convert.ToInt32(dr["Cantidad"])
                         };
                         listado.Add(carrito);
@@ -139,7 +139,7 @@ namespace ActivoFijo.Models
             return listado;
         }
 
-        public bool EliminarCarrito(int idcliente, int idproducto)
+        public bool EliminarCarrito(int idusuario, int idequipo)
         {
             bool resultado = true;
 
@@ -147,8 +147,8 @@ namespace ActivoFijo.Models
             {
                 using (SqlCommand cmd = new SqlCommand("sp_EliminarCarrito", cn))
                 {
-                    cmd.Parameters.AddWithValue("IdCliente", idcliente);
-                    cmd.Parameters.AddWithValue("IdProducto", idproducto);
+                    cmd.Parameters.AddWithValue("IdUsuario", idusuario);
+                    cmd.Parameters.AddWithValue("IdEquipos", idequipo);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 

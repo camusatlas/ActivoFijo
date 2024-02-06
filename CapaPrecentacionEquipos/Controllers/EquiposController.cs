@@ -1,4 +1,5 @@
 ﻿using ActivoFijo.Models;
+using DocumentFormat.OpenXml.Bibliography;
 using Irony.Parsing;
 using System;
 using System.Collections.Generic;
@@ -85,49 +86,119 @@ namespace CapaPrecentacionEquipos.Controllers
 
         }
 
-        // AGREAR AL CARRITO
+        public ActionResult Carrito()
+        {
+            return View();
+        }
+
+        // AGREGAR CARRITO
         [HttpPost]
         public JsonResult AgregarCarrito(int idequipo)
         {
-            // Verificar si el usuario está autenticado
-            if (Session["usuario"] != null && Session["usuario"] is string username)
+            int idusuario = ((Usuario)Session["Usuario"]).IdUsuario;
+
+            bool existe = new CN_Carrito().ExisteCarrito(idusuario, idequipo);
+
+            bool respuesta = false;
+
+            string mensaje = string.Empty;
+
+            if (existe)
             {
-                // Obtener más información del usuario según tus necesidades
-                string displayName = Session["displayName"] as string;
-
-                // Ahora puedes usar 'username' y 'displayName' como necesites
-                int idcliente = ObtenerIdClienteDesdeAlgunaFuente(username);
-
-                bool existe = new CN_Carrito().ExisteCarrito(idcliente, idequipo);
-
-                bool respuesta = false;
-                string mensaje = string.Empty;
-
-                if (existe)
-                {
-                    mensaje = "El equipo ya existe en el carrito";
-                }
-                else
-                {
-                    respuesta = new CN_Carrito().OperacionCarrito(idcliente, idequipo, true, out mensaje);
-                }
-
-                return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+                mensaje = "El equipo ya existe en el carrito";
             }
             else
             {
-                // Manejar el caso donde el usuario no está autenticado
-                return Json(new { respuesta = false, mensaje = "Usuario no autenticado" }, JsonRequestBehavior.AllowGet);
+                respuesta = new CN_Carrito().OperacionCarrito(idusuario, idequipo, true, out mensaje);
             }
+            return Json(new { respuesta = respuesta, mensaje = mensaje });
         }
 
-        // Método de ejemplo para obtener el IdCliente desde alguna fuente (base de datos, servicio, etc.)
-        private int ObtenerIdClienteDesdeAlgunaFuente(string username)
+
+        [HttpGet]
+        public JsonResult CatidadEnCarrito()
         {
-            // Lógica para obtener el IdCliente asociado al nombre de usuario desde alguna fuente de datos
-            // Puedes implementar esta lógica según la estructura de tu aplicación
-            // En este ejemplo, simplemente devolvemos un valor fijo.
-            return 1;
+            int idusuario = ((Usuario)Session["Usuario"]).IdUsuario;
+            int cantidad = new CN_Carrito().CantidadEnCarrito(idusuario);
+            return Json(new { cantidad = cantidad }, JsonRequestBehavior.AllowGet);
+        }
+
+        // CREAR UN METODO POST LISTAR PRODUCTO
+        [HttpPost]
+        public JsonResult ListarProductosCarrito()
+        {
+            int idusuario = ((Usuario)Session["Usuario"]).IdUsuario;
+
+            List<Carrito> oLista = new List<Carrito>();
+
+            bool conversion;
+
+            oLista = new CN_Carrito().ListarEquipo(idusuario).Select(oc => new Carrito()
+            {
+                oEquipo = new Equipo()
+                {
+                    IdEquipos = oc.oEquipo.IdEquipos,
+                    Nombre = oc.oEquipo.Nombre,
+                    oMarca = oc.oEquipo.oMarca,
+                    Precio = oc.oEquipo.Precio,
+                    RutaImagen = oc.oEquipo.RutaImagen,
+                    Base64 = CN_Recursos.ConvertirBase64(Path.Combine(oc.oEquipo.RutaImagen, oc.oEquipo.Nombre), out conversion),
+                    Extension = Path.GetExtension(oc.oEquipo.NombreImagen)
+                },
+                Cantidad = oc.Cantidad
+            }).ToList();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult OperacionCarrito(int idequipo, bool sumar)
+        {
+            int idusuario = ((Usuario)Session["Usuario"]).IdUsuario;
+
+            bool existe = new CN_Carrito().ExisteCarrito(idusuario, idequipo);
+
+            bool respuesta = false;
+
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Carrito().OperacionCarrito(idusuario, idequipo, true, out mensaje);
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult EliminarCarrito(int idequipo)
+        {
+            int idusuario = ((Usuario)Session["Usuario"]).IdUsuario;
+
+            bool respuesta = false;
+
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Carrito().EliminarCarrito(idusuario, idequipo);
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        //Obtener MarcaTienda
+        public JsonResult ObtenerMarcaTienda()
+        {
+            List<MarcaTienda> oLista = new List<MarcaTienda>();
+
+            oLista = new CN_Asignado().ObtenerMarcaTienda();
+
+            return Json(new { lista = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerTienda(string idtiendamarca)
+        {
+            List<Tienda> oLista = new List<Tienda>();
+
+            oLista = new CN_Asignado().ObtenerTienda(idtiendamarca);
+
+            return Json(new { lista = oLista }, JsonRequestBehavior.AllowGet);
         }
 
     }

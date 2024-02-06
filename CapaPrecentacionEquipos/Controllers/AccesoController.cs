@@ -1,145 +1,188 @@
-﻿using System;
+﻿using ActivoFijo.Models;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace CapaPrecentacionEquipos.Controllers
 {
     public class AccesoController : Controller
     {
-        public ActionResult Login()
+
+        #region Index
+        public ActionResult Index()
         {
             return View();
         }
-        /*--------------------------------------------------*/
-        public string ObtenerDisplayName(string dominio, string usuario, string pwd, string path)
-        {
-            string domainAndUsername = usuario + "@" + dominio;
 
-            using (DirectoryEntry entry = new DirectoryEntry(path, domainAndUsername, pwd))
-            {
-                try
-                {
-                    using (DirectorySearcher search = new DirectorySearcher(entry))
-                    {
-                        search.Filter = "(samaccountname=" + usuario + ")";
-                        search.PropertiesToLoad.Add("displayName");
-                        SearchResult result = search.FindOne();
-
-                        if (result != null)
-                        {
-                            return result.Properties["displayName"][0].ToString();
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    // Manejar el error apropiadamente
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
-        /*---------------------------------------------------*/
-        public ActionResult ObtenerInformacionUsuario()
-        {
-            // Verificar si el usuario está autenticado
-            if (User.Identity.IsAuthenticated)
-            {
-                // Obtener el nombre de usuario del claim del identificador del usuario
-                string nombreUsuario = User.Identity.Name;
-
-                // Obtener el displayName utilizando el método ya existente
-                string displayName = ObtenerDisplayName("FRANQUICIASPERU.COM", nombreUsuario, "", "LDAP://192.168.0.6/DC=FRANQUICIASPERU,DC=COM");
-
-                // Puedes obtener más información según tus necesidades, por ejemplo, desde la base de datos
-                // Aquí estoy usando un objeto ViewBag para pasar la información a la vista
-                ViewBag.NombreUsuario = nombreUsuario;
-                ViewBag.DisplayName = displayName;
-
-                return View();
-            }
-            else
-            {
-                // El usuario no está autenticado, redirigir o manejar según sea necesario
-                return RedirectToAction("Login");
-            }
-        }
-
-
-
-        /*--------------------------------------------------*/
         [HttpPost]
-        public ActionResult Login(string usuario, string clave, string mensaje)
+        public ActionResult Index(string correo, string clave, string name)
         {
-            string ldapPath = "LDAP://192.168.0.6/DC=FRANQUICIASPERU,DC=COM";
-            string username = usuario;
-            string password = clave;
-            string msn = mensaje;
+            Usuario oUsuario = null;
 
-            bool isAuthenticated = EstaAutenticado("FRANQUICIASPERU.COM", username, password, ldapPath, msn);
-
-            if (isAuthenticated)
+            oUsuario = new CN_Usuario().Listar().Where(item => item.Correo == correo && item.Clave == CN_Recursos.ConvertirSha256(clave)).FirstOrDefault();
+            if (oUsuario == null)
             {
-                string displayName = ObtenerDisplayName("FRANQUICIASPERU.COM", username, password, ldapPath);
-
-                // Establecer una variable de sesión o hacer otro tipo de seguimiento de inicio de sesión
-                Session["usuario"] = usuario;
-                Session["displayName"] = displayName;
-
-                return RedirectToAction("Index", "Equipos");
+                ViewBag.Error = "Correo o contraseña no son correctas";
+                return View();
             }
             else
             {
-                ViewData["Mensaje"] = "Usuario no encontrado";
+                if (oUsuario.Reestablecer)
+                {
+                    TempData["IdUsuario"] = oUsuario.IdUsuario;
+                    return RedirectToAction("CambiarClave", "Acceso");
+                }
+                else
+                {
+                    FormsAuthentication.SetAuthCookie(oUsuario.Correo, false);
+
+                    Session["Usuario"] = oUsuario;
+
+                    ViewBag.Error = null;
+                    return RedirectToAction("Index", "Equipos");
+                }
+            }
+        }
+
+        #endregion
+
+        #region Regitrar
+
+        public ActionResult Registrar()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Registrar(Usuario objeto)
+        {
+            int resultado;
+            string mensaje = string.Empty;
+
+            ViewData["Nombres"] = string.IsNullOrEmpty(objeto.Nombres) ? "" : objeto.Nombres;
+            ViewData["Apellidos"] = string.IsNullOrEmpty(objeto.Apellidos) ? "" : objeto.Apellidos;
+            ViewData["Correo"] = string.IsNullOrEmpty(objeto.Correo) ? "" : objeto.Correo;
+
+            if (objeto.Clave != objeto.Confirmarclave)
+            {
+                ViewBag.Error = "Las contraseñas no coinciden";
+                return View();
+            }
+
+            resultado = new CN_Usuario().Registrar(objeto, out mensaje);
+
+            if (resultado > 0)
+            {
+                ViewBag.Error = null;
+                return RedirectToAction("Index", "Acceso");
+            }
+            else
+            {
+                ViewBag.Error = mensaje;
                 return View();
             }
         }
 
-        public bool EstaAutenticado(string dominio, string usuario, string pwd, string path, string msn)
-        {
-            // Armamos la cadena completa de dominio y usuario
-            string domainAndUsername = usuario + "@" + dominio;
+        #endregion Registrar
 
-            // Creamos un objeto DirectoryEntry al cual le pasamos el URL, dominio/usuario y la contraseña
-            using (DirectoryEntry entry = new DirectoryEntry(path, domainAndUsername, pwd))
+        #region Restablece
+
+        public ActionResult Reestablecer()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Reestablecer(string correo)
+        {
+            Usuario usuario = new Usuario();
+            usuario = new CN_Usuario().Listar().Where(item => item.Correo == correo).FirstOrDefault();
+
+            if (usuario == null)
             {
-                try
-                {
-                    using (DirectorySearcher search = new DirectorySearcher(entry))
-                    {
-                        // Verificamos que los datos de logeo proporcionados son correctos
-                        SearchResult result = search.FindOne();
-                        return result != null;
-                    }
-                }
-                catch (Exception)
-                {
-                    // Puedes manejar el error de alguna manera apropiada, como registrar o mostrar un mensaje
-                    return false;
-                }
+
+                ViewBag.Error = "No se encontro un Cliente relacionado en ese correo";
+                return View();
+            }
+
+
+            string mensaje = string.Empty;
+            bool respuesta = new CN_Usuario().ReestablecerClave(usuario.IdUsuario, correo, out mensaje);
+
+            if (respuesta)
+            {
+                ViewBag.Error = null;
+                return RedirectToAction("Index", "Acceso");
+            }
+            else
+            {
+                ViewBag.Error = mensaje;
+                return View();
             }
         }
+
+        #endregion Restablece
+
+        #region CambiarClave
+
+        public ActionResult CambiarClave()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CambiarClave(string idusuario, string claveactual, string nuevaclave, string confirmaclave)
+        {
+            Usuario oUsuario = new Usuario();
+            oUsuario = new CN_Usuario().Listar().Where(u => u.IdUsuario == int.Parse(idusuario)).FirstOrDefault();
+
+            if (oUsuario.Clave != CN_Recursos.ConvertirSha256(claveactual))
+            {
+                TempData["IdUsuario"] = idusuario;
+                ViewData["vclave"] = "";
+                ViewBag.Error = "La contraseña actual no es corresta";
+                return View();
+            }
+            else if (nuevaclave != confirmaclave)
+            {
+                TempData["IdUsuario"] = idusuario;
+                ViewData["vclave"] = claveactual;
+                ViewBag.Error = "Las contraseñas no coinciden";
+                return View();
+            }
+
+            ViewData["vclave"] = "";
+
+            nuevaclave = CN_Recursos.ConvertirSha256(nuevaclave);
+
+            string mensaje = string.Empty;
+            bool respuesta = new CN_Usuario().CambiarClave(int.Parse(idusuario), nuevaclave, out mensaje);
+
+            if (respuesta)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["IdUsuario"] = idusuario;
+
+                ViewBag.Error = mensaje;
+                return View();
+            }
+        }
+
+        #endregion CambiarClave
+
         public ActionResult CerrarSesion()
         {
-            Session["usuario"] = null;
-            return RedirectToAction("Login", "Acceso");
-        }
-    }
-    public class VariableSessionAttribute : ActionFilterAttribute
-    {
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            if (HttpContext.Current.Session["usuario"] == null)
-            {
-                filterContext.Result = new RedirectResult("~/Login/Login");
-            }
 
-            base.OnActionExecuted(filterContext);
+            Session["Usuario"] = null;
+
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Acceso");
         }
 
     }

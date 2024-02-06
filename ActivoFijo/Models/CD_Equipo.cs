@@ -44,7 +44,7 @@ namespace ActivoFijo.Models
                             CodInventario = dr["CodInventario"].ToString(),
                             oRazonSocial = new RazonSocial() { IdRazonSocial = Convert.ToInt32(dr["IdRazonSocial"]), NomRazonSocial = dr["NomRazonSocial"].ToString() },
                             Usuario = dr["Usuario"].ToString(),
-                            Stock = Convert.ToInt32(dr["Cantidad"]),
+                            Stock = Convert.ToInt32(dr["Stock"]),
                             GuiaIngreso = dr["GuiaIngreso"].ToString(),
                             oProveedor = new Proveedor() { IdProveedor = Convert.ToInt32(dr["IdProveedor"]), NomProveedor = dr["Proveedor"].ToString() },
                             OrdenCompra = dr["OrdenCompra"].ToString(),
@@ -106,7 +106,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("ActivoFijo", obj.ActivoFijo);
                     cmd.Parameters.AddWithValue("IdAlmacen", obj.oAlmacen.IdAlmacen);
                     cmd.Parameters.AddWithValue("CodMaterialSAP", obj.CodMaterialSAP);
-                    cmd.Parameters.AddWithValue("Cantidad", obj.Stock);
+                    cmd.Parameters.AddWithValue("Stock", obj.Stock);
                     cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
                     cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
@@ -163,7 +163,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("ActivoFijo", obj.ActivoFijo);
                     cmd.Parameters.AddWithValue("IdAlmacen", obj.oAlmacen.IdAlmacen);
                     cmd.Parameters.AddWithValue("CodMaterialSAP", obj.CodMaterialSAP);
-                    cmd.Parameters.AddWithValue("Cantidad", obj.Stock);
+                    cmd.Parameters.AddWithValue("Stock", obj.Stock);
                     cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
                     cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
                     cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);

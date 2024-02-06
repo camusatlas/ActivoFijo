@@ -211,7 +211,7 @@
                 success: function (response) {
                     $("#contenedor_producto").html(""); // Limpia el contenedor antes de agregar nuevos elementos
                     $("#contenedor_producto").LoadingOverlay("hide");
-        
+
                     $.each(response.data, function (i, element) {
                         $("<div>").addClass("col mb-5").append(
                             $("<div>").addClass("card h-100").append(
@@ -223,22 +223,22 @@
                                     )
                                 ),
                                 $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(
-        
-        
+
+
                                     $("<div>").addClass("d-grid gap-2").append(
-                                        @if (Session["usuario"]!=null)
+                                        @if (Session["Usuario"]!=null)
                                          {
                                              @:$("<button>").addClass("btn btn-success mt-auto agregarcarrito").data("idequipo", element.IdEquipos).text("Agregar al carrito"),
                                          }
-        
+
                                         $("<a>").addClass("btn btn-dark mt-auto btn-ver-detalle")
-                                           .attr({ "href": "@Url.Action("DetalleEquipo", "Tienda")" + "?idequipo=" + element.IdEquipos })
+                                           .attr({ "href": "@Url.Action("DetalleEquipo", "Equipos")" + "?idequipo=" + element.IdEquipos })
                                            .text("Ver detalle")
                                     )
-        
-        
+
+
                                 )
-        
+
                             )
                         ).appendTo("#contenedor_producto")
                     });
@@ -254,8 +254,40 @@
 
             var _idcategoria = $("input[name=categoria]:checked").val()
             var _idmarca = $("input[name=marca]:checked").val()
-            MostrarProducto(_idcategoria, _idmarca)
+            MostrarEquipo(_idcategoria, _idmarca)
 
+        })
+
+
+        $(document).on("click", "button.agregarcarrito", function () {
+            console.log($(this).data("idequipo"))
+        
+            jQuery.ajax({
+                url: '@Url.Action("AgregarCarrito", "Equipos")',
+                type: "POST",
+                data: JSON.stringify({ idequipo: $(this).data("idequipo") }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.respuesta) {
+                        MostrarCantidadCarrito();
+        
+                        swal({
+                            title: "Agregado al carrito",
+                            text: "¿Desea ir al carrito?",
+                            type: "success",
+                            showCancelButton: true,
+                            confirmButtonText: "Si",
+                            cancelButtonText: "No",
+                            closeOnConfirm: true
+                        }, function () {
+                            window.location.href = '@Url.Action("Carrito", "Equipos")'
+                        })
+                    } else {
+                        swal("", data.mensaje, "warning");
+                    }
+                }
+            })
         })
 
 

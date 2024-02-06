@@ -11,8 +11,7 @@
                 <div class="small mb-1">Marca: @Html.DisplayTextFor(m => m.oMarca.Descripcion)</div>
                 <h1 class="display-5 fw-bolder">@Html.DisplayTextFor(m => m.Nombre)</h1>
                 <div class="fs-5 mb-5">
-                    @*<span class="text-decoration-line-through">$45.00</span>*@
-                    <span>@Html.DisplayTextFor(m => m.Precio) USD</span>
+                    <span>@Html.DisplayTextFor(m => m.Precio) Soles</span>
                 </div>
                 <p class="lead">@Html.DisplayTextFor(m => m.Descripcion)</p>
                 <div class="d-flex">
@@ -20,9 +19,9 @@
                         <i class="fas fa-undo-alt"></i> Volver
                     </a>
 
-                    @if (Session["usuario"] != null)
+                    @if (Session["Usuario"] != null)
                     {
-                        <button class="btn btn-outline-success agregarcarrito flex-shink-0 w-50" type="button" data-idproducto="@Html.DisplayTextFor(m => m.IdProducto)">
+                        <button class="btn btn-outline-success agregarcarrito flex-shink-0 w-50" type="button" data-idquipo="@Html.DisplayFor(m => m.IdEquipos)">
                             <i class="fas fa-cart-plus"></i> Agregar al carrito
                         </button>
                     }
@@ -37,38 +36,24 @@
 @section scripts {
     <script>
         $(document).on("click", "button.agregarcarrito", function () {
-            console.log($(this).data("idequipo"))
+            console.log($(this).data("idquipo"));
 
             jQuery.ajax({
                 url: '@Url.Action("AgregarCarrito", "Equipos")',
                 type: "POST",
-                data: JSON.stringify({ idequipo: $(this).data("idequipo") }),
+                data: JSON.stringify({ idequipo: $(this).data("idquipo") }),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.respuesta) {
                         MostrarCantidadCarrito();
 
-                        @*swal({
-                            title: "Agregado al carrito",
-                            text: "¿Desea ir al carrito?",
-                            type: "success",
-                            showCancelButton: true,
-                            confirmButtonText: "Si",
-                            cancelButtonText: "No",
-                            closeOnConfirm: true
-                        }, function () {
-                            window.location.href = '@Url.Action("Carrito", "Tienda")'
-                        })*@
-
                         swal("", "Agregado al Carrito", "success");
-
                     } else {
                         swal("", data.mensaje, "warning");
                     }
                 }
-            })
-        })
+            });
+        });
     </script>
-
 }

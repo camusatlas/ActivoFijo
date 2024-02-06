@@ -4,9 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>Asignación de Equipos</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -20,24 +19,24 @@
 
                 </ul>
                 <form class="d-flex">
-                    @if (Session["usuario"] == null)
+                    @if (Session["Usuario"] == null)
                     {
-                        <a class="btn btn-outline-dark" aria-current="page" href="@Url.Action("Login", "Acceso")"><i class="fas fa-sign-out-alt me-1"></i>Iniciar Sesión</a>
+                        <a class="btn btn-outline-dark" aria-current="page" href="@Url.Action("Index", "Acceso")"><i class="fas fa-sign-out-alt me-1"></i>Iniciar Sesión</a>
                     }
                     else
                     {
-                        <a class="btn btn-outline-dark" href="@Url.Action("Carrito", "Tienda")">
+                        <a class="btn btn-outline-dark" href="@Url.Action("Carrito", "Equipos")">
                             <i class="fas fa-shopping-cart me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="cantidadcarrito">0</span>
                         </a>
 
                         <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#!"><b>@Session["displayName"]</b></a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("MisCompras", "Tienda")">Mis Compras</a></li>
+                                    <li><a class="dropdown-item" href="#!"><b>@User.Identity.Name</b></a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("MisCompras", "Equipos")">Mis Compras</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li><a class="dropdown-item" href="@Url.Action("CerrarSesion", "Acceso")">Cerrar Sesion</a></li>
                                 </ul>
@@ -59,3 +58,23 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<script>
+
+
+    function MostrarCantidadCarrito() {
+        if ($("#cantidadcarrito").length > 0) {
+            jQuery.ajax({
+                url: '@Url.Action("CatidadEnCarrito", "Equipos")',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                    $("#cantidadcarrito").text(data.cantidad)
+                }
+            })
+        }
+    }
+
+
+</script>
