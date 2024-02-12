@@ -61,6 +61,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex justify-content-end">
+                                    <label class="align-self-center"><b>Total: S/. <span id="total">0</span> </b></label>
+                                </div>
                             </div>
 
                         </div>
@@ -84,6 +87,14 @@
                                             <label for="cbotecnico" class="form-label">Tecnico : </label>
                                             <select class="form-select form-select-sm" id="cbotecnico"></select>
                                         </div>
+                                        <div class="mb-2">
+                                            <label for="txtticket" class="form-label">Ticket : </label>
+                                            <input type="text" class="form-control form-control-sm" id="txtticket" autocomplete="off" />
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="txtguia" class="form-label">Guia de Salida : </label>
+                                            <input type="text" class="form-control form-control-sm" id="txtguia" autocomplete="off" />
+                                        </div>
                                         <div class="d-grid">
                                             <button class="btn btn-success" type="button" onclick="RealizarPago()">
                                                 <i class=""></i> Asignar
@@ -101,13 +112,11 @@
     </div>
 </div>
 @section scripts {
-
     <script>
-
         $(document).ready(function () {
 
             jQuery.ajax({
-                url: '@Url.Action("ListarProductosCarrito", "Equipos")',
+                url: '@Url.Action("ListarEquipoCarrito", "Equipos")',
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -119,55 +128,82 @@
                     $.each(response.data, function (i, item) {
 
                         $("<div>").addClass("card mb-2 card-producto").append(
+                            $("<div>").addClass("card-body").append(
+                                $("<div>").addClass("row").append(
 
-
-
-
-
-                            "Hola mundo"
-                        ).appendTo("#producto-carrito")
+                                    //1.-
+                                    $("<div>").addClass("col-sm-2 align-self-center d-flex justify-content-center").append(
+                                        $("<img>").addClass("rounded").attr({ "src": "data:image/" + item.oEquipo.Extension + ";base64," + item.oEquipo.Base64 })
+                                            .css({ "width": "100px", "height": "100px" })
+                                    ),
+                                    //2.-
+                                    $("<div>").addClass("col-sm-4 align-self-center").append(
+                                        $("<span>").addClass("font-wight-bold d-block").text(item.oEquipo.oMarca.Descripcion),
+                                        $("<span>").text(item.oEquipo.Nombre)
+                                    ),
+                                    //3.-
+                                    $("<div>").addClass("col-sm-2 align-self-center").append(
+                                        $("<span>").text("S./" + item.oEquipo.Precio.toFixed(2))
+                                    ),
+                                    //4.-
+                                    $("<div>").addClass("col-sm-2 align-self-center").append(
+                                        $("<div>").addClass("d-flex").append(
+                                            $("<button>").addClass("btn btn-outline-secondary btn-restar rounded-0").append($("<i>").addClass("fas fa-minus")),
+                                            $("<input>").addClass("form-control input-cantidad p-1 text-center rounded-0").attr({ "disabled": "disabled" })
+                                                .css({ "width": "40px" })
+                                                .data("oEquipo", item.oEquipo)
+                                                .val(item.Cantidad),
+                                            $("<button>").addClass("btn btn-outline-secondary btn-sumar rounded-0").append($("<i>").addClass("fas fa-plus")),
+                                        )
+                                    ),
+                                    $("<div>").addClass("col-sm-2 align-self-center").append(
+                                        $("<button>").addClass("btn btn-outline-danger btn-eliminar").append($("<i>").addClass("far fa-trash-alt")).text("Eliminar")
+                                            .data("idequipo", item.oEquipo.IdEquipos),
+                                    )
+                                )
+                            )
+                        ).appendTo("#productos-carrito")
                     })
+                    sumarTotal();
+                },
+                error: function (error) {
+                    $("#productos-carrito").LoadingOverlay("hide");
+                },
+                beforeSend: function () {
+                    $("#productos-carrito").LoadingOverlay("show");
                 }
-            })
-
-
-
-
-            ListarMarcaTienda()
-        })
-
-
+            });
+            ListarMarcaTienda();
+            ListarTecnico();
+        });
 
         function ListarMarcaTienda() {
-
-            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cbomarcatienda")
+            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cbomarcatienda");
 
             jQuery.ajax({
                 url: '@Url.Action("ObtenerMarcaTienda", "Equipos")',
                 type: "POST",
                 dataType: "json",
-                contentType: "application/json; charset= utf-8",
+                contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.lista != null) {
                         $.each(data.lista, function (i, item) {
-                            $("<option>").attr({ "value": item.IdMarcaTienda }).text(item.Descripcion).appendTo("#cbomarcatienda")
-                        })
+                            $("<option>").attr({ "value": item.IdMarcaTienda }).text(item.Descripcion).appendTo("#cbomarcatienda");
+                        });
                         ListarTienda();
                     }
                 }
-            })
+            });
         }
 
         $("#cbomarcatienda").on("change", function () {
             ListarTienda();
-        })
-
+        });
 
         function ListarTienda() {
+            $("#cbotienda").html("");
 
-            $("#cbomarcatienda").html("")
-
-            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cbotienda")
+            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cbotienda");
 
             jQuery.ajax({
                 url: '@Url.Action("ObtenerTienda", "Equipos")',
@@ -178,15 +214,209 @@
                 success: function (data) {
                     if (data.lista != null) {
                         $.each(data.lista, function (i, item) {
-                            $("<option>").attr({ "value": item.IdTienda }).text(item.Descripcion).appendTo("#cbotienda")
-                        })
-                        
+                            $("<option>").attr({ "value": item.IdTienda }).text(item.Descripcion).appendTo("#cbotienda");
+                        });
                     }
                 }
-            })
+            });
+        }
+
+        function ListarTecnico() {
+            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cbotecnico");
+
+            jQuery.ajax({
+                url: '@Url.Action("ObtenerTecnico", "Equipos")',
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.lista != null) {
+                        $.each(data.lista, function (i, item) {
+                            $("<option>").attr({ "value": item.IdTecnico }).text(item.Nombres).appendTo("#cbotecnico");
+                        });
+                        ListarTienda();
+                    }
+                }
+            });
+        }
+
+        function sumarTotal() {
+            var sumaTotal = parseFloat(0);
+
+            $("input.input-cantidad").each(function (i) {
+                var precio = $(this).data("oEquipo").Precio;
+                var cantidad = parseFloat($(this).val());
+
+                var subtotal = precio * cantidad;
+
+                sumaTotal += subtotal;
+            });
+            $("#total").text(sumaTotal.toFixed(2));
+            $("#total").data("sumaTotal", sumaTotal);
+        }
+
+        $(document).on("click", ".btn-sumar", function () {
+            var div_contenedor = $(this).parent("div.d-flex");
+
+            var input_cantidad = $(div_contenedor).find("input.input-cantidad");
+
+            var btn = $(this);
+
+            var idequipo = div_contenedor.find("input.input-cantidad").data("oEquipo").IdEquipos;
+
+            jQuery.ajax({
+                url: '@Url.Action("OperacionCarrito", "Equipos")',
+                type: "POST",
+                data: JSON.stringify({ idequipo: idequipo, sumar: true }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.respuesta) {
+
+                        $(btn).LoadingOverlay("hide");
+
+                        var cantidad = parseInt($(input_cantidad).val()) + 1;
+                        $(input_cantidad).val(cantidad);
+                        sumarTotal();
+                    } else {
+
+                        swal("", data.mensaje, "warning");
+                    }
+                },
+                beforeSend: function () {
+                    $(btn).LoadingOverlay("show");
+                },
+                error: function (error) {
+                    $(btn).LoadingOverlay("hide");
+                }
+            });
+        });
+
+        $(document).on("click", ".btn-restar", function () {
+            var div_contenedor = $(this).parents("div.d-flex");
+
+            var input_cantidad = $(div_contenedor).find("input.input-cantidad");
+
+            var btn = $(this);
+
+            var idequipo = div_contenedor.find("input.input-cantidad").data("oEquipo").IdEquipos;
+
+            var cantidad = parseInt($(input_cantidad).val()) - 1;
+
+            if (cantidad >= 1) {
+
+                jQuery.ajax({
+                    url: '@Url.Action("OperacionCarrito", "Equipos")',
+                    type: "POST",
+                    data: JSON.stringify({ idequipo: idequipo, sumar: false }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data.respuesta) {
+
+                            $(btn).LoadingOverlay("hide");
+
+                            $(input_cantidad).val(cantidad);
+                            sumarTotal();
+                        } else {
+
+                            swal("", data.mensaje, "warning");
+                        }
+                    },
+                    beforeSend: function () {
+                        $(btn).LoadingOverlay("show");
+                    },
+                    error: function (error) {
+                        $(btn).LoadingOverlay("hide");
+                    }
+                });
+
+            }
+        });
+
+        $(document).on("click", ".btn-eliminar", function () {
+
+            var idequipo = $(this).data("idequipo");
+
+            var card_producto = $(this).parents("div.card-producto");
+
+            jQuery.ajax({
+                url: '@Url.Action("EliminarCarrito", "Equipos")',
+                type: "POST",
+                data: JSON.stringify({ idequipo: idequipo }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.respuesta) {
+
+                        card_producto.remove();
+                        MostrarCantidadCarrito();
+                        sumarTotal();
+
+                    } else {
+
+                        swal("", data.mensaje, "warning");
+                    }
+                }
+            });
+        });
+
+        function RealizarPago() {
+            debugger;
+
+            if (parseInt($("cantidadcarrito").text()) == 0) {
+
+                swal("", "No existe equipos en el carrito", "warning");
+                return;
+            }
+
+            if ($("#cbotienda").val() == null || $("#cbotecnico").val() == "" || $("#txtticket").val() == "" || $("#txtguia").val() == "") {
+                swal("", "Debe completar los datos de detalle envio", "warning");
+                return;
+            }
+
+            var venta = {
+                TotalProducto: $("input.input-cantidad").length,
+                MontoTotal: 0,
+                IdTienda: $("#cbotienda").val(),
+                IdTecnico: $("#cbotecnico").val(),
+                Ticket: $("#txtticket").val(),
+                GuiaSalida: $("#txtguia").val()
+
+            };
+
+            var lista_carrito = [];
+
+            $("input.input-cantidad").each(function (i) {
+                var equipo = $(this).data("oEquipo");
+                var cantidad = parseFloat($(this).val());
+
+                lista_carrito.push({
+                    oEquipo: equipo,
+                    Cantidad: cantidad
+                });
+            });
+
+            jQuery.ajax({
+                url: '@Url.Action("ProcesarPago", "Equipos")',
+                type: "POST",
+                data: JSON.stringify({ oListaCarrito: lista_carrito, oVenta: venta }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $.LoadingOverlay("hide");
+                    if (data.Status) {
+                        window.location.href = data.Link;
+                    } else {
+                        swal("", "Vuelva intentarlo mas tarde", "warning");
+                    }
+                },
+                beforeSend: function () { $.LoadingOverlay("show"); },
+                error: function (error) { $.LoadingOverlay("hide"); }
+            });
 
         }
 
     </script>
-
 }

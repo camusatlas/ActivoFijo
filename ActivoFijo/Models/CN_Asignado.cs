@@ -19,5 +19,10 @@ namespace ActivoFijo.Models
         {
             return objCapaDato.ObtenerTienda(idmarcatienda);
         }
+
+        public List<Tecnico> ObtenerTecnico()
+        {
+            return objCapaDato.ObtenerTecnico();
+        }
     }
 }

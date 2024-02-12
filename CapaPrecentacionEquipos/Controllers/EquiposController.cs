@@ -3,10 +3,14 @@ using DocumentFormat.OpenXml.Bibliography;
 using Irony.Parsing;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace CapaPrecentacionEquipos.Controllers
 {
@@ -192,13 +196,109 @@ namespace CapaPrecentacionEquipos.Controllers
         }
 
         [HttpPost]
-        public JsonResult ObtenerTienda(string idtiendamarca)
+        public JsonResult ObtenerTienda(string idmarcatienda)
         {
             List<Tienda> oLista = new List<Tienda>();
 
-            oLista = new CN_Asignado().ObtenerTienda(idtiendamarca);
+            oLista = new CN_Asignado().ObtenerTienda(idmarcatienda);
 
             return Json(new { lista = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerTecnico()
+        {
+            List<Tecnico> oLista = new List<Tecnico>();
+
+            oLista = new CN_Asignado().ObtenerTecnico();
+
+            return Json(new { lista = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ListarEquipoCarrito()
+        {
+            int idusuario = ((Usuario)Session["Usuario"]).IdUsuario;
+
+            List<Carrito> oLista = new List<Carrito>();
+
+            bool conversion;
+
+            oLista = new CN_Carrito().ListarEquipo(idusuario).Select(oc => new Carrito()
+            {
+                oEquipo = new Equipo()
+                {
+                    IdEquipos = oc.oEquipo.IdEquipos,
+                    Nombre = oc.oEquipo.Nombre,
+                    oMarca = oc.oEquipo.oMarca,
+                    Precio = oc.oEquipo.Precio,
+                    RutaImagen = oc.oEquipo.RutaImagen,
+                    Base64 = CN_Recursos.ConvertirBase64(Path.Combine(oc.oEquipo.RutaImagen, oc.oEquipo.NombreImagen), out conversion),
+                    Extension = Path.GetExtension(oc.oEquipo.NombreImagen)
+                },
+                Cantidad = oc.Cantidad
+            }).ToList();
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ProcesarPago(List<Carrito> oListaCarrito, Venta oVenta)
+        {
+            decimal total = 0;
+
+            DataTable detalle_venta = new DataTable();
+            detalle_venta.Locale = new CultureInfo("es-PE");
+            detalle_venta.Columns.Add("IdEquipos", typeof(string));
+            detalle_venta.Columns.Add("Cantidad", typeof(int));
+            detalle_venta.Columns.Add("Total", typeof(decimal));
+
+            foreach (Carrito oCarrito in oListaCarrito)
+            {
+                decimal subtotal = Convert.ToDecimal(oCarrito.Cantidad.ToString()) * oCarrito.oEquipo.Precio;
+
+                total += subtotal;
+                detalle_venta.Rows.Add(new object[]
+                {
+                    oCarrito.oEquipo.IdEquipos,
+                    oCarrito.Cantidad,
+                    subtotal,
+                });
+
+            }
+
+            oVenta.MontoTotal = total;
+            oVenta.IdUsuario = ((Usuario)Session["Usuario"]).IdUsuario;
+
+            TempData["Venta"] = oVenta;
+            TempData["DetalleVenta"] = detalle_venta;
+
+            return Json(new { Status = true, Link = "/Equipos/Pagoefectuado?idTransaccion=code0001&status=true" }, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> PagoEfectuado()
+        {
+            string idtransaccion = Request.QueryString["idTransaccion"];
+            bool status = Convert.ToBoolean(Request.QueryString["status"]);
+
+            ViewData["Status"] = status;
+
+            if (status)
+            {
+                Venta oVenta = (Venta)TempData["Venta"];
+
+                DataTable detalle_venta = (DataTable)TempData["DetalleVenta"];
+
+                oVenta.IdTransaccion = idtransaccion;
+
+                string mensaje = string.Empty;
+
+                bool respuesta = new CN_Venta().Registrar(oVenta, detalle_venta, out mensaje);
+
+                ViewData["IdTransaccion"] = oVenta.IdTransaccion;
+            }
+
+            return View();
         }
 
     }

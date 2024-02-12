@@ -269,6 +269,7 @@
     <Compile Include="Models\CD_SistemaOperativo.cs" />
     <Compile Include="Models\CD_Tecnico.cs" />
     <Compile Include="Models\CD_Usuario.cs" />
+    <Compile Include="Models\CD_Venta.cs" />
     <Compile Include="Models\CD_WorkStation.cs" />
     <Compile Include="Models\CN_Almacen.cs" />
     <Compile Include="Models\CN_Asignado.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Models\CN_SistemaOperativo.cs" />
     <Compile Include="Models\CN_Tecnico.cs" />
     <Compile Include="Models\CN_Usuario.cs" />
+    <Compile Include="Models\CN_Venta.cs" />
     <Compile Include="Models\CN_WorkStation.cs" />
     <Compile Include="Models\DashBoard.cs" />
     <Compile Include="Models\Equipo.cs" />
@@ -309,6 +311,7 @@
     <Compile Include="Models\Tienda.cs" />
     <Compile Include="Models\TipoEquipo.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Venta.cs" />
     <Compile Include="Models\WorkStation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

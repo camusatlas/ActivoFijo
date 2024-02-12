@@ -17,6 +17,40 @@ namespace ActivoFijo.Models
             cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
         }
 
+        public List<Tecnico> ObtenerTecnico()
+        {
+            List<Tecnico> listado = new List<Tecnico>();
+            SqlCommand cmd = new SqlCommand("sp_ListarTecnico", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        Tecnico tecnico = new Tecnico()
+                        {
+                            IdTecnico = Convert.ToInt32(dr["IdTecnico"]),
+                            Nombres = dr["Descripcion"].ToString()
+                        };
+                        listado.Add(tecnico);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                    cn.Close();
+            }
+            return listado;
+        }
+
+
         public List<MarcaTienda> ObtenerMarcaTienda()
         {
             List<MarcaTienda> listado = new List<MarcaTienda>();
@@ -32,7 +66,7 @@ namespace ActivoFijo.Models
                         MarcaTienda marcatienda = new MarcaTienda()
                         {
                             IdMarcaTienda = dr["IdMarcaTienda"].ToString(),
-                            Descripcion = dr["Descripcion"].ToString()
+                            Descripcion = dr["NombreMarca"].ToString()
                         };
                         listado.Add(marcatienda);
                     }
@@ -53,7 +87,7 @@ namespace ActivoFijo.Models
         public List<Tienda> ObtenerTienda(string idmarcatienda)
         {
             List<Tienda> listado = new List<Tienda>();
-            SqlCommand cmd = new SqlCommand("sp_OptenerTienda", cn);
+            SqlCommand cmd = new SqlCommand("sp_ObtenerTienda", cn);
             cmd.Parameters.AddWithValue("@IdMarcaTienda", idmarcatienda);
             cmd.CommandType = CommandType.StoredProcedure;
             try
