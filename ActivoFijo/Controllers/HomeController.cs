@@ -842,6 +842,8 @@ namespace ActivoFijo.Controllers
 
             dt.Locale = new System.Globalization.CultureInfo("es-Pe");
             dt.Columns.Add("Fecha Asigando", typeof(string));
+            dt.Columns.Add("Usuario", typeof(string));
+            dt.Columns.Add("Tienda", typeof(string));
             dt.Columns.Add("Tecnico", typeof(string));
             dt.Columns.Add("Equipo", typeof(string));
             dt.Columns.Add("Precio", typeof(decimal));
@@ -855,7 +857,9 @@ namespace ActivoFijo.Controllers
                 dt.Rows.Add(new object[]
                 {
                     rp.FechaVenta,
-                    rp.Cliente,
+                    rp.Usuario,
+                    rp.Tienda,
+                    rp.Tecnico,
                     rp.Equipo,
                     rp.Precio,
                     rp.Cantidad,

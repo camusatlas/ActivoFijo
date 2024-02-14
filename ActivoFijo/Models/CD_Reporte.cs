@@ -38,7 +38,9 @@ namespace ActivoFijo.Models
                         Reporte reporte = new Reporte()
                         {
                             FechaVenta = dr["FechaVenta"].ToString(),
-                            Cliente = dr["Cliente"].ToString(),
+                            Usuario = dr["Usuario"].ToString(),
+                            Tienda = dr["Tienda"].ToString(),
+                            Tecnico = dr["Tecnico"].ToString(),
                             Equipo = dr["Producto"].ToString(),
                             Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-PE")),
                             Cantidad = Convert.ToInt32(dr["Cantidad"].ToString()),

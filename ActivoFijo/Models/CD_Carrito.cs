@@ -83,7 +83,7 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) from CARRITO where IdUsuario = @idusuario", cn))
+                using (SqlCommand cmd = new SqlCommand("select count(*) from CARRITO where IdUsuario = @IdUsuario", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@IdUsuario", idusuario);

@@ -84,8 +84,8 @@
                                             <select class="form-select form-select-sm" id="cbotienda"></select>
                                         </div>
                                         <div class="mb-2">
-                                            <label for="cbotecnico" class="form-label">Tecnico : </label>
-                                            <select class="form-select form-select-sm" id="cbotecnico"></select>
+                                            <label for="txttecnico" class="form-label">Tecnico : </label>
+                                            <input type="text" class="form-control form-control-sm" id="txttecnico" autocomplete="off" />
                                         </div>
                                         <div class="mb-2">
                                             <label for="txtticket" class="form-label">Ticket : </label>
@@ -174,7 +174,6 @@
                 }
             });
             ListarMarcaTienda();
-            ListarTecnico();
         });
 
         function ListarMarcaTienda() {
@@ -216,25 +215,6 @@
                         $.each(data.lista, function (i, item) {
                             $("<option>").attr({ "value": item.IdTienda }).text(item.Descripcion).appendTo("#cbotienda");
                         });
-                    }
-                }
-            });
-        }
-
-        function ListarTecnico() {
-            $("<option>").attr({ "value": "00", "disabled": "disabled", "selected": "true" }).text("Seleccionar").appendTo("#cbotecnico");
-
-            jQuery.ajax({
-                url: '@Url.Action("ObtenerTecnico", "Equipos")',
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    if (data.lista != null) {
-                        $.each(data.lista, function (i, item) {
-                            $("<option>").attr({ "value": item.IdTecnico }).text(item.Nombres).appendTo("#cbotecnico");
-                        });
-                        ListarTienda();
                     }
                 }
             });
@@ -370,7 +350,7 @@
                 return;
             }
 
-            if ($("#cbotienda").val() == null || $("#cbotecnico").val() == "" || $("#txtticket").val() == "" || $("#txtguia").val() == "") {
+            if ($("#cbotienda").val() == null || $("#txttecnico").val() == "" || $("#txtticket").val() == "" || $("#txtguia").val() == "") {
                 swal("", "Debe completar los datos de detalle envio", "warning");
                 return;
             }
@@ -379,7 +359,7 @@
                 TotalProducto: $("input.input-cantidad").length,
                 MontoTotal: 0,
                 IdTienda: $("#cbotienda").val(),
-                IdTecnico: $("#cbotecnico").val(),
+                IdTecnico: $("#txttecnico").val(),
                 Ticket: $("#txtticket").val(),
                 GuiaSalida: $("#txtguia").val()
 

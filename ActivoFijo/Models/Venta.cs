@@ -8,7 +8,7 @@ namespace ActivoFijo.Models
     public class Venta
     {
         public int IdSalidaEquipo { get; set; }
-        public int IdTecnico { get; set; }
+        public string IdTecnico { get; set; }
         public int IdUsuario { get; set; }
         public int TotalProducto { get; set; }
         public decimal MontoTotal { get; set; }
