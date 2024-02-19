@@ -551,6 +551,7 @@
     <Content Include="Scripts\Botones\jszip.min.js" />
     <Content Include="Scripts\Botones\pdfmake.min.js" />
     <Content Include="Scripts\Botones\vfs_fonts.js" />
+    <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
