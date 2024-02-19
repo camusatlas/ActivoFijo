@@ -258,6 +258,7 @@
     <Compile Include="Models\CD_Equipo.cs" />
     <Compile Include="Models\CD_KDS.cs" />
     <Compile Include="Models\CD_Marca.cs" />
+    <Compile Include="Models\CD_MarcaTeinda.cs" />
     <Compile Include="Models\CD_Modelo.cs" />
     <Compile Include="Models\CD_PCGerencial.cs" />
     <Compile Include="Models\CD_Prioridad.cs" />
@@ -268,6 +269,7 @@
     <Compile Include="Models\CD_Servidor.cs" />
     <Compile Include="Models\CD_SistemaOperativo.cs" />
     <Compile Include="Models\CD_Tecnico.cs" />
+    <Compile Include="Models\CD_Tienda.cs" />
     <Compile Include="Models\CD_Usuario.cs" />
     <Compile Include="Models\CD_Venta.cs" />
     <Compile Include="Models\CD_WorkStation.cs" />
@@ -296,6 +298,7 @@
     <Compile Include="Models\Equipo.cs" />
     <Compile Include="Models\KDS.cs" />
     <Compile Include="Models\Marca.cs" />
+    <Compile Include="Models\MarcaTeinda.cs" />
     <Compile Include="Models\MarcaTienda.cs" />
     <Compile Include="Models\Modelo.cs" />
     <Compile Include="Models\PCGerencial.cs" />

@@ -219,7 +219,8 @@
                                 $("<div>").addClass("card-body p-4").append(
                                     $("<div>").addClass("text-center").append(
                                         $("<h5>").addClass("fw-bolder").text(element.Nombre),
-                                        "S/ " + element.Precio.toFixed(2)
+                                        $("<p>").text("Razón Social: " + element.oRazonSocial.NomRazonSocial),
+                                        "S/ " + element.Precio.toFixed(2) 
                                     )
                                 ),
                                 $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(

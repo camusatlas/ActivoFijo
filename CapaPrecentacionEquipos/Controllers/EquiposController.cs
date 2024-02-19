@@ -71,6 +71,8 @@ namespace CapaPrecentacionEquipos.Controllers
                 Descripcion = p.Descripcion,
                 oMarca = p.oMarca,
                 oCategoria = p.oCategoria,
+                oRazonSocial = p.oRazonSocial,
+                Serie = p.Serie,
                 Precio = p.Precio,
                 Stock = p.Stock,
                 RutaImagen = p.RutaImagen,
