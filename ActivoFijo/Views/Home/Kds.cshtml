@@ -51,14 +51,14 @@
             </div>
             <div class="modal-body">
 
-                <input id="IdKds" type="text" value="0" style="display: none;" />
+                <input id="txtIdKds" type="text" value="0" style="display: none;" />
 
 
                 <div class="row g-2">
 
                     <div class="col-sm-6">
-                        <label for="empresa" class="form-label">Empresa</label>
-                        <select class="form-control" id="empresa" name="empresa" placeholder="Ingresa Empresa">
+                        <label for="cboempresa" class="form-label">Empresa</label>
+                        <select class="form-control" id="cboempresa" placeholder="Ingresa Empresa">
                             <option value="CINDEL">CINDEL</option>
                             <option value="DELOSI">DELOSI</option>
                             <option value="LASINO">LASINO</option>
@@ -69,8 +69,8 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="marca" class="form-label">Marca</label>
-                        <select class="form-control" id="marca" name="marca" placeholder="Ingresa Marca">
+                        <label for="cbomarca" class="form-label">Marca</label>
+                        <select class="form-control" id="cbomarca" name="cbomarca" placeholder="Ingresa Marca">
                             <option value="BK">BK</option>
                             <option value="CH">CH</option>
                             <option value="KF">KF</option>
@@ -82,31 +82,31 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="tienda" class="form-label">Tienda</label>
-                        <input type="text" class="form-control" id="tienda" placeholder="Ingresa tienda" maxlength="20">
+                        <label for="txttienda" class="form-label">Tienda</label>
+                        <input type="text" class="form-control" id="txttienda" placeholder="Ingresa tienda" maxlength="20" autocomplete="off">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="nombre_tienda" class="form-label">Nombre de la tienda</label>
-                        <input type="text" class="form-control" id="nombre_tienda" placeholder="Ingrese el nombre de la tienda" maxlength="50">
+                        <label for="txtnombre_tienda" class="form-label">Nombre de la tienda</label>
+                        <input type="text" class="form-control" id="txtnombre_tienda" placeholder="Ingrese el nombre de la tienda" maxlength="50">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="ip_kds" class="form-label">IP</label>
-                        <input type="text" class="form-control" id="ip_kds" placeholder="Ingrese la IP" maxlength="30">
+                        <label for="txtip_kds" class="form-label">IP</label>
+                        <input type="text" class="form-control" id="txtip_kds" placeholder="Ingrese la IP" maxlength="30">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="hostname" class="form-label">HostName</label>
-                        <input type="text" class="form-control" id="hostname" placeholder="Ingrese el HostName" maxlength="30">
+                        <label for="txthostname" class="form-label">HostName</label>
+                        <input type="text" class="form-control" id="txthostname" placeholder="Ingrese el HostName" maxlength="30">
                     </div>
                     <div class="col-sm-6">
-                        <label for="serie" class="form-label">Serie</label>
-                        <input type="text" class="form-control" id="serie" placeholder="Ingrese N° de Serie" maxlength="30">
+                        <label for="txtserie" class="form-label">Serie</label>
+                        <input type="text" class="form-control" id="txtserie" placeholder="Ingrese N° de Serie" maxlength="30">
                     </div>
                     <div class="col-sm-6">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-control" id="status" name="status">
+                        <label for="cbostatus" class="form-label">Status</label>
+                        <select class="form-control" id="cbostatus">
                             <option value="1">Operativa</option>
                             <option value="0">Inoperativa</option>
                         </select>
@@ -228,29 +228,29 @@
 });
 
         function abrirModal(json) {
-            $("#IdKds").val(0);
-            $("#empresa").val("");
-            $("#marca").val("");
-            $("#tienda").val("");
-            $("#nombre_tienda").val("");
-            $("#ip_kds").val("");
-            $("#hostname").val("");
-            $("#serie").val("");
-            $("#status").val(1);
+            $("#txtIdKds").val(0);
+            $("#cboempresa").val("");
+            $("#cbomarca").val("");
+            $("#txttienda").val("");
+            $("#txtnombre_tienda").val("");
+            $("#txtip_kds").val("");
+            $("#txthostname").val("");
+            $("#txtserie").val("");
+            $("#cbostatus").val(1);
 
             // Ocultar valores
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#IdKds").val(json.IdKds);
-                $("#empresa").val(json.empresa);
-                $("#marca").val(json.marca);
-                $("#tienda").val(json.tienda);
-                $("#nombre_tienda").val(json.nombre_tienda);
-                $("#ip_kds").val(json.ip_kds);
-                $("#hostname").val(json.hostname);
-                $("#serie").val(json.serie);
-                $("#status").val(json.status ? 1 : 0);
+                $("#txtIdKds").val(json.IdKds);
+                $("#cboempresa").val(json.empresa);
+                $("#cbomarca").val(json.marca);
+                $("#txttienda").val(json.tienda);
+                $("#txtnombre_tienda").val(json.nombre_tienda);
+                $("#txtip_kds").val(json.ip_kds);
+                $("#txthostname").val(json.hostname);
+                $("#txtserie").val(json.serie);
+                $("#cbostatus").val(json.status ? 1 : 0);
             }
 
             $("#formModal").modal("show");
@@ -266,15 +266,15 @@
         function Guardar() {
             debugger;
     var KDS = {
-        IdKds: $("#IdKds").val(),
-        empresa: $("#empresa").val(),
-        tienda: $("#tienda").val(),
-        nombre_tienda: $("#nombre_tienda").val(),
-        ip_kds: $("#ip_kds").val(),
-        hostname: $("#hostname").val(),
-        serie: $("#serie").val(),
-        marca: $("#marca").val(),
-        status: $("#status").val() == 1 ? true : false,
+        IdKds: $("#txtIdKds").val(),
+        empresa: $("#cboempresa").val(),
+        tienda: $("#txttienda").val(),
+        nombre_tienda: $("#txtnombre_tienda").val(),
+        ip_kds: $("#txtip_kds").val(),
+        hostname: $("#txthostname").val(),
+        serie: $("#txtserie").val(),
+        marca: $("#cbomarca").val(),
+        status: $("#cbostatus").val() == 1 ? true : false,
     };
 
     jQuery.ajax({

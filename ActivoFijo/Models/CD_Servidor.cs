@@ -76,25 +76,25 @@ namespace ActivoFijo.Models
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
-                    cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
-                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("ip_servidor", obj.ip_servidor);
-                    cmd.Parameters.AddWithValue("nom_servidor", obj.nom_servidor);
-                    cmd.Parameters.AddWithValue("modelo", obj.modelo);
-                    cmd.Parameters.AddWithValue("serie", obj.serie);
-                    cmd.Parameters.AddWithValue("sistema_operativo", obj.sistema_operativo);
-                    cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
-                    cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
-                    cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("p_cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("p_tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("p_ip_servidor", obj.ip_servidor);
+                    cmd.Parameters.AddWithValue("p_nom_servidor", obj.nom_servidor);
+                    cmd.Parameters.AddWithValue("p_modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("p_serie", obj.serie);
+                    cmd.Parameters.AddWithValue("p_sistema_operativo", obj.sistema_operativo);
+                    cmd.Parameters.AddWithValue("p_version_micros", obj.version_micros);
+                    cmd.Parameters.AddWithValue("p_memoria_ram", obj.memoria_ram);
+                    cmd.Parameters.AddWithValue("p_status", obj.status);
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
                 }
             }
             catch (Exception ex)
@@ -117,26 +117,26 @@ namespace ActivoFijo.Models
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdTienda", obj.IdTienda);
-                    cmd.Parameters.AddWithValue("cod_marca", obj.cod_marca);
-                    cmd.Parameters.AddWithValue("cod_tienda", obj.cod_tienda);
-                    cmd.Parameters.AddWithValue("tienda", obj.tienda);
-                    cmd.Parameters.AddWithValue("ip_servidor", obj.ip_servidor);
-                    cmd.Parameters.AddWithValue("nom_servidor", obj.nom_servidor);
-                    cmd.Parameters.AddWithValue("modelo", obj.modelo);
-                    cmd.Parameters.AddWithValue("serie", obj.serie);
-                    cmd.Parameters.AddWithValue("sistema_operativo", obj.sistema_operativo);
-                    cmd.Parameters.AddWithValue("version_micros", obj.version_micros);
-                    cmd.Parameters.AddWithValue("memoria_ram", obj.memoria_ram);
-                    cmd.Parameters.AddWithValue("status", obj.status);
-                    cmd.Parameters.Add("Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdTienda", obj.IdTienda);
+                    cmd.Parameters.AddWithValue("p_cod_marca", obj.cod_marca);
+                    cmd.Parameters.AddWithValue("p_cod_tienda", obj.cod_tienda);
+                    cmd.Parameters.AddWithValue("p_tienda", obj.tienda);
+                    cmd.Parameters.AddWithValue("p_ip_servidor", obj.ip_servidor);
+                    cmd.Parameters.AddWithValue("p_nom_servidor", obj.nom_servidor);
+                    cmd.Parameters.AddWithValue("p_modelo", obj.modelo);
+                    cmd.Parameters.AddWithValue("p_serie", obj.serie);
+                    cmd.Parameters.AddWithValue("p_sistema_operativo", obj.sistema_operativo);
+                    cmd.Parameters.AddWithValue("p_version_micros", obj.version_micros);
+                    cmd.Parameters.AddWithValue("p_memoria_ram", obj.memoria_ram);
+                    cmd.Parameters.AddWithValue("p_status", obj.status);
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }

@@ -59,14 +59,14 @@
             </div>
             <div class="modal-body">
 
-                <input id="IdWorkStation" type="text" value="0" style="display: none;" />
+                <input id="txtIdWorkStation" type="text" value="0" style="display: none;" />
 
 
                 <div class="row g-2">
 
                     <div class="col-sm-6">
-                        <label for="cod_marca" class="form-label">Código de Marca</label>
-                        <select class="form-control" id="cod_marca" name="cod_marca">
+                        <label for="cbocod_marca" class="form-label">Código de Marca</label>
+                        <select class="form-control" id="cbocod_marca" >
                             <option value="BK">BK</option>
                             <option value="CH">CH</option>
                             <option value="KF">KF</option>
@@ -78,49 +78,49 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="cod_tienda" class="form-label">Código Tienda</label>
-                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
+                        <label for="txtcod_tienda" class="form-label">Código Tienda</label>
+                        <input type="text" class="form-control" id="txtcod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
                     </div>
 
 
                     <div class="col-sm-6">
-                        <label for="tienda" class="form-label">Tienda</label>
-                        <input type="text" class="form-control" id="tienda" placeholder="Ingrese la IP del Servisor" maxlength="20">
+                        <label for="txttienda" class="form-label">Tienda</label>
+                        <input type="text" class="form-control" id="txttienda" placeholder="Ingrese la IP del Servisor" maxlength="20">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="caja" class="form-label">Caja</label>
-                        <input type="text" class="form-control" id="caja" placeholder="Ingrese el nombre del servidor" maxlength="50">
+                        <label for="txtcaja" class="form-label">Caja</label>
+                        <input type="text" class="form-control" id="txtcaja" placeholder="Ingrese el nombre del servidor" maxlength="50">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="ip_workstation" class="form-label">IP</label>
-                        <input type="text" class="form-control" id="ip_workstation" placeholder="Ingrese el Modelo de Equipo" maxlength="90">
+                        <label for="txtip_workstation" class="form-label">IP</label>
+                        <input type="text" class="form-control" id="txtip_workstation" placeholder="Ingrese el Modelo de Equipo" maxlength="90">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="hostname" class="form-label">HostName</label>
-                        <input type="text" class="form-control" id="hostname" placeholder="Ingrese la serie del Equipo" maxlength="90">
+                        <label for="txthostname" class="form-label">HostName</label>
+                        <input type="text" class="form-control" id="txthostname" placeholder="Ingrese la serie del Equipo" maxlength="90">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="tipo" class="form-label">Tipo</label>
-                        <input type="text" class="form-control" id="tipo" placeholder="Ingrese la vercion del Micros" maxlength="90">
+                        <label for="txttipo" class="form-label">Tipo</label>
+                        <input type="text" class="form-control" id="txttipo" placeholder="Ingrese la vercion del Micros" maxlength="90">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="modelo" class="form-label">Modelo</label>
-                        <select class="form-control" id="modelo">
+                        <label for="cbomodelo" class="form-label">Modelo</label>
+                        <select class="form-control" id="cbomodelo">
                             <option value="ACTUAL">ACTUAL</option>
                             <option value="ANTIGUA">ANTIGUA</option>
                         </select>
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-control" id="status">
-                            <option value="ON">ON</option>
-                            <option value="OFF">OFF</option>
+                        <label for="cbostatus" class="form-label">Status</label>
+                        <select class="form-control" id="cbostatus">
+                            <option value="A">A</option>
+                            <option value="I">I</option>
                         </select>
                     </div>
 
@@ -171,11 +171,11 @@
                 "data": "modelo"
             },
             {
-                "data": "status", "render": function (valor) {
+                "data": "flg_estado", "render": function (valor) {
                     if (valor) {
-                        return '<span class="badge bg-success">ON</span>';
+                        return '<span class="badge bg-success">A</span>';
                     } else {
-                        return '<span class="badge bg-danger">OFF</span>';
+                        return '<span class="badge bg-danger">I</span>';
                     }
                 }
             },
@@ -199,8 +199,8 @@
     });
 
     $("#tabla tbody").on("click", '.btn-eliminar', function () {
-        var usuarioSeleccionado = $(this).closest("tr");
-        var data = tabladata.row(usuarioSeleccionado).data();
+        var workstationSeleccionado = $(this).closest("tr");
+        var data = tabladata.row(workstationSeleccionado).data();
 
         swal({
             title: "¿Está seguro?",
@@ -212,19 +212,19 @@
             cancelButtonText: "No",
             closeOnConfirm: true
         }, function () {
-            var Usuario = {
-                IdWorkStation: data.IdWorkStation // Obtener el IdUsuario del registro
+            var Workstation = {
+                IdWorkStation: data.IdWorkStation // Obtener el IdWorkstation del registro
             };
 
             jQuery.ajax({
                 url: '@Url.Action("EliminarWorkStation", "Home")',
                 type: 'POST',
-                data: JSON.stringify({ id: Usuario.IdWorkStation }), // Enviar solo el IdUsuario
+                data: JSON.stringify({ id: Workstation.IdWorkStation }), // Enviar solo el IdWorkstation
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.resultado) {
-                        tabladata.row(usuarioSeleccionado).remove().draw();
+                        tabladata.row(workstationSeleccionado).remove().draw();
                     } else {
                         swal("No se pudo eliminar", data.mensaje, "error");
                     }
@@ -243,31 +243,31 @@
 });
 
         function abrirModal(json) {
-            $("#IdWorkStation").val(0);
-            $("#cod_marca").val("");
-            $("#cod_tienda").val("");
-            $("#tienda").val("");
-            $("#caja").val("");
-            $("#ip_workstation").val("");
-            $("#hostname").val("");
-            $("#tipo").val("");
-            $("#modelo").val("");
-            $("#status").val(1);
+            $("#txtIdWorkStation").val(0);
+            $("#cbocod_marca").val("");
+            $("#txtcod_tienda").val("");
+            $("#txttienda").val("");
+            $("#txtcaja").val("");
+            $("#txtip_workstation").val("");
+            $("#txthostname").val("");
+            $("#txttipo").val("");
+            $("#cbomodelo").val("");
+            $("#cbostatus").val("");
 
             // Ocultar valores
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#IdWorkStation").val(json.IdWorkStation);
-                $("#cod_marca").val(json.cod_marca);
-                $("#cod_tienda").val(json.cod_tienda);
-                $("#tienda").val(json.tienda);
-                $("#caja").val(json.caja);
-                $("#ip_workstation").val(json.ip_workstation);
-                $("#hostname").val(json.hostname);
-                $("#tipo").val(json.tipo);
-                $("#modelo").val(json.modelo);
-                $("#status").val(json.status ? 1 : 0);
+                $("#txtIdWorkStation").val(json.IdWorkStation);
+                $("#cbocod_marca").val(json.cod_marca);
+                $("#txtcod_tienda").val(json.cod_tienda);
+                $("#txttienda").val(json.tienda);
+                $("#txtcaja").val(json.caja);
+                $("#txtip_workstation").val(json.ip_workstation);
+                $("#txthostname").val(json.hostname);
+                $("#txttipo").val(json.tipo);
+                $("#cbomodelo").val(json.modelo);
+                $("#cbostatus").val(json.flg_estado);
             }
 
             $("#formModal").modal("show");
@@ -281,31 +281,31 @@
         }
 
         function Guardar() {
-    var Usuario = {
-        IdWorkStation: $("#IdWorkStation").val(),
-        cod_marca: $("#cod_marca").val(),
-        cod_tienda: $("#cod_tienda").val(),
-        tienda: $("#tienda").val(),
-        caja: $("#caja").val(),
-        ip_workstation: $("#ip_workstation").val(),
-        hostname: $("#hostname").val(),
-        tipo: $("#tipo").val(),
-        modelo: $("#modelo").val(),
-        status: $("#status").val() == 1 ? true : false,
+    var Workstation = {
+        IdWorkStation: $("#txtIdWorkStation").val(),
+        cod_marca: $("#cbocod_marca").val(),
+        cod_tienda: $("#txtcod_tienda").val(),
+        tienda: $("#txttienda").val(),
+        caja: $("#txtcaja").val(),
+        ip_workstation: $("#txtip_workstation").val(),
+        hostname: $("#txthostname").val(),
+        tipo: $("#txttipo").val(),
+        modelo: $("#cbomodelo").val(),
+        flg_estado: $("#cbostatus").val(),
     };
 
     jQuery.ajax({
         url: '@Url.Action("GuardarWorkStation", "Home")',
         type: 'POST',
-        data: JSON.stringify({ objeto: Usuario }),
+        data: JSON.stringify({ objeto: Workstation }),
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             debugger;
-            if (Usuario.IdWorkStation == 0) {
+            if (Workstation.IdWorkStation == 0) {
                 if (data.resultado !== 0) {
-                    Usuario.IdWorkStation = data.resultado;
-                    tabladata.row.add(Usuario).draw(false);
+                    Workstation.IdWorkStation = data.resultado;
+                    tabladata.row.add(Workstation).draw(false);
                     $("#formModal").modal("hide");
                 } else {
                     $("#mensajeError").text(data.mensaje);
@@ -313,7 +313,7 @@
                 }
             } else {
                 if (data.data) {
-                    tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+                    tabladata.row(filaSeleccionada).data(Workstation).draw(false);
                     $("#formModal").modal("hide");
                 } else {
                     $("#mensajeError").text(data.mensaje);

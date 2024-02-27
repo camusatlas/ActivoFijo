@@ -24,8 +24,6 @@
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
-                    <th>Marca</th>
-                    <th>Código</th>
                     <th>Tienda</th>
                     <th>IP Servidor</th>
                     <th>Hostname</th>
@@ -34,7 +32,6 @@
                     <th>Sistema Operaivo</th>
                     <th>Version Micros</th>
                     <th>memoria Ram</th>
-                    <th>Tamaño BD</th>
                     <th>Status</th>
                     <th></th>
                 </tr>
@@ -56,14 +53,14 @@
             </div>
             <div class="modal-body">
 
-                <input id="IdTienda" type="text" value="0" style="display: none;" />
+                <input id="txtIdTienda" type="text" value="0" style="display: none;" />
 
 
                 <div class="row g-2">
 
                     <div class="col-sm-6">
-                        <label for="cod_marca" class="form-label">Código de Marca</label>
-                        <select class="form-control" id="cod_marca" name="cod_marca">
+                        <label for="cbocod_marca" class="form-label">Código de Marca</label>
+                        <select class="form-control" id="cbocod_marca" >
                             <option value="BK">BK</option>
                             <option value="CH">CH</option>
                             <option value="KF">KF</option>
@@ -75,54 +72,54 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="cod_tienda" class="form-label">Código Tienda</label>
-                        <input type="text" class="form-control" id="cod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
+                        <label for="txtcod_tienda" class="form-label">Código Tienda</label>
+                        <input type="text" class="form-control" id="txtcod_tienda" placeholder="Ingrese el código de la tienda" maxlength="3">
                     </div>
 
                     <div class="mb-3">
-                        <label for="tienda" class="form-label">Tienda</label>
-                        <input type="text" class="form-control" id="tienda" placeholder="Ingrese el código de la tienda">
+                        <label for="txttienda" class="form-label">Tienda</label>
+                        <input type="text" class="form-control" id="txttienda" placeholder="Ingrese el código de la tienda">
                     </div>
 
 
                     <div class="col-sm-6">
-                        <label for="ip_servidor" class="form-label">IP Servidor</label>
-                        <input type="text" class="form-control" id="ip_servidor" placeholder="Ingrese la IP del Servisor" maxlength="20">
+                        <label for="txtip_servidor" class="form-label">IP Servidor</label>
+                        <input type="text" class="form-control" id="txtip_servidor" placeholder="Ingrese la IP del Servisor" maxlength="20">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="nom_servidor" class="form-label">Nombre del Servidor</label>
-                        <input type="text" class="form-control" id="nom_servidor" placeholder="Ingrese el nombre del servidor" maxlength="50">
+                        <label for="txtnom_servidor" class="form-label">Nombre del Servidor</label>
+                        <input type="text" class="form-control" id="txtnom_servidor" placeholder="Ingrese el nombre del servidor" maxlength="50">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="modelo" class="form-label">Modelo de Equipo</label>
-                        <input type="text" class="form-control" id="modelo" placeholder="Ingrese el Modelo de Equipo" maxlength="90">
+                        <label for="txtmodelo" class="form-label">Modelo de Equipo</label>
+                        <input type="text" class="form-control" id="txtmodelo" placeholder="Ingrese el Modelo de Equipo" maxlength="90">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="serie" class="form-label">Serie</label>
-                        <input type="text" class="form-control" id="serie" placeholder="Ingrese la serie del Equipo" maxlength="90">
+                        <label for="txtserie" class="form-label">Serie</label>
+                        <input type="text" class="form-control" id="txtserie" placeholder="Ingrese la serie del Equipo" maxlength="90">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="sistema_operativo" class="form-label">Sistema Operativo</label>
-                        <input type="text" class="form-control" id="sistema_operativo" placeholder="Ingrese la serie del Equipo" maxlength="90">
+                        <label for="txtsistema_operativo" class="form-label">Sistema Operativo</label>
+                        <input type="text" class="form-control" id="txtsistema_operativo" placeholder="Ingrese la serie del Equipo" maxlength="90">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="version_micros" class="form-label">Version Micros</label>
-                        <input type="text" class="form-control" id="version_micros" placeholder="Ingrese la vercion del Micros" maxlength="90">
+                        <label for="txtversion_micros" class="form-label">Version Micros</label>
+                        <input type="text" class="form-control" id="txtversion_micros" placeholder="Ingrese la vercion del Micros" maxlength="90">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="memoria_ram" class="form-label">Memoria Ram</label>
-                        <input type="text" class="form-control" id="memoria_ram" placeholder="Ingrese la memoria ram" maxlength="30">
+                        <label for="txtmemoria_ram" class="form-label">Memoria Ram</label>
+                        <input type="text" class="form-control" id="txtmemoria_ram" placeholder="Ingrese la memoria ram" maxlength="30">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-control" id="status">
+                        <label for="cbostatus" class="form-label">Status</label>
+                        <select class="form-control" id="cbostatus">
                             <option value="0">Operativa</option>
                             <option value="1">Inoperativa</option>
                         </select>
@@ -164,8 +161,6 @@
             dataType: "json",
         },
         "columns": [
-            { "data": "cod_marca" },
-            { "data": "cod_tienda" },
             { "data": "tienda" },
             { "data": "ip_servidor" },
             { "data": "nom_servidor" },
@@ -174,7 +169,6 @@
             { "data": "sistema_operativo" },
             { "data": "version_micros" },
             { "data": "memoria_ram" },
-            { "data": "tamano_bd" },
             {
                 "data": "status", "render": function (valor) {
                     if (valor) {
@@ -198,14 +192,14 @@
     });
 
     $("#tabla tbody").on("click", '.btn-editar', function () {
-        var rowIndex = tabladata.row($(this).closest('tr')).index();
-        var rowData = tabladata.row(rowIndex).data();
-        abrirModal(rowData);
+        var filaSeleccionada = $(this).closest("tr");
+        var data = tabladata.row(filaSeleccionada).data();
+        abrirModal(data);
     });
 
     $("#tabla tbody").on("click", '.btn-eliminar', function () {
-        var usuarioSeleccionado = $(this).closest("tr");
-        var data = tabladata.row(usuarioSeleccionado).data();
+        var servidorSeleccionado = $(this).closest("tr");
+        var data = tabladata.row(servidorSeleccionado).data();
 
         swal({
             title: "¿Está seguro?",
@@ -229,7 +223,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.resultado) {
-                        tabladata.row(usuarioSeleccionado).remove().draw();
+                        tabladata.row(servidorSeleccionado).remove().draw();
                     } else {
                         swal("No se pudo eliminar", data.mensaje, "error");
                     }
@@ -248,61 +242,61 @@
 });
 
         function abrirModal(json) {
-            $("#IdTienda").val(0);
-            $("#cod_marca").val("");
-            $("#cod_tienda").val("");
-            $("#tienda").val("");
-            $("#ip_servidor").val("");
-            $("#nom_servidor").val("");
-            $("#modelo").val("");
-            $("#serie").val("");
-            $("#sistema_operativo").val("");
-            $("#version_micros").val("");
-            $("#memoria_ram").val("");
-            $("#status").val(1);
+            $("#txtIdTienda").val(0);
+            $("#cbocod_marca").val("");
+            $("#txtcod_tienda").val("");
+            $("#txttienda").val("");
+            $("#txtip_servidor").val("");
+            $("#txtnom_servidor").val("");
+            $("#txtmodelo").val("");
+            $("#txtserie").val("");
+            $("#txtsistema_operativo").val("");
+            $("#txtversion_micros").val("");
+            $("#txtmemoria_ram").val("");
+            $("#cbostatus").val(1);
 
             // Ocultar valores
             $("#mensajeError").hide();
 
             if (json !== null) {
-                $("#IdTienda").val(json.IdTienda);
-                $("#cod_marca").val(json.cod_marca);
-                $("#cod_tienda").val(json.cod_tienda);
-                $("#tienda").val(json.tienda);
-                $("#ip_servidor").val(json.ip_servidor);
-                $("#nom_servidor").val(json.nom_servidor);
-                $("#modelo").val(json.modelo);
-                $("#serie").val(json.serie);
-                $("#sistema_operativo").val(json.sistema_operativo);
-                $("#version_micros").val(json.version_micros);
-                $("#memoria_ram").val(json.memoria_ram);
-                $("status").val(json.status ? 1 : 0);
+                $("#txtIdTienda").val(json.IdTienda);
+                $("#cbocod_marca").val(json.cod_marca);
+                $("#txtcod_tienda").val(json.cod_tienda);
+                $("#txttienda").val(json.tienda);
+                $("#txtip_servidor").val(json.ip_servidor);
+                $("#txtnom_servidor").val(json.nom_servidor);
+                $("#txtmodelo").val(json.modelo);
+                $("#txtserie").val(json.serie);
+                $("#txtsistema_operativo").val(json.sistema_operativo);
+                $("#txtversion_micros").val(json.version_micros);
+                $("#txtmemoria_ram").val(json.memoria_ram);
+                $("cbostatus").val(json.status ? 1 : 0);
             }
 
             $("#formModal").modal("show");
 
             $("#tabla tbody").off("click", '.btn-editar').on("click", '.btn-editar', function () {
-                var rowIndex = tabladata.row($(this).closest('tr')).index();
-                var rowData = tabladata.row(rowIndex).data();
-                abrirModal(rowData);
+                var filaSeleccionada = $(this).closest("tr");
+                var data = tabladata.row(filaSeleccionada).data();
+                abrirModal(data);
             });
 
         }
 
         function Guardar() {
     var Servidor = {
-        IdTienda: $("#IdTienda").val(),
-        cod_marca: $("#cod_marca").val(),
-        cod_tienda: $("#cod_tienda").val(),
-        tienda: $("#tienda").val(),
-        ip_servidor: $("#ip_servidor").val(),
-        nom_servidor: $("#nom_servidor").val(),
-        modelo: $("#modelo").val(),
-        serie: $("#serie").val(),
-        sistema_operativo: $("#sistema_operativo").val(),
-        version_micros: $("#version_micros").val(),
-        memoria_ram: $("#memoria_ram").val(),
-        status: $("#status").val() == 1 ? true : false,
+        IdTienda: $("#txtIdTienda").val(),
+        cod_marca: $("#cbocod_marca").val(),
+        cod_tienda: $("#txtcod_tienda").val(),
+        tienda: $("#txttienda").val(),
+        ip_servidor: $("#txtip_servidor").val(),
+        nom_servidor: $("#txtnom_servidor").val(),
+        modelo: $("#txtmodelo").val(),
+        serie: $("#txtserie").val(),
+        sistema_operativo: $("#txtsistema_operativo").val(),
+        version_micros: $("#txtversion_micros").val(),
+        memoria_ram: $("#txtmemoria_ram").val(),
+        status: $("#cbostatus").val() == 1 ? true : false,
     };
 
     jQuery.ajax({
@@ -347,6 +341,7 @@
         }
     });
 }
+
 
     </script>
 }

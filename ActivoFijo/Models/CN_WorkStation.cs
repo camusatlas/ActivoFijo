@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ActivoFijo.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace ActivoFijo.Models
 {
@@ -120,7 +122,7 @@ namespace ActivoFijo.Models
             }
             else
             {
-                return objCapaDato.Editar(obj, out Mensaje);
+                return false;
             }
         }
 
