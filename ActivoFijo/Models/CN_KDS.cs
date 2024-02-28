@@ -50,6 +50,10 @@ namespace ActivoFijo.Models
                 Mensaje = "Ingresar el HostName correspondiente.";
 
             }
+            else if (string.IsNullOrEmpty(obj.modelo) || string.IsNullOrEmpty(obj.modelo))
+            {
+                Mensaje = "Ingresar el modelo correspondiente.";
+            }
             else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
             {
                 Mensaje = "Ingresar la serie.";
@@ -100,6 +104,10 @@ namespace ActivoFijo.Models
             {
                 Mensaje = "Ingresar el HostName correspondiente.";
 
+            }
+            else if (string.IsNullOrEmpty(obj.modelo) || string.IsNullOrEmpty(obj.hostname))
+            {
+                Mensaje = "Ingresar el modelo correspondiente";
             }
             else if (string.IsNullOrEmpty(obj.serie) || string.IsNullOrWhiteSpace(obj.serie))
             {

@@ -39,6 +39,7 @@ namespace ActivoFijo.Models
                             nombre_tienda = dr["nombre_tienda"].ToString(),
                             ip_kds = dr["ip_kds"].ToString(),
                             hostname = dr["hostname"].ToString(),
+                            modelo = dr["modelo"].ToString(),
                             serie = dr["serie"].ToString(),
                             status = Convert.ToBoolean(dr["status"]),
 
@@ -77,6 +78,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("p_nombre_tienda", obj.nombre_tienda);
                     cmd.Parameters.AddWithValue("p_ip_kds", obj.ip_kds);
                     cmd.Parameters.AddWithValue("p_hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("p_modelo", obj.modelo);
                     cmd.Parameters.AddWithValue("p_serie", obj.serie);
                     cmd.Parameters.AddWithValue("p_status", obj.status);
                     cmd.Parameters.Add("p_Mensaje", MySqlDbType.Int32).Direction = ParameterDirection.Output;
@@ -115,6 +117,7 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("p_nombre_tienda", obj.nombre_tienda);
                     cmd.Parameters.AddWithValue("p_ip_kds", obj.ip_kds);
                     cmd.Parameters.AddWithValue("p_hostname", obj.hostname);
+                    cmd.Parameters.AddWithValue("p_modelo", obj.modelo);
                     cmd.Parameters.AddWithValue("p_serie", obj.serie);
                     cmd.Parameters.AddWithValue("p_status", obj.status);
                     cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;

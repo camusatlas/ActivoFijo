@@ -15,6 +15,7 @@ namespace ActivoFijo.Models
         public string nombre_tienda { get; set; }
         public string ip_kds { get; set; }
         public string hostname { get; set; }
+        public string modelo { get; set; }
         public string serie { get; set; }
         public bool status { get; set; }
     }

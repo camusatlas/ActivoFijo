@@ -66,7 +66,7 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand("sp_ResgistrarWorkstation", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_RegistrarWorkstation", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

@@ -28,6 +28,7 @@
                     <th>Tienda</th>
                     <th>Nombre de Tienda</th>
                     <th>Ip</th>
+                    <th>Modelo</th>
                     <th>Host Name</th>
                     <th>Serie</th>
                     <th>Status</th>
@@ -101,6 +102,13 @@
                         <input type="text" class="form-control" id="txthostname" placeholder="Ingrese el HostName" maxlength="30">
                     </div>
                     <div class="col-sm-6">
+                        <label for="cbomodelo" class="form-label">Modelo</label>
+                        <select class="form-control" id="cbomodelo">
+                            <option value="DC - CE">DC - CE</option>
+                            <option value="Win32">Win32</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
                         <label for="txtserie" class="form-label">Serie</label>
                         <input type="text" class="form-control" id="txtserie" placeholder="Ingrese N° de Serie" maxlength="30">
                     </div>
@@ -153,6 +161,7 @@
             { "data": "tienda" },
             { "data": "nombre_tienda" },
             { "data": "ip_kds" },
+            { "data": "modelo" },
             { "data": "hostname" },
             { "data": "serie" },
             {
@@ -235,6 +244,7 @@
             $("#txtnombre_tienda").val("");
             $("#txtip_kds").val("");
             $("#txthostname").val("");
+            $("#cbomodelo").val("");
             $("#txtserie").val("");
             $("#cbostatus").val(1);
 
@@ -249,6 +259,7 @@
                 $("#txtnombre_tienda").val(json.nombre_tienda);
                 $("#txtip_kds").val(json.ip_kds);
                 $("#txthostname").val(json.hostname);
+                $("#cbomodelo").val(json.modelo)
                 $("#txtserie").val(json.serie);
                 $("#cbostatus").val(json.status ? 1 : 0);
             }
@@ -272,6 +283,7 @@
         nombre_tienda: $("#txtnombre_tienda").val(),
         ip_kds: $("#txtip_kds").val(),
         hostname: $("#txthostname").val(),
+        modelo: $("#cbomodelo").val(),
         serie: $("#txtserie").val(),
         marca: $("#cbomarca").val(),
         status: $("#cbostatus").val() == 1 ? true : false,
