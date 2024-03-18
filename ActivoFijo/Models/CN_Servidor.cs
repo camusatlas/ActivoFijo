@@ -151,5 +151,11 @@ namespace ActivoFijo.Models
         {
             return objCapaDato.Eliminarservidor(id, out Mensaje);
         }
+
+        // Detalle
+        public Servidor Detalle(int idTienda)
+        {
+            return objCapaDato.Detalle(idTienda);
+        }
     }
 }

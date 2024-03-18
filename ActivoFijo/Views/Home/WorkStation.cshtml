@@ -6,7 +6,7 @@
 
 
 @{
-    ViewBag.Title = "Servidor";
+    ViewBag.Title = "Workstation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -22,17 +22,21 @@
 
     <div class="card-body">
         <div class="row">
-            <div class="col-12">
-                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear Nuevo</button>
+            <div class="col-6">
+                <button type="button" class="btn btn-primary" onclick="abrirModal(null)">Crear Nuevo</button>
+            </div>
+            <div class="col-6 text-end">
+                <form id="exportForm" action="@Url.Action("ExportarReporteWorkStation", "Home")" method="post">
+                    <button class="btn btn-success" type="submit"><i class="fas fa-file-excel"></i> Exportar</button>
+                </form>
             </div>
         </div>
         <hr />
         <table id="tabla" class="display cell-border" style="width:100%">
             <thead>
                 <tr>
-                    <th>Marca</th>
-                    <th>Código</th>
                     <th>Tienda</th>
+                    <th></th>
                     <th>Caja</th>
                     <th>IP</th>
                     <th>Hostname</th>
@@ -49,11 +53,114 @@
 
 </div>
 
+<!-- Modal de Informacion -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Detallado del Workstation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="txtIdWorkStation1" type="text" value="0" style="display: none;" />
+
+                <div class="row g-2">
+                    <div class="col-sm-6">
+                        <label for="txttienda1" class="form-label">Tienda</label>
+                        <input type="text" class="form-control" id="txttienda1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtip_Workstation1" class="form-label">IP Workstation</label>
+                        <input type="text" class="form-control" id="txtip_Workstation1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtnom_Workstation1" class="form-label">Nombre del Workstation</label>
+                        <input type="text" class="form-control" id="txtnom_Workstation1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtmodelo1" class="form-label">Modelo de Equipo</label>
+                        <input type="text" class="form-control" id="txtmodelo1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtserie1" class="form-label">Serie</label>
+                        <input type="text" class="form-control" id="txtserie1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtsistema_operativo1" class="form-label">Sistema Operativo</label>
+                        <input type="text" class="form-control" id="txtsistema_operativo1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtversion_micros1" class="form-label">Version Micros</label>
+                        <input type="text" class="form-control" id="txtversion_micros1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtmemoria_ram1" class="form-label">Memoria Ram</label>
+                        <input type="text" class="form-control" id="txtmemoria_ram1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtusuarioregistro1" class="form-label">Usuario Ultimo Cambio</label>
+                        <input type="text" class="form-control" id="txtusuarioregistro1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtfecha_registro1" class="form-label">Fecha Regitro</label>
+                        <input type="text" class="form-control" id="txtfecha_registro1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtusuarioactualizacion1" class="form-label">Usuario ultim Actualización</label>
+                        <input type="text" class="form-control" id="txtusuarioactualizacion1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtfecha_actualizada1" class="form-label">Fecha Actualizada</label>
+                        <input type="text" class="form-control" id="txtfecha_actualizada1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txttamano_bd1" class="form-label">Tamaño BD</label>
+                        <input type="text" class="form-control" id="txttamano_bd1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtultimo_reinicio1" class="form-label">Ultimo Reinicio</label>
+                        <input type="text" class="form-control" id="txtultimo_reinicio1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtversion_facturador1" class="form-label">Version Facturador</label>
+                        <input type="text" class="form-control" id="txtversion_facturador1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtultima_venta1" class="form-label">Ultima Venta</label>
+                        <input type="text" class="form-control" id="txtultima_venta1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtflg_estado1" class="form-label">FLG Estado</label>
+                        <input type="text" class="form-control" id="txtflg_estado1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtusuario_crea1" class="form-label">Usuario Crea.</label>
+                        <input type="text" class="form-control" id="txtusuario_crea1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtfecha_crea1" class="form-label">Fecha Crea.</label>
+                        <input type="text" class="form-control" id="txtfecha_crea1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtusuario_mod1" class="form-label">Usuario Mod.</label>
+                        <input type="text" class="form-control" id="txtusuario_mod1" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtstatus1" class="form-label">Status</label>
+                        <input type="text" class="form-control" id="txtstatus1" readonly>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="exampleModalLabel">WorkSatation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -66,7 +173,7 @@
 
                     <div class="col-sm-6">
                         <label for="cbocod_marca" class="form-label">Código de Marca</label>
-                        <select class="form-control" id="cbocod_marca" >
+                        <select class="form-control" id="cbocod_marca">
                             <option value="BK">BK</option>
                             <option value="CH">CH</option>
                             <option value="KF">KF</option>
@@ -90,7 +197,7 @@
 
                     <div class="col-sm-6">
                         <label for="txtcaja" class="form-label">Caja</label>
-                        <input type="text" class="form-control" id="txtcaja" placeholder="Ingrese el nombre del servidor" maxlength="50">
+                        <input type="text" class="form-control" id="txtcaja" placeholder="Ingrese el nombre del Workstation" maxlength="50">
                     </div>
 
                     <div class="col-sm-6">
@@ -107,7 +214,6 @@
                         <label for="txttipo" class="form-label">Tipo</label>
                         <input type="text" class="form-control" id="txttipo" placeholder="Ingrese la vercion del Micros" maxlength="90">
                     </div>
-
                     <div class="col-sm-6">
                         <label for="cbomodelo" class="form-label">Modelo</label>
                         <select class="form-control" id="cbomodelo">
@@ -115,6 +221,28 @@
                             <option value="ANTIGUA">ANTIGUA</option>
                         </select>
                     </div>
+                    @{
+                        string displayName = Session["displayName"] != null ? Session["displayName"].ToString() : "";
+                    }
+
+
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="txtusuarioregistro" placeholder="@displayName" maxlength="30" style="display:none;">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="txtusuarioactualizacion" placeholder="@displayName" maxlength="30" style="display:none;">
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="mensajeError" class="alert alert-danger" role="alert" style="display:none;">
+                                A simple danger alert—check it out!
+                            </div>
+                        </div>
+                    </div>
+
+
 
                     <div class="col-sm-6">
                         <label for="cbostatus" class="form-label">Status</label>
@@ -126,7 +254,7 @@
 
                     <div class="row mt-2">
                         <div class="col-12">
-                            <div id="mensajeError" class="alert alert-danger" role="alert">
+                            <div id="mensajeError" class="alert alert-danger" role="alert" style="display:none">
                                 A simple danger alert—check it out!
                             </div>
                         </div>
@@ -146,115 +274,119 @@
 
 @section scripts{
     <script>
-
         var tabladata;
         var filaSeleccionada;
+        var displayName = '@Session["displayName"]';
 
         $(document).ready(function () {
-    tabladata = $("#tabla").DataTable({
-        responsive: true,
-        ordering: false,
-        "ajax": {
-            url: '@Url.Action("ListarWorkStation", "Home")',
-            type: "GET",
-            dataType: "json",
-        },
-        "columns": [
-            { "data": "cod_marca" },
-            { "data": "cod_tienda" },
-            { "data": "tienda" },
-            { "data": "caja" },
-            { "data": "ip_workstation" },
-            { "data": "hostname" },
-            { "data": "tipo" },
-            {
-                "data": "modelo"
-            },
-            {
-                "data": "flg_estado", "render": function (valor) {
-                    if (valor) {
-                        return '<span class="badge bg-success">A</span>';
-                    } else {
-                        return '<span class="badge bg-danger">I</span>';
-                    }
-                }
-            },
-            {
-                "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
-                    '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
-                "orderable": false,
-                "searchable": false,
-                "width": "90px"
-            }
-        ],
-        "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
-        }
-    });
-
-    $("#tabla tbody").on("click", '.btn-editar', function () {
-        var filaSeleccionada = $(this).closest("tr");
-        var data = tabladata.row(filaSeleccionada).data();
-        abrirModal(data);
-    });
-
-    $("#tabla tbody").on("click", '.btn-eliminar', function () {
-        var workstationSeleccionado = $(this).closest("tr");
-        var data = tabladata.row(workstationSeleccionado).data();
-
-        swal({
-            title: "¿Está seguro?",
-            text: "¿Desea eliminar el WorkStation?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-primary",
-            confirmButtonText: "Sí",
-            cancelButtonText: "No",
-            closeOnConfirm: true
-        }, function () {
-            var Workstation = {
-                IdWorkStation: data.IdWorkStation // Obtener el IdWorkstation del registro
-            };
-
-            jQuery.ajax({
-                url: '@Url.Action("EliminarWorkStation", "Home")',
-                type: 'POST',
-                data: JSON.stringify({ id: Workstation.IdWorkStation }), // Enviar solo el IdWorkstation
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    if (data.resultado) {
-                        tabladata.row(workstationSeleccionado).remove().draw();
-                    } else {
-                        swal("No se pudo eliminar", data.mensaje, "error");
-                    }
+            tabladata = $("#tabla").DataTable({
+                responsive: true,
+                ordering: false,
+                ajax: {
+                    url: '@Url.Action("ListarWorkStation", "Home")',
+                    type: "GET",
+                    dataType: "json"
                 },
-                error: function (error) {
-                    console.log(error);
-                },
-                beforeSend: function () {
-                    // Código de beforeSend si lo requieres
+                columns: [
+                    { data: "tienda" },
+                    {
+                        data: "IdWorkStation",
+                        render: function (data) {
+                            return '<button type="button" class="btn btn-sm btn-informe" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id-tienda="' + data + '" onclick="abrirInfo(' + data + ')"><i class="fas fa-eye"></i></button>';
+                        }
+                    },
+                    { data: "caja" },
+                    { data: "ip_workstation" },
+                    { data: "hostname" },
+                    { data: "tipo" },
+                    { data: "modelo" },
+                    {
+                        "data": "flg_estado",
+                        "render": function (data) {
+                            if (data === "A") {
+                                return '<span class="badge bg-success">A</span>';
+                            } else {
+                                return '<span class="badge bg-danger">I</span>';
+                            }
+                        }
+                    },
+                    {
+                        defaultContent: '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                            '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                        orderable: false,
+                        searchable: false,
+                        width: "90px"
+                    }
+                ],
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 }
             });
-        });
 
-        console.log(data);
-    });
-});
+            $("#tabla tbody").on("click", '.btn-editar', function () {
+                filaSeleccionada = $(this).closest("tr");
+                var data = tabladata.row(filaSeleccionada).data();
+                abrirModal(data);
+            });
+
+            $("#tabla tbody").on("click", '.btn-eliminar', function () {
+                var workstationSeleccionado = $(this).closest("tr");
+                var data = tabladata.row(workstationSeleccionado).data();
+
+                swal({
+                    title: "¿Está seguro?",
+                    text: "¿Desea eliminar el Punto de Venta?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-primary",
+                    confirmButtonText: "Sí",
+                    cancelButtonText: "No",
+                    closeOnConfirm: true
+                }, function () {
+                    var Workstation = {
+                        IdWorkStation: data.IdWorkStation
+                    };
+
+                    jQuery.ajax({
+                        url: '@Url.Action("EliminarWorkstation", "Home")',
+                        type: 'POST',
+                        data: JSON.stringify({ id: Workstation.IdWorkStation }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data.resultado) {
+                                tabladata.row(workstationSeleccionado).remove().draw();
+                            } else {
+                                swal("No se pudo eliminar", data.mensaje, "error");
+                            }
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                        beforeSend: function () {
+                            // Código de beforeSend si lo requieres
+                        }
+                    });
+                });
+            });
+        });
 
         function abrirModal(json) {
             $("#txtIdWorkStation").val(0);
             $("#cbocod_marca").val("");
             $("#txtcod_tienda").val("");
             $("#txttienda").val("");
-            $("#txtcaja").val("");
-            $("#txtip_workstation").val("");
-            $("#txthostname").val("");
-            $("#txttipo").val("");
-            $("#cbomodelo").val("");
+            $("#txtip_Workstation").val("");
+            $("#txtnom_Workstation").val("");
+            $("#txtmodelo").val("");
+            $("#txtserie").val("");
+            $("#txtsistema_operativo").val("");
+            $("#txtversion_micros").val("");
+            $("#txtmemoria_ram").val("");
+            $("#txtusuarioregistro").val(displayName);
+            $("#txtusuarioactualizacion").val(displayName);
             $("#cbostatus").val("");
 
-            // Ocultar valores
             $("#mensajeError").hide();
 
             if (json !== null) {
@@ -262,11 +394,15 @@
                 $("#cbocod_marca").val(json.cod_marca);
                 $("#txtcod_tienda").val(json.cod_tienda);
                 $("#txttienda").val(json.tienda);
-                $("#txtcaja").val(json.caja);
-                $("#txtip_workstation").val(json.ip_workstation);
-                $("#txthostname").val(json.hostname);
-                $("#txttipo").val(json.tipo);
-                $("#cbomodelo").val(json.modelo);
+                $("#txtip_Workstation").val(json.ip_Workstation);
+                $("#txtnom_Workstation").val(json.nom_Workstation);
+                $("#txtmodelo").val(json.modelo);
+                $("#txtserie").val(json.serie);
+                $("#txtsistema_operativo").val(json.sistema_operativo);
+                $("#txtversion_micros").val(json.version_micros);
+                $("#txtmemoria_ram").val(json.memoria_ram);
+                $("#txtusuarioregistro").val(json.usuarioregistro);
+                $("#txtusuarioactualizacion").val(json.usuarioactualizacion);
                 $("#cbostatus").val(json.flg_estado);
             }
 
@@ -277,67 +413,123 @@
                 var data = tabladata.row(filaSeleccionada).data();
                 abrirModal(data);
             });
-
         }
 
-        function Guardar() {
-    var Workstation = {
-        IdWorkStation: $("#txtIdWorkStation").val(),
-        cod_marca: $("#cbocod_marca").val(),
-        cod_tienda: $("#txtcod_tienda").val(),
-        tienda: $("#txttienda").val(),
-        caja: $("#txtcaja").val(),
-        ip_workstation: $("#txtip_workstation").val(),
-        hostname: $("#txthostname").val(),
-        tipo: $("#txttipo").val(),
-        modelo: $("#cbomodelo").val(),
-        flg_estado: $("#cbostatus").val(),
-    };
+        function abrirInfo(IdWorkStation) {
+            jQuery.ajax({
+                url: '@Url.Action("DetalleWorkstation", "Home")',
+                type: "POST", // Cambiar el tipo de solicitud a POST
+                dataType: "json",
+                data: { id: IdWorkStation },
+                success: function(response) {
+                    var Workstation = response;
 
-    jQuery.ajax({
-        url: '@Url.Action("GuardarWorkStation", "Home")',
-        type: 'POST',
-        data: JSON.stringify({ objeto: Workstation }),
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            debugger;
-            if (Workstation.IdWorkStation == 0) {
-                if (data.resultado !== 0) {
-                    Workstation.IdWorkStation = data.resultado;
-                    tabladata.row.add(Workstation).draw(false);
-                    $("#formModal").modal("hide");
-                } else {
-                    $("#mensajeError").text(data.mensaje);
-                    $("#mensajeError").show();
+                    $("#txtIdWorkStation1").val(Workstation.IdWorkStation);
+                    $("#txttienda1").val(Workstation.tienda);
+                    $("#txtip_Workstation1").val(Workstation.ip_Workstation);
+                    $("#txtnom_Workstation1").val(Workstation.nom_Workstation);
+                    $("#txtmodelo1").val(Workstation.modelo);
+                    $("#txtserie1").val(Workstation.serie);
+                    $("#txtsistema_operativo1").val(Workstation.sistema_operativo);
+                    $("#txtversion_micros1").val(Workstation.version_micros);
+                    $("#txtmemoria_ram1").val(Workstation.memoria_ram);
+                    $("#txtfecha_registro1").val(Workstation.fecha_registro);
+                    $("#txtfecha_actualizada1").val(Workstation.fecha_actualizada);
+                    $("#txtultimo_reinicio1").val(Workstation.ultimo_reinicio);
+                    $("#txtversion_facturador1").val(Workstation.version_facturador);
+                    $("#txtultima_venta1").val(Workstation.ultima_venta);
+                    $("#txtflg_estado1").val(Workstation.flg_estado);
+                    $("#txtusuario_crea1").val(Workstation.usuario_crea);
+                    $("#txtfecha_crea1").val(Workstation.fecha_crea);
+                    $("#txtusuario_mod1").val(Workstation.usuario_mod);
+                    $("#txtusuarioregistro1").val(Workstation.usuarioregistro);
+                    $("#txtusuarioactualizacion1").val(Workstation.usuarioactualizacion);
+                    $("#txtstatus1").val(Workstation.flg_estado);
+
+
+                    $('#exampleModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
                 }
-            } else {
-                if (data.data) {
-                    tabladata.row(filaSeleccionada).data(Workstation).draw(false);
-                    $("#formModal").modal("hide");
-                } else {
-                    $("#mensajeError").text(data.mensaje);
-                    $("#mensajeError").show();
-                }
-            }
-            location.reload(); // Recarga la página después de completar la operación de guardado
-        },
-        error: function (error) {
-            $(".modal-body").LoadingOverlay("hide");
-            $("#mensajeError").text("Error Ajax");
-            $("#mensajeError").show();
-        },
-        beforeSend: function () {
-            $(".modal-body").LoadingOverlay("show", {
-                imageResizeFactor: 2,
-                text: "Cargando...",
-                size: 14
             });
         }
-    });
-}
 
+
+
+
+
+        function Guardar() {
+            var Workstation = {
+                IdWorkStation: $("#txtIdWorkStation").val(),
+                cod_marca: $("#cbocod_marca").val(),
+                cod_tienda: $("#txtcod_tienda").val(),
+                tienda: $("#txttienda").val(),
+                ip_Workstation: $("#txtip_Workstation").val(),
+                nom_Workstation: $("#txtnom_Workstation").val(),
+                modelo: $("#txtmodelo").val(),
+                serie: $("#txtserie").val(),
+                sistema_operativo: $("#txtsistema_operativo").val(),
+                version_micros: $("#txtversion_micros").val(),
+                memoria_ram: $("#txtmemoria_ram").val(),
+                usuarioregistro: displayName,
+                usuarioactualizacion: displayName,
+                flg_estado: $("#cbostatus").val()
+            };
+
+            jQuery.ajax({
+                url: '@Url.Action("GuardarWorkstation", "Home")',
+                type: 'POST',
+                data: JSON.stringify({ objeto: Workstation }),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (Workstation.IdWorkStation == 0) {
+                        if (data.resultado !== 0) {
+                            Workstation.IdWorkStation = data.resultado;
+                            tabladata.row.add(Workstation).draw(false);
+                            $("#formModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    } else {
+                        if (data.data) {
+                            tabladata.row(filaSeleccionada).data(Workstation).draw(false);
+                            $("#formModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                    $("#mensajeError").text("Error al guardar los datos");
+                    $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    });
+                },
+                complete: function () {
+                    $(".modal-body").LoadingOverlay("hide");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Tu código existente aquí...
+
+            // Evento para actualizar la tabla después de cerrar el modal
+            $('#formModal').on('hidden.bs.modal', function () {
+                tabladata.ajax.reload();
+            });
+        });
     </script>
 }
-
-

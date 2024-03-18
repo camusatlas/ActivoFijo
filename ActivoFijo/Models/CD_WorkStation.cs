@@ -39,7 +39,17 @@ namespace ActivoFijo.Models
                             hostname = dr["hostname"].ToString(),
                             tipo = dr["tipo"].ToString(),
                             modelo = dr["modelo"].ToString(),
-                            flg_estado = dr["flg_estado"].ToString()
+                            flg_estado = dr["flg_estado"].ToString(),
+                            ultima_venta = dr["ultima_venta"].ToString(),
+                            usuario_crea = dr["usuario_crea"].ToString(),
+                            fecha_crea = dr["fecha_crea"].ToString(),
+                            usuario_mod = dr["usuario_mod"].ToString(),
+                            fecha_mod = dr["fecha_mod"].ToString(),
+                            version_facturador = dr["version_facturador"].ToString(),
+                            FechaRegistro = dr["FechaRegistro"].ToString(),
+                            FechaActualizacion = dr["FechaActualizacion"].ToString(),
+                            UsuarioRegistro = dr["UsuarioRegistro"].ToString(),
+                            UsuarioActualizacion = dr["UsuarioActualizacion"].ToString()
 
                         };
                         listado.Add(usuario);
@@ -56,6 +66,61 @@ namespace ActivoFijo.Models
                     cn.Close();
             }
             return listado;
+        }
+
+        // Detalle de WorkStation
+        public WorkStation Detalle(int idWorkStation)
+        {
+            WorkStation workStation = null;
+
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("sp_DetalleWorkStation", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("p_IdWorkStation", idWorkStation);
+                    cn.Open();
+                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            workStation = new WorkStation()
+                            {
+                                IdWorkStation = Convert.ToInt32(dr["IdWorkStation"]),
+                                cod_marca = dr["cod_marca"].ToString(),
+                                cod_tienda = dr["cod_tienda"].ToString(),
+                                tienda = dr["tienda"].ToString(),
+                                caja = dr["caja"].ToString(),
+                                ip_workstation = dr["ip_workstation"].ToString(),
+                                hostname = dr["hostname"].ToString(),
+                                tipo = dr["tipo"].ToString(),
+                                modelo = dr["modelo"].ToString(),
+                                flg_estado = dr["flg_estado"].ToString(),
+                                ultima_venta = dr["ultima_venta"].ToString(),
+                                usuario_crea = dr["usuario_crea"].ToString(),
+                                fecha_crea = dr["fecha_crea"].ToString(),
+                                usuario_mod = dr["usuario_mod"].ToString(),
+                                fecha_mod = dr["fecha_mod"].ToString(),
+                                version_facturador = dr["version_facturador"].ToString(),
+                                FechaRegistro = dr["FechaRegistro"].ToString(),
+                                FechaActualizacion = dr["FechaActualizacion"].ToString(),
+                                UsuarioRegistro = dr["UsuarioRegistro"].ToString(),
+                                UsuarioActualizacion = dr["UsuarioActualizacion"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                    cn.Close();
+            }
+            return workStation;
         }
 
         // Agregar
@@ -118,6 +183,8 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("p_tipo", obj.tipo);
                     cmd.Parameters.AddWithValue("p_modelo", obj.modelo);
                     cmd.Parameters.AddWithValue("p_flg_estado", obj.flg_estado);
+                    cmd.Parameters.AddWithValue("p_UsuarioRegistro", obj.UsuarioRegistro);
+                    cmd.Parameters.AddWithValue("p_UsuarioActualizacion", obj.UsuarioActualizacion);
                     cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 

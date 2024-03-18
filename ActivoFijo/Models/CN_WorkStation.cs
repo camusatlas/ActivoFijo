@@ -131,5 +131,11 @@ namespace ActivoFijo.Models
         {
             return objCapaDato.Eliminar(id, out Mensaje);
         }
+
+        // Detalle de Servidores
+        public WorkStation Detalle(int idWorkStation)
+        {
+            return objCapaDato.Detalle(idWorkStation);
+        }
     }
 }

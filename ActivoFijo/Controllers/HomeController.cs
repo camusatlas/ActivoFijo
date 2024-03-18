@@ -1,5 +1,6 @@
 ﻿using ActivoFijo.Models;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
 using Irony.Parsing;
 using Newtonsoft.Json;
 using System;
@@ -40,6 +41,14 @@ namespace ActivoFijo.Controllers
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
 
+        // Detalle Servidor
+        [HttpPost]
+        public JsonResult DetalleServidor(int id)
+        {
+            Servidor detalleServidor = new CN_Servidor().Detalle(id);
+            return Json(detalleServidor, JsonRequestBehavior.AllowGet);
+        }
+
         // Guardar Servidor
         [HttpPost]
         public JsonResult GuardarServidor(Servidor objeto)
@@ -68,12 +77,105 @@ namespace ActivoFijo.Controllers
 
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
+
+        //Lista de Reporte de Servidor
+        [HttpPost]
+        public JsonResult ListaReporteServidor()
+        {
+            List<Servidor> oLista = new List<Servidor>();
+
+            oLista = new CN_Servidor().listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public FileResult ExportarReporteServidor()
+        {
+            List<Servidor> oLista = new List<Servidor>();
+            oLista = new CN_Servidor().listar();
+
+            DataTable dt = new DataTable();
+
+            dt.Locale = new System.Globalization.CultureInfo("es-Pe");
+            dt.Columns.Add("Código de Marca", typeof(string));
+            dt.Columns.Add("Código tienda", typeof(string));
+            dt.Columns.Add("Tienda", typeof(string));
+            dt.Columns.Add("IP Servidor", typeof(string));
+            dt.Columns.Add("HostName", typeof(string));
+            dt.Columns.Add("Modelo", typeof(string));
+            dt.Columns.Add("Serie", typeof(string));
+            dt.Columns.Add("SistemaOperativo", typeof(string));
+            dt.Columns.Add("Version Micros", typeof(string));
+            dt.Columns.Add("Memoria Ram", typeof(string));
+            dt.Columns.Add("Tamño BD", typeof(string));
+            dt.Columns.Add("Usuario Registro", typeof(string));
+            dt.Columns.Add("Fecha Registro", typeof(string));
+            dt.Columns.Add("UsuarioActualizado", typeof(string));
+            dt.Columns.Add("FechaActualización", typeof(string));
+            dt.Columns.Add("Ultimo Reinicio", typeof(string));
+            dt.Columns.Add("Version Facturador", typeof(string));
+            dt.Columns.Add("Ultima Venta", typeof(string));
+            dt.Columns.Add("Flg Estado", typeof(string));
+            dt.Columns.Add("Usuario Creado", typeof(string));
+            dt.Columns.Add("Fecha_crea", typeof(string));
+            dt.Columns.Add("Usuario_mod", typeof(string));
+
+
+            foreach (Servidor rp in oLista)
+            {
+                dt.Rows.Add(new object[]
+                {
+                    rp.cod_marca,
+                    rp.cod_tienda,
+                    rp.tienda,
+                    rp.ip_servidor,
+                    rp.nom_servidor,
+                    rp.modelo,
+                    rp.serie,
+                    rp.sistema_operativo,
+                    rp.version_micros,
+                    rp.memoria_ram,
+                    rp.tamano_bd,
+                    rp.usuarioregistro,
+                    rp.fecha_registro,
+                    rp.usuarioactualizacion,
+                    rp.fecha_actualizada,
+                    rp.ultimo_reinicio,
+                    rp.version_facturador,
+                    rp.ultima_venta,
+                    rp.flg_estado,
+                    rp.usuario_crea,
+                    rp.fecha_crea,
+                    rp.usuario_mod
+                });
+            }
+            dt.TableName = "Datos";
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ResporteServidor" + DateTime.Now.ToString() + ".xlsx");
+                }
+            }
+        }
+
         #endregion Servidor
         /* Listo */
         #region Worstation
         public ActionResult WorkStation()
         {
             return View();
+        }
+
+        // Detallado de WorkSation
+        [HttpPost]
+        public JsonResult DetalleWorkStation(int id)
+        {
+            WorkStation detalleServidor = new CN_WorkStation().Detalle(id);
+            return Json(detalleServidor, JsonRequestBehavior.AllowGet);
         }
 
         // Listar WorkStation
@@ -115,6 +217,84 @@ namespace ActivoFijo.Controllers
 
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
+
+        // Listar de Reporte de WorkStation
+        [HttpPost]
+        public JsonResult ListaReporteWorkSatation()
+        {
+            List<WorkStation> oLista = new List<WorkStation>();
+
+            oLista = new CN_WorkStation().listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public FileResult ExportarReporteWorkStation()
+        {
+            List<WorkStation> oLista = new List<WorkStation>();
+            oLista = new CN_WorkStation().listar();
+            
+            DataTable dt = new DataTable();
+
+            dt.Locale = new System.Globalization.CultureInfo("es-Pe");
+            dt.Columns.Add("cod_marca", typeof(string));
+            dt.Columns.Add("cod_tienda", typeof(string));
+            dt.Columns.Add("tienda", typeof(string));
+            dt.Columns.Add("caja", typeof(string));
+            dt.Columns.Add("ip_workstation", typeof(string));
+            dt.Columns.Add("hostname", typeof(string));
+            dt.Columns.Add("tipo", typeof(string));
+            dt.Columns.Add("modelo", typeof(string));
+            dt.Columns.Add("ultima_venta", typeof(string));
+            dt.Columns.Add("flg_estado", typeof(string));
+            dt.Columns.Add("usuario_crea", typeof(string));
+            dt.Columns.Add("fecha_crea", typeof(string));
+            dt.Columns.Add("usuario_mod", typeof(string));
+            dt.Columns.Add("fecha_mod", typeof(string));
+            dt.Columns.Add("version_facturador", typeof(string));
+            dt.Columns.Add("FechaRegistro", typeof(string));
+            dt.Columns.Add("FechaActualizacion", typeof(string));
+            dt.Columns.Add("UsuarioRegistro", typeof(string));
+            dt.Columns.Add("UsuarioActualizacion", typeof(string));
+
+            foreach (WorkStation rp in oLista)
+            {
+                dt.Rows.Add(new object[]
+                {
+                    rp.cod_marca,
+                    rp.cod_tienda,
+                    rp.tienda,
+                    rp.caja,
+                    rp.ip_workstation,
+                    rp.hostname,
+                    rp.tipo,
+                    rp.modelo,
+                    rp.ultima_venta,
+                    rp.flg_estado,
+                    rp.usuario_crea,
+                    rp.fecha_crea,
+                    rp.usuario_mod,
+                    rp.version_facturador,
+                    rp.FechaRegistro,
+                    rp.FechaActualizacion,
+                    rp.UsuarioRegistro,
+                    rp.UsuarioActualizacion
+                });
+            }
+            dt.TableName = "Datos";
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ResporteServidor" + DateTime.Now.ToString() + ".xlsx");
+                }
+            }
+        }
+
+
         #endregion Workstation
         /* Listo */
         #region KDS

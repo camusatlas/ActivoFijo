@@ -28,5 +28,10 @@ namespace ActivoFijo.Models
         public string usuario_mod { set; get; }
         public string fecha_mod { set; get; }
         public string version_facturador { set; get; }
+
+        public string FechaRegistro { set; get; }
+        public string FechaActualizacion { set; get; }
+        public string UsuarioRegistro { set; get; }
+        public string UsuarioActualizacion { set; get; }
     }
 }

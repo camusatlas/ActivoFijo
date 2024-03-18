@@ -23,6 +23,10 @@ namespace ActivoFijo.Models
 
         public string tamano_bd { get; set; }
         public bool status { get; set; }
+
+        public string usuarioregistro { get; set; }
+        public string usuarioactualizacion { get; set; }
+
         public string ultimo_reinicio { get; set; }
         public string version_facturador { get; set; }
         public string ultima_venta { get; set; }
@@ -33,5 +37,9 @@ namespace ActivoFijo.Models
         public string fecha_mod { get; set; }
         public string idtecnico { get; set; }
         public string fecha_asignado { get; set; }
+
+        public string fecha_registro { get; set; }
+        public string fecha_actualizada { get; set; }
+
     }
 }

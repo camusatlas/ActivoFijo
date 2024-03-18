@@ -45,6 +45,18 @@ namespace ActivoFijo.Models
                             sistema_operativo = dr["sistema_operativo"].ToString(),
                             version_micros = dr["version_micros"].ToString(),
                             memoria_ram = dr["memoria_ram"].ToString(),
+                            tamano_bd = dr["tamano_bd"].ToString(),
+                            usuarioregistro = dr["UsuarioRegistro"].ToString(),
+                            usuarioactualizacion = dr["UsuarioActualizacion"].ToString(),
+                            fecha_registro = dr["FechaRegistro"].ToString(),
+                            fecha_actualizada = dr["FechaActualizacion"].ToString(),
+                            ultimo_reinicio = dr["ultimo_reinicio"].ToString(),
+                            version_facturador = dr["version_facturador"].ToString(),
+                            ultima_venta = dr["ultima_venta"].ToString(),
+                            flg_estado = dr["flg_estado"].ToString(),
+                            usuario_crea = dr["usuario_crea"].ToString(),
+                            fecha_crea = dr["fecha_crea"].ToString(),
+                            usuario_mod = dr["usuario_mod"].ToString(),
                             status = Convert.ToBoolean(dr["status"]),
 
                         };
@@ -62,6 +74,65 @@ namespace ActivoFijo.Models
                     cn.Close();
             }
             return listado;
+        }
+
+        // Detalle
+        public Servidor Detalle(int idTienda)
+        {
+            Servidor servidor = null;
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand("sp_DetalleServidor", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("p_IdTienda", idTienda);
+
+                    cn.Open();
+                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            servidor = new Servidor()
+                            {
+                                IdTienda = Convert.ToInt32(dr["IdTienda"]),
+                                cod_marca = dr["cod_marca"].ToString(),
+                                cod_tienda = dr["cod_tienda"].ToString(),
+                                tienda = dr["tienda"].ToString(),
+                                ip_servidor = dr["ip_servidor"].ToString(),
+                                nom_servidor = dr["nom_servidor"].ToString(),
+                                modelo = dr["modelo"].ToString(),
+                                serie = dr["serie"].ToString(),
+                                sistema_operativo = dr["sistema_operativo"].ToString(),
+                                version_micros = dr["version_micros"].ToString(),
+                                memoria_ram = dr["memoria_ram"].ToString(),
+                                tamano_bd = dr["tamano_bd"].ToString(),
+                                usuarioregistro = dr["UsuarioRegistro"].ToString(),
+                                usuarioactualizacion = dr["UsuarioActualizacion"].ToString(),
+                                fecha_registro = dr["FechaRegistro"].ToString(),
+                                fecha_actualizada = dr["FechaActualizacion"].ToString(),
+                                ultimo_reinicio = dr["ultimo_reinicio"].ToString(),
+                                version_facturador = dr["version_facturador"].ToString(),
+                                ultima_venta = dr["ultima_venta"].ToString(),
+                                flg_estado = dr["flg_estado"].ToString(),
+                                usuario_crea = dr["usuario_crea"].ToString(),
+                                fecha_crea = dr["fecha_crea"].ToString(),
+                                usuario_mod = dr["usuario_mod"].ToString(),
+                                status = Convert.ToBoolean(dr["status"])
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                    cn.Close();
+            }
+            return servidor;
         }
 
         // Funcion Registrar
@@ -128,7 +199,9 @@ namespace ActivoFijo.Models
                     cmd.Parameters.AddWithValue("p_sistema_operativo", obj.sistema_operativo);
                     cmd.Parameters.AddWithValue("p_version_micros", obj.version_micros);
                     cmd.Parameters.AddWithValue("p_memoria_ram", obj.memoria_ram);
-                    cmd.Parameters.AddWithValue("p_status", obj.status);
+                    cmd.Parameters.AddWithValue("p_flg_estado", obj.flg_estado);
+                    cmd.Parameters.AddWithValue("p_UsuarioRegistro", obj.usuarioregistro);
+                    cmd.Parameters.AddWithValue("p_UsuarioActualizacion", obj.usuarioactualizacion);
                     cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
 
