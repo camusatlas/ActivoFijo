@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -10,22 +11,22 @@ namespace ActivoFijo.Models
 {
     public class CD_Modelo
     {
-        private SqlConnection cn;
+        private  MySqlConnection cn;
         public CD_Modelo()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosiInventario"].ConnectionString);
         }
 
         // Listar Modelo
         public List<Modelo> listar()
         {
             List<Modelo> listado = new List<Modelo>();
-            SqlCommand cmd = new SqlCommand("sp_ListarModelo", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ListarModelo", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -58,21 +59,21 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_InsertarModelo", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_InsertarModelo", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("NomModelo", obj.NomModelo);
-                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_NomModelo", obj.NomModelo);
+                    cmd.Parameters.AddWithValue("p_Activo", obj.Activo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -91,21 +92,21 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EditarModelo", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EditarModelo", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdModelo", obj.IdModelo);
-                    cmd.Parameters.AddWithValue("NomModelo", obj.NomModelo);
-                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdModelo", obj.IdModelo);
+                    cmd.Parameters.AddWithValue("p_NomModelo", obj.NomModelo);
+                    cmd.Parameters.AddWithValue("p_Activo", obj.Activo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -124,19 +125,19 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EliminarModelo", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EliminarModelo", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdModelo", id);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdModelo", id);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }

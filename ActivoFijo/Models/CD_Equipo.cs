@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -11,22 +12,22 @@ namespace ActivoFijo.Models
 {
     public class CD_Equipo
     {
-        private SqlConnection cn;
+        private MySqlConnection cn;
         public CD_Equipo()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosiInventario"].ConnectionString);
         }
 
         // Listar Producto
         public List<Equipo> listar()
         {
             List<Equipo> listado = new List<Equipo>();
-            SqlCommand cmd = new SqlCommand("sp_ListarEquipo", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ListarEquipo", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -55,11 +56,11 @@ namespace ActivoFijo.Models
                             oPrioridad = new Prioridad() { IdPrioridades = Convert.ToInt32(dr["IdPrioridades"]), NomPrioridad = dr["Nivel-Prioridad"].ToString() },
                             oSistema = new SistemaOperativo() { IdSistema = Convert.ToInt32(dr["IdSistema"]), NombreSistema = dr["SistemaOperativo"].ToString() },
                             DireccionMac = dr["DireccionMac"].ToString(),
-                            NombreImagen = dr["NombreImagen"].ToString(),
+                            NombreImagen = dr["NombreImgen"].ToString(),
                             RutaImagen = dr["RutaImagen"].ToString(),
                             FechaActualizacion = Convert.ToDateTime(dr["FechaActualizacion"]),
                             FechaGarantia = Convert.ToDateTime(dr["FechaGarantia"]),
-                            Onservacion = dr["Observaciones"].ToString(),
+                            Onservacion = dr["Observacion"].ToString(),
                             Activo = Convert.ToBoolean(dr["Activo"])
                         };
                         listado.Add(equipo);
@@ -84,44 +85,44 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_RegistrarEquipo", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_RegistrarEquipo", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-                    cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
-                    cmd.Parameters.AddWithValue("IdMarca", obj.oMarca.IdMarca);
-                    cmd.Parameters.AddWithValue("IdCategoria", obj.oCategoria.IdCategoria);
-                    cmd.Parameters.AddWithValue("Precio", obj.Precio);
-                    cmd.Parameters.AddWithValue("IdSede", obj.oSede.IdSede);
-                    cmd.Parameters.AddWithValue("IdModelo", obj.oModelo.IdModelo);
-                    cmd.Parameters.AddWithValue("Serie", obj.Serie);
-                    cmd.Parameters.AddWithValue("CodInventario", obj.CodInventario);
-                    cmd.Parameters.AddWithValue("Usuario", obj.Usuario);
-                    cmd.Parameters.AddWithValue("IdRazonSocial", obj.oRazonSocial.IdRazonSocial);
-                    cmd.Parameters.AddWithValue("GuiaIngreso", obj.GuiaIngreso);
-                    cmd.Parameters.AddWithValue("IdProveedor", obj.oProveedor.IdProveedor);
-                    cmd.Parameters.AddWithValue("OrdenCompra", obj.OrdenCompra);
-                    cmd.Parameters.AddWithValue("OrdenInterna", obj.OrdenInterna);
-                    cmd.Parameters.AddWithValue("ActivoFijo", obj.ActivoFijo);
-                    cmd.Parameters.AddWithValue("IdAlmacen", obj.oAlmacen.IdAlmacen);
-                    cmd.Parameters.AddWithValue("CodMaterialSAP", obj.CodMaterialSAP);
-                    cmd.Parameters.AddWithValue("Stock", obj.Stock);
-                    cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
-                    cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
-                    cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
-                    cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
-                    cmd.Parameters.AddWithValue("FechaActualizacion", obj.FechaActualizacion);
-                    cmd.Parameters.AddWithValue("Observacion", obj.Onservacion);
-                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_Nombre", obj.Nombre);
+                    cmd.Parameters.AddWithValue("p_Descripcion", obj.Descripcion);
+                    cmd.Parameters.AddWithValue("p_IdMarca", obj.oMarca.IdMarca);
+                    cmd.Parameters.AddWithValue("p_IdCategoria", obj.oCategoria.IdCategoria);
+                    cmd.Parameters.AddWithValue("p_Precio", obj.Precio);
+                    cmd.Parameters.AddWithValue("p_IdSede", obj.oSede.IdSede);
+                    cmd.Parameters.AddWithValue("p_IdModelo", obj.oModelo.IdModelo);
+                    cmd.Parameters.AddWithValue("p_Serie", obj.Serie);
+                    cmd.Parameters.AddWithValue("p_CodInventario", obj.CodInventario);
+                    cmd.Parameters.AddWithValue("p_Usuario", obj.Usuario);
+                    cmd.Parameters.AddWithValue("p_IdRazonSocial", obj.oRazonSocial.IdRazonSocial);
+                    cmd.Parameters.AddWithValue("p_GuiaIngreso", obj.GuiaIngreso);
+                    cmd.Parameters.AddWithValue("p_IdProveedor", obj.oProveedor.IdProveedor);
+                    cmd.Parameters.AddWithValue("p_OrdenCompra", obj.OrdenCompra);
+                    cmd.Parameters.AddWithValue("p_OrdenInterna", obj.OrdenInterna);
+                    cmd.Parameters.AddWithValue("p_ActivoFijo", obj.ActivoFijo);
+                    cmd.Parameters.AddWithValue("p_IdAlmacen", obj.oAlmacen.IdAlmacen);
+                    cmd.Parameters.AddWithValue("p_CodMaterialSAP", obj.CodMaterialSAP);
+                    cmd.Parameters.AddWithValue("p_Stock", obj.Stock);
+                    cmd.Parameters.AddWithValue("p_IdPrioridades", obj.oPrioridad.IdPrioridades);
+                    cmd.Parameters.AddWithValue("p_IdSistema", obj.oSistema.IdSistema);
+                    cmd.Parameters.AddWithValue("p_DireccionMac", obj.DireccionMac);
+                    cmd.Parameters.AddWithValue("p_FechaGarantia", obj.FechaGarantia);
+                    cmd.Parameters.AddWithValue("p_FechaActualizacion", obj.FechaActualizacion);
+                    cmd.Parameters.AddWithValue("p_Observacion", obj.Onservacion);
+                    cmd.Parameters.AddWithValue("p_Activo", obj.Activo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -140,46 +141,46 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EditarEquipo", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EditarEquipo", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdEquipos", obj.IdEquipos);
-                    cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-                    cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
-                    cmd.Parameters.AddWithValue("IdMarca", obj.oMarca.IdMarca);
-                    cmd.Parameters.AddWithValue("IdCategoria", obj.oCategoria.IdCategoria);
-                    cmd.Parameters.AddWithValue("Precio", obj.Precio);
-                    cmd.Parameters.AddWithValue("IdSede", obj.oSede.IdSede);
-                    cmd.Parameters.AddWithValue("IdModelo", obj.oModelo.IdModelo);
-                    cmd.Parameters.AddWithValue("Serie", obj.Serie);
-                    cmd.Parameters.AddWithValue("CodInventario", obj.CodInventario);
-                    cmd.Parameters.AddWithValue("Usuario", obj.Usuario);
-                    cmd.Parameters.AddWithValue("IdRazonSocial", obj.oRazonSocial.IdRazonSocial);
-                    cmd.Parameters.AddWithValue("GuiaIngreso", obj.GuiaIngreso);
-                    cmd.Parameters.AddWithValue("IdProveedor", obj.oProveedor.IdProveedor);
-                    cmd.Parameters.AddWithValue("OrdenCompra", obj.OrdenCompra);
-                    cmd.Parameters.AddWithValue("OrdenInterna", obj.OrdenInterna);
-                    cmd.Parameters.AddWithValue("ActivoFijo", obj.ActivoFijo);
-                    cmd.Parameters.AddWithValue("IdAlmacen", obj.oAlmacen.IdAlmacen);
-                    cmd.Parameters.AddWithValue("CodMaterialSAP", obj.CodMaterialSAP);
-                    cmd.Parameters.AddWithValue("Stock", obj.Stock);
-                    cmd.Parameters.AddWithValue("IdPrioridades", obj.oPrioridad.IdPrioridades);
-                    cmd.Parameters.AddWithValue("IdSistema", obj.oSistema.IdSistema);
-                    cmd.Parameters.AddWithValue("DireccionMac", obj.DireccionMac);
-                    cmd.Parameters.AddWithValue("FechaActualizacion", obj.FechaActualizacion);
-                    cmd.Parameters.AddWithValue("FechaGarantia", obj.FechaGarantia);
-                    cmd.Parameters.AddWithValue("Observacion", obj.Onservacion);
-                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdEquipos", obj.IdEquipos);
+                    cmd.Parameters.AddWithValue("p_Nombre", obj.Nombre);
+                    cmd.Parameters.AddWithValue("p_Descripcion", obj.Descripcion);
+                    cmd.Parameters.AddWithValue("p_IdMarca", obj.oMarca.IdMarca);
+                    cmd.Parameters.AddWithValue("p_IdCategoria", obj.oCategoria.IdCategoria);
+                    cmd.Parameters.AddWithValue("p_Precio", obj.Precio);
+                    cmd.Parameters.AddWithValue("p_IdSede", obj.oSede.IdSede);
+                    cmd.Parameters.AddWithValue("p_IdModelo", obj.oModelo.IdModelo);
+                    cmd.Parameters.AddWithValue("p_Serie", obj.Serie);
+                    cmd.Parameters.AddWithValue("p_CodInventario", obj.CodInventario);
+                    cmd.Parameters.AddWithValue("p_Usuario", obj.Usuario);
+                    cmd.Parameters.AddWithValue("p_IdRazonSocial", obj.oRazonSocial.IdRazonSocial);
+                    cmd.Parameters.AddWithValue("p_GuiaIngreso", obj.GuiaIngreso);
+                    cmd.Parameters.AddWithValue("p_IdProveedor", obj.oProveedor.IdProveedor);
+                    cmd.Parameters.AddWithValue("p_OrdenCompra", obj.OrdenCompra);
+                    cmd.Parameters.AddWithValue("p_OrdenInterna", obj.OrdenInterna);
+                    cmd.Parameters.AddWithValue("p_ActivoFijo", obj.ActivoFijo);
+                    cmd.Parameters.AddWithValue("p_IdAlmacen", obj.oAlmacen.IdAlmacen);
+                    cmd.Parameters.AddWithValue("p_CodMaterialSAP", obj.CodMaterialSAP);
+                    cmd.Parameters.AddWithValue("p_Stock", obj.Stock);
+                    cmd.Parameters.AddWithValue("p_IdPrioridades", obj.oPrioridad.IdPrioridades);
+                    cmd.Parameters.AddWithValue("p_IdSistema", obj.oSistema.IdSistema);
+                    cmd.Parameters.AddWithValue("p_DireccionMac", obj.DireccionMac);
+                    cmd.Parameters.AddWithValue("p_FechaActualizacion", obj.FechaActualizacion);
+                    cmd.Parameters.AddWithValue("p_FechaGarantia", obj.FechaGarantia);
+                    cmd.Parameters.AddWithValue("p_Observacion", obj.Onservacion);
+                    cmd.Parameters.AddWithValue("p_Activo", obj.Activo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -198,19 +199,19 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EliminarEquipo", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EliminarEquipo", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdEquipos", id);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdEquipos", id);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int64).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -229,13 +230,13 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_GuardarDatosImagen", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_GuardarDatosImagen", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("RutaImagen", obj.RutaImagen);
-                    cmd.Parameters.AddWithValue("NombreImagen", obj.NombreImagen);
-                    cmd.Parameters.AddWithValue("IdEquipos", obj.IdEquipos);
+                    cmd.Parameters.AddWithValue("p_RutaImagen", obj.RutaImagen);
+                    cmd.Parameters.AddWithValue("p_NombreImagen", obj.NombreImagen);
+                    cmd.Parameters.AddWithValue("p_IdEquipos", obj.IdEquipos);
 
                     cn.Open();
                     if (cmd.ExecuteNonQuery() > 0)

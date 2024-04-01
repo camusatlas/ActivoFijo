@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -10,22 +11,22 @@ namespace ActivoFijo.Models
 {
     public class CD_Almacen
     {
-        private SqlConnection cn;
+        private MySqlConnection cn;
         public CD_Almacen()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosiInventario"].ConnectionString);
         }
 
         // Listar Marca
         public List<Almacen> listar()
         {
             List<Almacen> listado = new List<Almacen>();
-            SqlCommand cmd = new SqlCommand("sp_ListarAlmacen", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ListarAlmacen", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -58,21 +59,20 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_InsertarAlmacen", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_InsertarAlmacen", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("NomAlmacen", obj.NomAlmacen);
-                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("p_NomAlmacen", obj.NomAlmacen);
+                    cmd.Parameters.AddWithValue("p_Activo", obj.Activo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -83,6 +83,7 @@ namespace ActivoFijo.Models
             }
             return idautogenerado;
         }
+
         //Editar Almacen
         public bool Editar(Almacen obj, out string Mensaje)
         {
@@ -90,21 +91,21 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EditarAlmacen", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EditarAlmacen", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdAlmacen", obj.IdAlmacen);
-                    cmd.Parameters.AddWithValue("NomAlmacen", obj.NomAlmacen);
-                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdAlmacen", obj.IdAlmacen);
+                    cmd.Parameters.AddWithValue("p_NomAlmacen", obj.NomAlmacen);
+                    cmd.Parameters.AddWithValue("p_Activo", obj.Activo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -123,19 +124,19 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EliminarAlmacen", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EliminarAlmacen", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("IdAlmacen", id);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdAlmacen", id);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }

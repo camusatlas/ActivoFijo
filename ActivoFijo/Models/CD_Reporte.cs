@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -11,17 +12,17 @@ namespace ActivoFijo.Models
 {
     public class CD_Reporte
     {
-        private SqlConnection cn;
+        private MySqlConnection cn;
         public CD_Reporte()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosiInventario"].ConnectionString);
         }
 
         // Listar Resportes
         public List<Reporte> Ventas(string fechainicio, string fechafin, string idtransaccion)
         {
             List<Reporte> listado = new List<Reporte>();
-            SqlCommand cmd = new SqlCommand("sp_ReporteVentas", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ReporteVentas", cn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("fechainicio", fechainicio);
@@ -31,7 +32,7 @@ namespace ActivoFijo.Models
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -62,12 +63,12 @@ namespace ActivoFijo.Models
         public DashBoard VerDashBoard()
         {
             DashBoard objeto = new DashBoard();
-            SqlCommand cmd = new SqlCommand("sp_ReporteDashboard", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ReporteDashboard", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {

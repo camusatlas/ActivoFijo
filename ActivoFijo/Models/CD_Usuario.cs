@@ -1,4 +1,5 @@
-﻿using MySqlX.XDevAPI;
+﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,22 +12,22 @@ namespace ActivoFijo.Models
 {
     public class CD_Usuario
     {
-        private SqlConnection cn;
+        private MySqlConnection cn;
         public CD_Usuario()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosiInventario"].ConnectionString);
         }
 
         // Listar Cliente
         public List<Usuario> listar()
         {
             List<Usuario> listado = new List<Usuario>();
-            SqlCommand cmd = new SqlCommand("sp_ListarUsuario", cn);
+            MySqlCommand cmd = new MySqlCommand("sp_ListarUsuario", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
                 cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -62,23 +63,23 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_RegistrarUsuario", cn))
                 {
 
 
-                    cmd.Parameters.AddWithValue("Nombres", obj.Nombres);
-                    cmd.Parameters.AddWithValue("Apellidos", obj.Apellidos);
-                    cmd.Parameters.AddWithValue("Correo", obj.Correo);
-                    cmd.Parameters.AddWithValue("Clave", obj.Clave);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_Nombres", obj.Nombres);
+                    cmd.Parameters.AddWithValue("p_Apellidos", obj.Apellidos);
+                    cmd.Parameters.AddWithValue("p_Correo", obj.Correo);
+                    cmd.Parameters.AddWithValue("p_Clave", obj.Clave);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Int32).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -97,7 +98,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("update Usuario set clave = @nuevaclave, Restablecer = 0 where IdUsuario = @id", cn))
+                using (MySqlCommand cmd = new MySqlCommand("update Usuario set clave = @nuevaclave, Restablecer = 0 where IdUsuario = @id", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", idusuario);
@@ -121,7 +122,7 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("update Usuario set clave = @clave, Restablecer = 1 where IdUsuario = @id", cn))
+                using (MySqlCommand cmd = new MySqlCommand("update Usuario set clave = @clave, Restablecer = 1 where IdUsuario = @id", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@id", idusuario);

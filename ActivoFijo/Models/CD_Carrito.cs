@@ -1,4 +1,5 @@
 ﻿using Irony.Parsing;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,10 +13,10 @@ namespace ActivoFijo.Models
 {
     public class CD_Carrito
     {
-        private SqlConnection cn;
+        private MySqlConnection cn;
         public CD_Carrito()
         {
-            cn = new SqlConnection(ConfigurationManager.ConnectionStrings["ActivoFijo"].ConnectionString);
+            cn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ServidorDelosiInventario"].ConnectionString);
         }
 
         public bool ExisteCarrito(int idusuario, int idequipo)
@@ -24,17 +25,17 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_ExisteCarrito", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_ExisteCarrito", cn))
                 {
-                    cmd.Parameters.AddWithValue("IdUsuario", idusuario);
-                    cmd.Parameters.AddWithValue("IdEquipos", idequipo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdUsuario", idusuario);
+                    cmd.Parameters.AddWithValue("p_IdEquipos", idequipo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
                 }
             }
             catch (Exception ex)
@@ -50,22 +51,22 @@ namespace ActivoFijo.Models
             Mensaje = string.Empty;
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_OperacionCarrito", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_OperacionCarrito", cn))
                 {
 
 
-                    cmd.Parameters.AddWithValue("IdUsuario", idusuario);
-                    cmd.Parameters.AddWithValue("IdEquipos", idequipo);
-                    cmd.Parameters.AddWithValue("Sumar", sumar);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdUsuario", idusuario);
+                    cmd.Parameters.AddWithValue("p_IdEquipos", idequipo);
+                    cmd.Parameters.AddWithValue("p_Sumar", sumar);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("p_Mensaje", MySqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
+                    Mensaje = cmd.Parameters["p_Mensaje"].Value.ToString();
 
                 }
             }
@@ -83,7 +84,7 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select count(*) from CARRITO where IdUsuario = @IdUsuario", cn))
+                using (MySqlCommand cmd = new MySqlCommand("select count(*) from CARRITO where IdUsuario = @IdUsuario", cn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@IdUsuario", idusuario);
@@ -101,41 +102,41 @@ namespace ActivoFijo.Models
         public List<Carrito> ListarEquipo(int idusuario)
         {
             List<Carrito> listado = new List<Carrito>();
-            SqlCommand cmd = new SqlCommand("sp_ObtenerCarritoUsuario", cn);
-            cmd.Parameters.AddWithValue("@IdUsuario", idusuario);
-            cmd.CommandType = CommandType.StoredProcedure;
-            try
-            {
-                cn.Open();
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (MySqlCommand cmd = new MySqlCommand("sp_ObtenerCarritoUsuario", cn))
                 {
-                    while (dr.Read())
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("p_IdUsuario", idusuario);
+
+                    try
                     {
-                        Carrito carrito = new Carrito()
+                        cn.Open();
+                        using (MySqlDataReader dr = cmd.ExecuteReader())
                         {
-                            oEquipo = new Equipo()
+                            while (dr.Read())
                             {
-                                IdEquipos = Convert.ToInt32(dr["IdEquipos"]),
-                                Nombre = dr["Nombre"].ToString(),
-                                Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-PE")),
-                                RutaImagen = dr["RutaImagen"].ToString(),
-                                NombreImagen = dr["NombreImagen"].ToString(),
-                                oMarca = new Marca() { Descripcion = dr["DesMarca"].ToString() }
-                            }, 
-                            Cantidad = Convert.ToInt32(dr["Cantidad"])
-                        };
-                        listado.Add(carrito);
+                                Carrito carrito = new Carrito()
+                                {
+                                    oEquipo = new Equipo()
+                                    {
+                                        IdEquipos = Convert.ToInt32(dr["IdEquipos"]),
+                                        Nombre = dr["Nombre"].ToString(),
+                                        Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-PE")),
+                                        RutaImagen = dr["RutaImagen"].ToString(),
+                                        NombreImagen = dr["NombreImgen"].ToString(),
+                                        oMarca = new Marca() { Descripcion = dr["DesMarca"].ToString() }
+                                    },
+                                    Cantidad = Convert.ToInt32(dr["Cantidad"])
+                                };
+                                listado.Add(carrito);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                        // También puedes lanzar una excepción aquí o manejarla de otra manera.
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            finally
-            {
-                cn.Close();
-            }
             return listado;
         }
 
@@ -145,17 +146,17 @@ namespace ActivoFijo.Models
 
             try
             {
-                using (SqlCommand cmd = new SqlCommand("sp_EliminarCarrito", cn))
+                using (MySqlCommand cmd = new MySqlCommand("sp_EliminarCarrito", cn))
                 {
-                    cmd.Parameters.AddWithValue("IdUsuario", idusuario);
-                    cmd.Parameters.AddWithValue("IdEquipos", idequipo);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("p_IdUsuario", idusuario);
+                    cmd.Parameters.AddWithValue("p_IdEquipos", idequipo);
+                    cmd.Parameters.Add("p_Resultado", MySqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cn.Open();
                     cmd.ExecuteNonQuery();
 
-                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    resultado = Convert.ToBoolean(cmd.Parameters["p_Resultado"].Value);
                 }
             }
             catch (Exception ex)

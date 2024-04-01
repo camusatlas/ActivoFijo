@@ -648,7 +648,7 @@ namespace ActivoFijo.Controllers
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
-        // Registrar y Editar Sede
+        // Registrar y Editar Almacen
         [HttpPost]
         public JsonResult GuardarAlmacen(Almacen objeto)
         {
@@ -742,7 +742,7 @@ namespace ActivoFijo.Controllers
         // Registrar y Editar Prioridad
         [HttpPost]
         public JsonResult GuardarPrioridad(Prioridad objeto)
-        {
+         {
             object resultado;
             string mensaje = string.Empty;
             if (objeto.IdPrioridades == 0)
